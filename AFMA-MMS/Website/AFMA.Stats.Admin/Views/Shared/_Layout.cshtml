@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="~/img/favicon.ico" type="image/x-icon"/>
+  <title>AFMA Statistics</title>
+
+  <!-- Required CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap">
+  <link rel="stylesheet" href="~/css/simplebar.css">
+  <link rel="stylesheet" href="~/css/pagedlist.css" />
+  <link rel="stylesheet" href="~/css/style.css">
+  <link rel="stylesheet" href="~/css/custom.css">
+  <link rel="stylesheet" href="~/css/sidebar-light.css" id="sidebar-theme"> <!-- available themes: dark, light, cyan, green, indigo, red -->
+  <link rel="stylesheet" href="~/css/dselect.css">
+  <script src="https://kit.fontawesome.com/4ed0b1790b.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="~/vendor/dselect/dselect.js"></script>
+</head>
+
+<body class="preloading">
+
+<div id="wrapper" class="fixed-sidebar fixed-navbar">
+  <!-- available options: fixed-sidebar, fixed-navbar, fixed-footer, mini-sidebar -->
+
+  <partial name="_Sidebar"/>
+
+  <div id="main">
+
+    <partial name="_Header"/>
+
+    <div id="main-body">
+
+      @RenderBody()
+
+    </div>
+
+    <partial name="_Footer"/>
+
+  </div>
+
+</div>
+<script src="~/vendor/bootstrap/bootstrap.bundle.js"></script>
+<script src="~/vendor/feather-icons/feather.min.js"></script>
+<script src="~/vendor/simplebar/simplebar.js"></script>
+<script src="~/js/script.js"></script>
+<script src="~/js/custom.js"></script>
+@await Component.InvokeAsync("Notyf") 
+@await RenderSectionAsync("Scripts", required: false)
+<script>
+  feather.replace()
+
+        for (const el of document.querySelectorAll('.dselect')) {
+        dselect(el)
+      }
+
+</script>
+</body>
+
+</html>

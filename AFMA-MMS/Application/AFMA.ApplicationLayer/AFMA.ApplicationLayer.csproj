@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+    <Version>2.0.1.0</Version>
+    <Product>Application Service</Product>
+    <AssemblyName>AFMA Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Alpha.Services.Extensions" Version="9.0.20" />
+    <PackageReference Include="Alpha.Services.NHibernate.Repository" Version="9.0.20" />
+    <PackageReference Include="Alpha.Services.Notifications" Version="9.0.20" />
+    <PackageReference Include="Alpha.Services.Notifications.Templates" Version="9.0.20" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="EPPlus" Version="6.2.10" />
+    <PackageReference Include="Resolvetech.NetCore.Common" Version="1.0.3.1004" />
+    <PackageReference Include="Serilog" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\AFMA.Data.Entities.Wims\AFMA.Data.Entities.Wims.csproj" />
+    <ProjectReference Include="..\..\Data\AFMA.Data.Entities\AFMA.Data.Entities.csproj" />
+    <ProjectReference Include="..\..\Shared\AFMA.Shared.Infrastructure\AFMA.Infrastructure.csproj" />
+    <ProjectReference Include="..\AFMA.ApplicationLayer.Templating\AFMA.ApplicationLayer.Templating.csproj" />
+  </ItemGroup>
+
+</Project>

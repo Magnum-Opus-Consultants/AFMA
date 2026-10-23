@@ -1,0 +1,49 @@
+﻿@model IEnumerable<AFMA.ApplicationLayer.Model.ProvinceModel>
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Provinces</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Provinces</h4>
+    </div>
+
+    <div class="col-12 pb-3">
+      <a asp-area="General" asp-controller="Province" asp-action="Create" class="btn btn-afm-primary"><i class="fa-solid fa-plus"></i> New Province</a>
+    </div>
+    
+    <div class="col-12">
+      <div class="alert alert-warning"><i class="fa-solid fa-circle-exclamation"></i> Do not edit anything here unless you know what you are doing?!?!?!</div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-sm table-bordered">
+        <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col" class="w-5"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var province in Model)
+        {
+          <tr>
+            <td class="align-middle">
+              @province.Description
+            </td>
+            <td class="text-center">
+              <a asp-area="General" asp-controller="Province" asp-action="Edit" asp-route-id="@province.Id" class="btn btn-afm-primary btn-sm"><i class="fa-regular fa-edit"></i> Edit</a>
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+﻿@model DeleteViewModel
+
+<div class="modal fade" id="deleteMemberCommittee" tabindex="-1" aria-labelledby="deleteMemberCommitteeLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form asp-route-id="@Model.Id" asp-action="DeleteCommittee" method="post">
+        <input type="hidden" name="ParentId" value="@Model.ParentId" />
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteMemberCommitteeLabel">Delete MEmber Committee</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to remove this committee?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-close"></i> Cancel</button>
+          <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

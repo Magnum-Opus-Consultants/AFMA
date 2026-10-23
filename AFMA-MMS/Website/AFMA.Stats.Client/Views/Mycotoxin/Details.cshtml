@@ -1,0 +1,119 @@
+﻿@using Resolvetech.NetCore.Common.Helpers
+@using AFMA.ApplicationLayer.Helpers
+@using AFMA.ApplicationLayer.Model
+@model AFMA.ApplicationLayer.Model.MycotoxinReportModel
+
+@{
+  ViewBag.PageTitle = "Mycotoxins";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Mycotoxins";
+  ViewBag.Action = "View Report";
+}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">View Mycotoxin Report</h4>
+        <p class="card-title-desc">Displays your mycotoxin report with a summary of all items submitted.</p>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="Id" class="form-label"></label>
+              <input asp-for="Id" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="Member" class="form-label"></label>
+              <input asp-for="Member" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="LaboratoryReportNo" class="form-label"></label>
+              <input asp-for="LaboratoryReportNo" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="MemberBranch" class="form-label"></label>
+              <input asp-for="MemberBranch" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="SubmittedDate" class="form-label"></label>
+              @Html.TextBoxFor(model => model.SubmittedDate, "{0:dd/MM/yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="MemberAccount" class="form-label"></label>
+              <input asp-for="MemberAccount" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="Laboratory" class="form-label"></label>
+              <input asp-for="Laboratory" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="DueDate" class="form-label"></label>
+              @Html.TextBoxFor(model => model.DueDate, "{0:dd/MM/yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="InfoFor" class="form-label"></label>
+              @Html.TextBoxFor(model => model.InfoFor, "{0:MMMM yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 mb-3">
+            <div class="form-group">
+              <label asp-for="Comment" class="form-label"></label>
+              <textarea rows="3" asp-for="Comment" class="form-control" disabled></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="float: left" class="mt-2">
+          <a asp-controller="Mycotoxin" asp-action="Index" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+        </div>
+
+        <div style="float: right" class="mt-2">
+
+          @if (!Model.IsSubmitted)
+          {
+            <a asp-controller="Mycotoxin" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#submitMycotoxinReport"><i class="fa fa-arrow-up"></i> Submit</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<partial name="SubmitReportPartial" model="@Model.Id" />

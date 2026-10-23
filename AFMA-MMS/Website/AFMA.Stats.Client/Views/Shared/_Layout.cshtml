@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  @await Html.PartialAsync("~/Views/Shared/_title_meta.cshtml")
+  @RenderSection("styles", false)
+  @await Html.PartialAsync("~/Views/Shared/_head_css.cshtml")
+
+  @await Html.PartialAsync("~/Views/Shared/_vendor_scripts_header.cshtml")
+
+</head>
+
+<body data-sidebar="brand">
+
+  <!-- Begin page -->
+  <div id="layout-wrapper">
+
+    @await Html.PartialAsync("~/Views/Shared/_topbar.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_sidebar.cshtml")
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+
+    <div class="main-content">
+      <div class="page-content">
+        <div class="container-fluid">
+          @await Html.PartialAsync("~/Views/Shared/_page_title.cshtml")
+
+          @RenderBody()
+        </div> <!-- container-fluid -->
+      </div>
+      <!-- End Page-content -->
+      @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")
+    </div>
+    <!-- end main content-->
+
+  </div>
+
+  @RenderSection("externalhtml", required: false)
+
+  <!-- END layout-wrapper -->
+  @await Html.PartialAsync("~/Views/Shared/_right_sidebar.cshtml")
+
+  @await Html.PartialAsync("~/Views/Shared/_vendor_scripts.cshtml")
+
+  @await Component.InvokeAsync("Notyf")
+
+  @RenderSection("scripts", required: false)
+
+
+</body>
+
+</html>

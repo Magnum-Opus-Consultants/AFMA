@@ -1,0 +1,67 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using AFMA.ApplicationLayer.Helpers
+@model IEnumerable<AFMA.ApplicationLayer.Model.MycotoxinReportModel>
+
+@{
+  ViewBag.PageTitle = "Mycotoxins";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Mycotoxins";
+  ViewBag.Action = "Reports";
+  var filterIsSubmitted = Context.Request.Query["filterIsSubmitted"].ToNullableBool();
+}
+
+<div class="col-12">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Mycotoxin Reports</h4>
+      <p class="card-title-desc">
+        Displays a list of all outstanding and submitted mycotoxin reports.
+      </p>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped mb-0">
+
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th class="w-25">Branch</th>
+              <th class="w-15">Info For</th>
+              <th class="w-10 text-center">Report No</th>
+              <th class="w-10 text-center">Status</th>
+              <th class="w-15"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var item in Model)
+            {
+              <tr>
+                <td scope="row">@item.Member</td>
+                <td>@item.MemberBranch</td>
+                <td>@item.InfoFor.ToString("MMMM yyyy")</td>
+                <td class="text-center">@item.Id</td>
+                <td class="text-center align-middle">
+                  @if (item.IsSubmitted)
+                  {
+                    <span class="afm-badge bg-success">SUBMITTED</span>
+                  }
+                  else
+                  {
+                    <span class="afm-badge bg-danger">OUTSTANDING</span>
+                  }
+                </td>
+                <td class="text-center">
+                  <a asp-controller="Mycotoxin" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm waves-effect waves-light"><i class="fas fa-eye"></i> View</a>
+                  <a asp-controller="Mycotoxin" asp-action="Manage" asp-route-id="@item.Id" class="btn btn-info btn-sm waves-effect waves-light"><i class="fas fa-edit"></i> Manage</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page, filterIsSubmitted }))
+
+    </div>
+  </div>
+</div>

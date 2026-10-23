@@ -1,0 +1,84 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.MemberDocumentModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Member</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Member Document</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Create Member Document</h3>
+  <p>Manages all member related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <form class="needs-validation" novalidate asp-action="CreateDocument" method="post" enctype="multipart/form-data">
+            
+            <input type="hidden" asp-for="MemberId" />
+
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="Name" class="form-label"></label>
+                  <input asp-for="Name" class="form-control" />
+                  <span asp-validation-for="Name"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="DocumentTypeId" class="form-label"></label>
+                  <select id="DocumenTypeId" name="DocumentTypeId" class="form-control" asp-items="@(await WimsApplicationLayer.GenerateDocumentTypeSelectList(null))">
+                    <option value="">-- Select Document Type --</option>
+                  </select>
+                  <span asp-validation-for="DocumentTypeId"></span>
+                </div>
+              </div>
+              <div class="col-6">
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="DocumentContent" class="form-label"></label>
+                  <input asp-for="DocumentContent" id="documentContent" class="form-control" type="file">
+                  <span asp-validation-for="DocumentContent"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-3">
+                <div class="form-group">
+                  <input asp-for="Visible" class="form-check-input" type="checkbox" checked>
+                  <label asp-for="Visible" class="form-check-label">Visible</label>
+                </div>
+              </div>
+
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="DocumentType" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="~/js/max-file-size-validation.js"></script>
+
+@section Scripts
+{
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,148 @@
+﻿@{
+  string? areaName = ViewContext.RouteData.Values["area"]?.ToString()?.ToLower();
+  string? controllerName = ViewContext.RouteData.Values["Controller"]?.ToString()?.ToLower();
+  string? actionName = ViewContext.RouteData.Values["Action"]?.ToString()?.ToLower();
+  var memberAccess = await ApplicationLayer.GetCurrentMemberAccess().ConfigureAwait(false);
+}
+
+@if (memberAccess.HasAccess)
+{
+  <div class="vertical-menu">
+    <div data-simplebar class="h-100">
+      <div id="sidebar-menu">
+        <ul class="metismenu list-unstyled" id="side-menu">
+
+          <li class="menu-title" key="t-menu">Menu</li>
+
+          <li>
+            <a href=@Url.Action("Index", "Home") class="waves-effect">
+              <i class="bx bxs-dashboard"></i>
+              <span key="t-dashboard">Dashboard</span>
+            </a>
+          </li>
+
+          @if (memberAccess.HasFeedsalesAccess)
+          {
+            <li class="menu-title mt-3" key="t-feedsales">Feesales</li>
+
+            <li>
+              <a href=@Url.Action("Guideline", "Feedsales") class="waves-effect">
+                <i class="bx bxs-help-circle"></i>
+                <span key="t-guideline-fs">Guideline</span>
+              </a>
+            </li>
+
+            <li>
+              <a href=@Url.Action("Index", "Feedsales") class="waves-effect">
+                <i class="bx bx-clipboard"></i>
+                <span key="t-submit-reports-fs">Submit Reports</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="bx bxs-report"></i>
+                <span key="t-reports-fs">Reports</span>
+              </a>
+              <ul class="sub-menu" aria-expanded="false">
+                <li><a href=@Url.Action("Report", "Feedsales")><span key="t-report-total-fs">Feedsales Total</span></a></li>
+              </ul>
+            </li>
+          }
+
+          @if (memberAccess.HasIndustryProfileAccess)
+          {
+            <li class="menu-title mt-3" key="t-adminkit">Industry Profile</li>
+
+            <li>
+              <a href=@Url.Action("Guideline", "IndustryProfile") class="waves-effect">
+                <i class="bx bxs-help-circle"></i>
+                <span key="t-guideline-ip">Guideline</span>
+              </a>
+            </li>
+
+            <li>
+              <a href=@Url.Action("Index", "IndustryProfile") class="waves-effect">
+                <i class="bx bx-clipboard"></i>
+                <span key="t-submmit-reports-ip">Submit Reports</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="bx bxs-report"></i>
+                <span key="t-reports-ip">Reports</span>
+              </a>
+              <ul class="sub-menu" aria-expanded="false">
+                <li><a href=@Url.Action("SummaryReport", "IndustryProfile")><span key="t-calendar2">Industry Profile Summary</span></a></li>
+              </ul>
+            </li>
+          }
+
+          @if (memberAccess.HasSalmonellaAccess)
+          {
+            <li class="menu-title mt-3" key="t-salmonella">Salmonella</li>
+
+            <li>
+              <a href=@Url.Action("Guideline", "Salmonella") class="waves-effect">
+                <i class="bx bxs-help-circle"></i>
+                <span key="t-guideline-s">Guideline</span>
+              </a>
+            </li>
+
+            <li>
+              <a href=@Url.Action("Index", "Salmonella") class="waves-effect">
+                <i class="bx bx-clipboard"></i>
+                <span key="t-submit-reports-s">Submit Reports</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="bx bxs-report"></i>
+                <span key="t-reports-s">Reports</span>
+              </a>
+              <ul class="sub-menu" aria-expanded="false">
+                <li><a href=@Url.Action("Report", "Salmonella")><span key="t-calendar3">Salmonella Details</span></a></li>
+              </ul>
+            </li>
+          }
+
+          @if (memberAccess.HasMycotoxinAccess)
+          {
+            <li class="menu-title mt-3" key="t-mycotoxib">Mycotoxins</li>
+
+            <li>
+              <a href=@Url.Action("Guideline", "Mycotoxin") class="waves-effect">
+                <i class="bx bxs-help-circle"></i>
+                <span key="t-guideline-mt">Guideline</span>
+              </a>
+            </li>
+
+            <li>
+              <a href=@Url.Action("Index", "Mycotoxin") class="waves-effect">
+                <i class="bx bx-clipboard"></i>
+                <span key="t-submit-reports-mt">Submit Reports</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="bx bxs-report"></i>
+                <span key="t-reports-mt">Reports</span>
+              </a>
+              <ul class="sub-menu" aria-expanded="false">
+                <li><a href=@Url.Action("ComingSoon", "Home")><span key="t-calendar4">Under development</span></a></li>
+              </ul>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+}
+<div style="display: none">
+  <!-- BEGIN ProvideSupport.com Graphics Chat Button Code -->
+  <script>(function (D) { function f() { function n(n, e) { e = D.createElement("script"); e.src = "https://image.providesupport.com/" + n, D.body.appendChild(e) } n("js/06pn4s44z4ipv1jwn71ho2rz69/safe-standard-sync.js?ps_h=arVc&ps_t=" + Date.now() + "&AFMA_Client_User=@User.Identity.Name"), n("sjs/static.js") } D.readyState == "complete" ? f() : window.addEventListener("load", f) })(document)</script><noscript><div style="display:inline"><a href="https://vm.providesupport.com/06pn4s44z4ipv1jwn71ho2rz69">Live Chat</a></div></noscript>
+  <!-- END ProvideSupport.com Graphics Chat Button Code -->
+</div>

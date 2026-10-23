@@ -1,0 +1,47 @@
+﻿@model IEnumerable<AFMA.ApplicationLayer.Model.SalmonellaSampleTypeModel>
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Salmonella</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Sample Types</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Sample Types</h4>
+    </div>
+
+    <div class="col-12 pb-3">
+      <a asp-area="Salmonella" asp-controller="SampleType" asp-action="Create" class="btn btn-afm-primary"><i class="fa-solid fa-plus"></i> New Sample Type</a>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-sm table-bordered">
+        <thead>
+        <tr>
+          <th scope="col" class="w-10">Short Code</th>
+          <th scope="col">Name</th>
+          <th scope="col" class="text-center w-5">Active</th>
+          <th scope="col" class="w-5"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var sampleType in Model)
+        {
+          <tr>
+            <td class="align-middle">@sampleType.ShortCode</td>
+            <td class="align-middle">@sampleType.Name</td>
+            <td class="align-middle">@Html.Raw(sampleType.Active.ToFormattedActiveInactive())</td>
+            <td class="text-center">
+              <a asp-area="Salmonella" asp-controller="SampleType" asp-action="Edit" asp-route-id="@sampleType.Id" class="btn btn-afm-primary btn-sm"><i class="fa-regular fa-edit"></i> Edit</a>
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

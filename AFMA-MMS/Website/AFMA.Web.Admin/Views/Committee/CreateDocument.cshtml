@@ -1,0 +1,81 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model AFMA.ApplicationLayer.Model.Wims.CommitteeDocumentModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Committee Document</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Create Committee Document</h3>
+  <p>Manages committees related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <form class="needs-validation" novalidate asp-action="CreateDocument" method="post" enctype="multipart/form-data">
+
+            <input asp-for="CommitteeId" type="hidden" />
+
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="DocumentTypeId" class="form-label"></label>
+                  <select class="form-control" asp-for="DocumentTypeId" asp-items="await WimsApplicationLayer.GenerateDocumentTypeSelectList(null)"></select>
+                  <span asp-validation-for="DocumentTypeId"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="Name" class="form-label"></label>
+                  <input asp-for="Name" class="form-control" />
+                  <span asp-validation-for="Name"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="Description" class="form-label"></label>
+                  <textarea rows="3" asp-for="Description" class="form-control"></textarea>
+                  <span asp-validation-for="Description"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="DocumentContent" class="form-label"></label>
+                  <input asp-for="DocumentContent" class="form-control" type="file">
+                  <span asp-validation-for="DocumentContent"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="Committee" asp-action="Details" asp-route-id="@Model.CommitteeId" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="~/js/max-file-size-validation.js"></script>
+
+@section Scripts
+{
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}

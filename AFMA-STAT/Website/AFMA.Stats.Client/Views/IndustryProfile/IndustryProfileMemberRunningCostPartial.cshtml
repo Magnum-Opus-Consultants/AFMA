@@ -1,0 +1,157 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model IEnumerable<AFMA.ApplicationLayer.ViewModels.MemberRunningCostViewModel>
+
+@{
+  var id = Convert.ToInt32(ViewData["IndustryProfileReportId"]);
+  Enum.TryParse(ViewData["CurrentPageAction"]?.ToString(), out CurrentPageAction currentPageAction);
+}
+
+<div class="row">
+  <div class="col-md-12">
+
+    <table class="table table-responsive table-sm table-bordered">
+      <tr>
+        <th class="td-afm-secondary td-w-5"></th>
+        <th class="td-afm-secondary"></th>
+        <th class="td-afm-secondary td-w-10"></th>
+        <th class="td-afm-secondary td-w-10 text-center">P</th>
+        <th class="td-afm-secondary td-w-10 text-center">S</th>
+        <th class="td-afm-secondary td-w-10 text-center">V</th>
+        <th class="td-afm-secondary td-w-10 text-center">V</th>
+      </tr>
+      <tr>
+        <th class="td-afm-secondary">Code</th>
+        <th class="td-afm-secondary">Item</th>
+        <th class="td-afm-secondary">Total Cost</th>
+        <th class="td-afm-secondary">Production</th>
+        <th class="td-afm-secondary">Sales/Marketing</th>
+        <th class="td-afm-secondary">Administration</th>
+        <th class="td-afm-secondary">Road Transport</th>
+      </tr>
+
+      @foreach (var group in Model)
+      {
+        <tr>
+          <td>@group.GroupCode</td>
+          <td>@group.GroupName</td>
+          <td style="text-align:right"><strong>@($"{group.Total:c}")</strong></td>
+          <td style="text-align:right">
+            @if (group.ProductionEnabled)
+            {
+              <div style="text-align:right">@($"{group.ProductionValue:c}")</div>
+            }
+            else
+            {
+              <div style="text-align:center">XXXXX</div>
+            }
+          </td>
+          <td style="text-align:right">
+            @if (group.SalesEnabled)
+            {
+              <div style="text-align:right">@($"{group.SalesValue:c}")</div>
+            }
+            else
+            {
+              <div style="text-align:center">XXXXX</div>
+            }
+          </td>
+          <td style="text-align:right">
+            @if (group.AdministrationEnabled)
+            {
+              <div style="text-align:right">@($"{group.AdministrationValue:c}")</div>
+            }
+            else
+            {
+              <div style="text-align:center">XXXXX</div>
+            }
+          </td>
+          <td style="text-align:right">
+            @if (group.RoadTransportEnabled)
+            {
+              <div style="text-align:right">@($"{group.RoadTransportValue:c}")</div>
+            }
+            else
+            {
+              <div style="text-align:center">XXXXX</div>
+            }
+          </td>
+        </tr>
+        if (group.SubItems.Count > 0)
+        {
+          foreach (var item in group.SubItems)
+          {
+            <tr>
+              <td></td>
+              <td>* @item.GroupName</td>
+              <td style="text-align:right"><strong>@($"{item.Total:c}")</strong></td>
+              <td style="text-align:right">
+                @if (item.ProductionEnabled)
+                {
+                  <div style="text-align:right">@($"{item.ProductionValue:c}")</div>
+                }
+                else
+                {
+                  <div style="text-align:center">XXXXX</div>
+                }
+              </td>
+              <td style="text-align:right">
+                @if (item.SalesEnabled)
+                {
+                  <div style="text-align:right">@($"{item.SalesValue:c}")</div>
+                }
+                else
+                {
+                  <div style="text-align:center">XXXXX</div>
+                }
+              </td>
+              <td style="text-align:right">
+                @if (item.AdministrationEnabled)
+                {
+                  <div style="text-align:right">@($"{item.AdministrationValue:c}")</div>
+                }
+                else
+                {
+                  <div style="text-align:center">XXXXX</div>
+                }
+              </td>
+              <td style="text-align:right">
+                @if (item.RoadTransportEnabled)
+                {
+                  <div style="text-align:right">@($"{item.RoadTransportValue:c}")</div>
+                }
+                else
+                {
+                  <div style="text-align:center">XXXXX</div>
+                }
+              </td>
+            </tr>
+          }
+        }
+
+      }
+      <tr>
+        <th class="td-afm-secondary"></th>
+        <th class="td-afm-secondary">TOTAL</th>
+        <th class="td-afm-secondary" style="text-align:right">
+          @($"{Model.Sum(d => d.ProductionValue) + Model.SelectMany(q => q.SubItems).Sum(w => w.ProductionValue) + Model.Sum(d => d.SalesValue) + Model.SelectMany(e => e.SubItems).Sum(f => f.SalesValue) + Model.Sum(d => d.AdministrationValue) + Model.SelectMany(g => g.SubItems).Sum(v => v.AdministrationValue) + Model.Sum(d => d.RoadTransportValue) + Model.SelectMany(k => k.SubItems).Sum(l => l.RoadTransportValue):c}")
+        </th>
+        <th class="td-afm-secondary" style="text-align:right">@($"{Model.Sum(d => d.ProductionValue) + Model.SelectMany(s => s.SubItems).Sum(p => p.ProductionValue):c}")</th>
+        <th class="td-afm-secondary" style="text-align:right">@($"{Model.Sum(d => d.SalesValue) + Model.SelectMany(a => a.SubItems).Sum(b => b.SalesValue):c}")</th>
+        <th class="td-afm-secondary" style="text-align:right">@($"{Model.Sum(d => d.AdministrationValue) + Model.SelectMany(a => a.SubItems).Sum(b => b.AdministrationValue):c}")</th>
+        <th class="td-afm-secondary" style="text-align:right">@($"{Model.Sum(d => d.RoadTransportValue) + Model.SelectMany(a => a.SubItems).Sum(b => b.RoadTransportValue):c}")</th>
+      </tr>
+
+    </table>
+  </div>
+</div>
+
+@if (currentPageAction == CurrentPageAction.Manage)
+{
+  <div class="row g-2">
+    <div class="col-12">
+      <div style="float: right" class="mt-2">
+        <a asp-controller="IndustryProfile" asp-action="EditIndustryCost" asp-route-id="@id" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+      </div>
+    </div>
+  </div>
+}

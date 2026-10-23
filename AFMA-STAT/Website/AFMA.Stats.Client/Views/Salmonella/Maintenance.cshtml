@@ -1,0 +1,36 @@
+@{
+  ViewBag.PageTitle = "Salmonella";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Salmonella";
+  ViewBag.Action = "Maintenance";
+}
+
+<div class="col-12">
+  <div class="card">
+    <div class="card-body text-center py-5">
+      <i class="fa-solid fa-triangle-exclamation fa-3x text-warning mb-3"></i>
+      <h4 class="card-title">@ViewBag.MaintenanceHeading</h4>
+      <p class="card-title-desc" style="white-space: pre-line;">@ViewBag.MaintenanceMessage</p>
+
+      @if (ViewBag.ShowBypassForm == true)
+      {
+        <hr class="my-4" />
+        <p class="text-muted">If you have an access code, enter it below to continue:</p>
+        <form method="post" asp-action="Maintenance" class="d-inline-block">
+          @Html.AntiForgeryToken()
+          <div class="input-group" style="max-width: 320px; margin: 0 auto;">
+            <input type="text" name="accessCode" class="form-control" placeholder="Enter access code"
+                   autocomplete="off" required />
+            <button type="submit" class="btn btn-afm-primary">Submit</button>
+          </div>
+          @if (ViewBag.InvalidCode == true)
+          {
+            <div class="text-danger mt-2">
+              <small>Invalid access code. Please try again.</small>
+            </div>
+          }
+        </form>
+      }
+    </div>
+  </div>
+</div>

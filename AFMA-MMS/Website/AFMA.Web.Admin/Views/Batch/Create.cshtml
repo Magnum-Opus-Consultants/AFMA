@@ -1,0 +1,167 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.BatchModel
+
+<link rel="stylesheet" href="~/css/summernote-lite.css">
+<link rel="stylesheet" href="~/vendor/summernote/summernote-lite.css">
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Distribution</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Batch</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Create Batch</h3>
+  <p>Manages all distribution group related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <form class="needs-validation" novalidate asp-action="Create" method="post">
+            
+            <div class="row mt-2">
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="Description" class="form-label"></label>
+                  <input asp-for="Description" class="form-control" />
+                  <span asp-validation-for="Description"></span>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  <label asp-for="FromEmail" class="form-label"></label>
+                  <input asp-for="FromEmail" class="form-control" value="afma@afma.co.za" />
+                  <span asp-validation-for="FromEmail"></span>
+                </div>
+              </div>
+
+              <div class="col-3">
+                <div class="form-group">
+                  <label asp-for="FromName" class="form-label"></label>
+                  <input asp-for="FromName" class="form-control" value="AFMA" />
+                  <span asp-validation-for="FromName"></span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row mt-2">
+              
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label class="form-label">Select Recipients</label>
+                  <select asp-for="RecipientSelector" id="RecipientSelector" name="RecipientSelector" class="form-control">
+                    <option value="">-- Select Recipients --</option>
+                    <option value="1">Distribution Group</option>
+                    <option value="2">Committee</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-6 mt-2" id="committeRecipients" style="display:none">
+                <div class="form-group">
+                  <label class="form-label">Committee</label>
+                  <select id="CommitteeId" name="CommitteeId" class="form-control" asp-items="@(await WimsApplicationLayer.GenerateCommitteeSelectList(null))">
+                    <option value="">-- Select Committee --</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-6 mt-2" id="distributionGroupRecipients" style="display:none">
+                <div class="form-group">
+                  <label class="form-label">Distribution Group</label>
+                  <select id="DistributionGroupId" name="DistributionGroupId" class="form-control" asp-items="@(await WimsApplicationLayer.GenerateDistributionGroupSelectList(null))">
+                    <option value="">-- Select Recipients --</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12 mt-2">
+                <div class="form-group">
+                  <label asp-for="Subject" class="form-label"></label>
+                  <input asp-for="Subject" class="form-control"/>
+                  <span asp-validation-for="Subject"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12 mt-2">
+                <div class="form-group">
+                  <label asp-for="Message" class="form-label"></label>
+                  <textarea asp-for="Message" class="summernote"></textarea>
+                  <span asp-validation-for="Message"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mt-2">
+              <div class="col-12 mt-2">
+                <div class="alert alert-info">
+                  <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path>
+                  </svg>
+                  You will be able to add attachments to this message on the next page.
+                </div>
+              </div>
+            </div>
+
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="Batch" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  <script src="~/vendor/summernote/summernote-lite.js"></script>
+  <script>
+    $(function() {
+
+      summernoteStyle()
+
+      $('.summernote').summernote({
+        minHeight: 500,
+        callbacks: {
+          onBlur: function() {
+            $("#Message").val($('#Message').code());
+          },
+          onChange: function(contents, $editable) {
+            // fix https://github.com/summernote/summernote/issues/2631
+            if ($(this).summernote('isEmpty') && contents != '') {
+              $(this).summernote('code', '')
+            }
+          }
+        }
+      })
+    })
+  </script>
+
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+<script>
+
+    $("#RecipientSelector").on('change', function () {
+    
+      var entityId = $('#RecipientSelector').val();
+    
+      if (entityId == 1) {
+        $("#distributionGroupRecipients").show();
+        $("#committeRecipients").hide();
+      } else if (entityId == 2) {
+        $("#distributionGroupRecipients").hide();
+        $("#committeRecipients").show();
+      }
+  });
+
+</script>

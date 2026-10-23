@@ -1,0 +1,19 @@
+﻿@model AFMA.ApplicationLayer.ViewModels.Wims.MemberUserBranchViewModel
+
+@{
+  var memberBranches = await WimsApplicationLayer.GetMemberBranches(Model.MemberId).ConfigureAwait(false);
+}
+
+<h5 class="fw-black">Member Branch Access</h5>
+<p>Selects the branches this user has access to</p>
+<div class="list-group">
+  @foreach (var memberBranch in memberBranches)
+  {
+    var isSelected = Model.MemberBranches.Any(x => x.MemberBranchId == memberBranch.Id) ? "checked" : "";
+
+    <label class="list-group-item">
+      <input class="form-check-input me-1" type="checkbox" id="mub_@memberBranch.Id" name="mub_@memberBranch.Id" @isSelected>
+      @memberBranch.BranchName
+    </label>
+  }
+</div>

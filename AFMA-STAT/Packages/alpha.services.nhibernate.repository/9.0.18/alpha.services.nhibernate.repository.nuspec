@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Alpha.Services.NHibernate.Repository</id>
+    <version>9.0.18</version>
+    <authors>JJ Swart</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="6fbecf47e53523658300bb8f3ce44b2a52b9370b" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="Alpha.Services.Extensions.Mvc" version="9.0.18" exclude="Build,Analyzers" />
+        <dependency id="Alpha.Services.Extensions" version="9.0.18" exclude="Build,Analyzers" />
+        <dependency id="Alpha.Services.Models" version="9.0.18" exclude="Build,Analyzers" />
+        <dependency id="FluentNHibernate" version="3.3.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Authentication.JwtBearer" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Identity.UI" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="NHibernate" version="5.4.6" exclude="Build,Analyzers" />
+        <dependency id="NHibernate.AspNetCore.Identity" version="7.0.12" exclude="Build,Analyzers" />
+        <dependency id="NHibernate.NetCore" version="7.0.9" exclude="Build,Analyzers" />
+        <dependency id="System.Data.SqlClient" version="4.8.5" exclude="Build,Analyzers" />
+        <dependency id="System.IdentityModel.Tokens.Jwt" version="7.0.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

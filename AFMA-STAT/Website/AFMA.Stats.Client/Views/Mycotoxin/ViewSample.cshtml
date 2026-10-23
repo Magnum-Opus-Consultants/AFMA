@@ -1,0 +1,258 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@using AFMA.ApplicationLayer.Model
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AFMA.ApplicationLayer.Model.MycotoxinSampleModel
+
+@{
+  ViewBag.PageTitle = "Mycotoxins";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Mycotoxins";
+  ViewBag.Action = "View Sample";
+}
+
+<div class="row g-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">View Mycotoxin Sample</h4>
+        <p class="card-title-desc">Displays your mycotoxin report with a summary of all items submitted.</p>
+      
+      <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MycotoxinReportId" class="form-label"></label>
+              <input asp-for="MycotoxinReportId" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        @if (Model.MaterialId != null)
+        {
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Material" class="form-label"></label>
+                <input asp-for="Material" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="MaterialOrigin" class="form-label"></label>
+                <input asp-for="MaterialOrigin" class="form-control" disabled />
+              </div>
+            </div>
+
+            @if (Model.MaterialOriginId == (int)MaterialOriginEnum.Local)
+            {
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="Province" class="form-label"></label>
+                  <input asp-for="Province" class="form-control" disabled />
+                </div>
+              </div>
+            }
+            else
+            {
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="MaterialCountryOfOrigin" class="form-label"></label>
+                  <input asp-for="MaterialCountryOfOrigin" class="form-control" disabled />
+                </div>
+              </div>
+            }
+
+          </div>
+        }
+
+        @if (Model.ProductId != null)
+        {
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Product" class="form-label"></label>
+                <input asp-for="Product" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MycotoxinAnalysis" class="form-label"></label>
+              <input asp-for="MycotoxinAnalysis" class="form-control" disabled />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MycotoxinAnalysisOther" class="form-label"></label>
+              <input asp-for="MycotoxinAnalysisOther" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="Note" class="form-label"></label>
+              <textarea asp-for="Note" class="form-control" disabled></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <h4 class="mb-2">Detections</h4>
+            </div>
+          </div>
+        </div>
+
+        @if (Model.MycotoxinDetected)
+        {
+          <div class="alert alert-danger">
+            <div class="col-12">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-2">Add Detection</h5>
+              </div>
+            </div>
+
+            <form class="needs-validation" novalidate asp-action="CreateDetection" asp-route-sampleId="@Model.Id" asp-route-reportId="@Model.MycotoxinReportId" method="post">
+
+              <div class="row g-2">
+                <div class="col-3 mb-2">
+                  <div class="form-group">
+                    <label class="form-label">Mycotoxin Class</label>
+                    <select class="form-control" id="MycotoxinClassId" name="MycotoxinClassId" asp-items="@(await MycotoxinLayer.GenerateMycotoxinClassSelectList(null))" required>
+                      <option value="">-- Select Mycotoxin Class --</option>
+                    </select>
+                    <div class="invalid-feedback">Mycotoxin Class is required.</div>
+                  </div>
+                </div>
+
+                <div class="col-3 mb-2">
+                  <div class="form-group">
+                    <label class="form-label">Mycotoxin Type</label>
+                    <select class="form-control" id="MycotoxinTypeId" name="MycotoxinTypeId" asp-items="@(await MycotoxinLayer.GenerateMycotoxinTypeSelectList(0, null))" required>
+                      <option value="">-- Select Mycotoxin Type --</option>
+                    </select>
+                    <div class="invalid-feedback">Mycotoxin Type is required.</div>
+                  </div>
+                </div>
+
+                <div class="col-3 mb-2">
+                  <div class="form-group">
+                    <label class="form-label">Concentration</label>
+                    <input type="text" id="Concentration" name="Concentration" class="form-control" />
+                    <div class="invalid-feedback">Concentration is required.</div>
+                  </div>
+                </div>
+
+                <div class="col-2 mb-2">
+                  <div class="form-group">
+                    <label class="form-label">LOD</label>
+                    <input type="text" id="Lod" name="Lod" class="form-control" />
+                    <div class="invalid-feedback">LOD is required.</div>
+                  </div>
+                </div>
+
+                <div class="col-1 mb-2">
+                  <div class="form-group">
+                    <label class="form-label">&nbsp;</label><br />
+                    <div class="d-grid gap-2 mx-auto">
+                      <button type="submit" class="btn btn-afm-default btn-block"><i class="fa-regular fa-plus"></i> Add</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+          <hr />
+
+
+          <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-2">Current Detections</h5>
+            </div>
+          </div>
+
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
+              <tr>
+                <th class="w-25">Mycotoxin Class</th>
+                <th class="w-25">Mycotoxin Type</th>
+                <th>Concentration</th>
+                <th>LOD</th>
+                <th class="w-10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach (var detection in Model.Detections)
+              {
+                <tr>
+                  <td class="align-middle">@detection.MycotoxinClass</td>
+                  <td class="align-middle">@detection.MycotoxinType</td>
+                  <td class="align-middle">@detection.Concentration</td>
+                  <td class="align-middle">@detection.Lod</td>
+                  <td>
+                    <div class="d-grid gap-2 mx-auto">
+                      <button type="button" class="btn btn-warning btn-sm remove-detection" data-detectionId="@detection.Id" data-bs-toggle="modal" data-bs-target="#deleteSampleDetectionConfirm"><i class="fa-solid fa-minus"></i> Remove</button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+        else
+        {
+          <p class="text-success">No detections found for this sample.</p>
+        }
+
+        <div style="float: left" class="mt-2">
+          <a asp-controller="Mycotoxin" asp-action="Details" asp-route-id="@Model.MycotoxinReportId" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+        </div>
+
+        <div style="float: right" class="mt-2">
+          <div class="mt-2 float-md-end">
+            <a asp-action="EditSample" asp-controller="Mycotoxin" asp-route-id="@Model.Id" asp-route-reportId="@Model.MycotoxinReportId" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSampleConfirm"><i class="fa fa-trash"></i> Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<partial name="DeleteSampleDetectionPartial" model="@(new NotificationModel{SampleId = Model.Id, ReportId = Model.MycotoxinReportId})" />
+<partial name="DeleteSamplePartial" model="@(new NotificationModel{SampleId = Model.Id, ReportId = Model.MycotoxinReportId})" />
+
+<script type="text/javascript">
+
+  $("#MycotoxinClassId").on('change', function (e) {
+
+    $.ajax({
+      type: "GET",
+      url: "/MycotoxinReport/GenerateMycotoxinTypeSelectList",
+      data: { mycotoxinClassId: this.value },
+      success: function (result) {
+        var s = '<option value="">-- Select Mycotoxin Type --</option>';
+        for (var i = 0; i < result.length; i++) {
+          s += '<option value="' + result[i].id + '">' + result[i].name + '</option>';
+        }
+        $("#MycotoxinTypeId").html(s);
+      }
+    });
+  });
+
+  $(".remove-detection").on('click', function (e) {
+    var id = $(this).data('detectionid');
+    $("#sampleDetectionId").val(id);
+  });
+
+</script>

@@ -1,0 +1,92 @@
+﻿@using AFMA.ApplicationLayer.Model
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AFMA.ApplicationLayer.Model.ProductGroupModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">System Admin</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item"><a href="#">Finished Product Groups</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Finished Product Group</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>View Finished Product Group</h4>
+    </div>
+
+    <div class="row g-2">
+
+      <div class="col-2">
+        <div class="form-group">
+          <label asp-for="Code" class="form-label"></label>
+          <input asp-for="Code" class="form-control" readonly />
+        </div>
+      </div>
+
+      <div class="col-9">
+        <div class="form-group">
+          <label asp-for="Name" class="form-label"></label>
+          <input asp-for="Name" class="form-control" readonly />
+        </div>
+      </div>
+      
+      <div class="col-1">
+        <div class="form-group">
+          <label asp-for="DisplayOrder" class="form-label"></label>
+          <input asp-for="DisplayOrder" class="form-control" readonly />
+        </div>
+      </div>
+      
+      <div class="col-12">
+        <div class="form-group">
+          <label asp-for="SalmonellaProductGroupCategory" class="form-label"></label>
+          <input asp-for="SalmonellaProductGroupCategory" class="form-control" readonly />
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-check">
+          <input asp-for="Active" class="form-check-input" type="checkbox" disabled>
+          <label asp-for="Active" class="form-check-label">Active</label>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-check">
+          <input asp-for="VisibleToMembers" class="form-check-input" type="checkbox" disabled>
+          <label asp-for="VisibleToMembers" class="form-check-label">Visible To Members</label>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-check">
+          <input asp-for="HideOnSalmonella" class="form-check-input" type="checkbox" disabled>
+          <label asp-for="HideOnSalmonella" class="form-check-label">Hidden For Salmonella</label>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-check">
+          <input asp-for="HideOnFeedsales" class="form-check-input" type="checkbox" disabled>
+          <label asp-for="HideOnFeedsales" class="form-check-label">Hidden For Feedsales</label>
+        </div>
+      </div>
+    </div>
+
+    <div style="float: left" class="mt-2">
+      <a asp-area="General" asp-controller="FinishedProductGroup" asp-action="Index" class="btn btn-light"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    </div>
+
+    <div style="float: right" class="mt-4">
+      <a asp-area="General" asp-controller="FinishedProductGroup" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFinishedProductGroupConfirm"><i class="fa-solid fa-trash"></i> Delete</button>
+    </div>
+
+  </div>
+</div>
+
+<partial name="DeleteFinishedProductGroupConfirmPartial" model="@(new NotificationModel{Id = Model.Id})" />

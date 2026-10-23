@@ -1,0 +1,7 @@
+# Database backups - never commit
+_bk/
+*.bak
+*.trn
+
+# Local publish output (used by deploy workflow)
+publish/

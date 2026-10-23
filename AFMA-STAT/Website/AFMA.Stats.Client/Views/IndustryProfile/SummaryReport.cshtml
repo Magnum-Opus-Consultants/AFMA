@@ -1,0 +1,42 @@
+﻿@model AFMA.ApplicationLayer.Model.ReportCriteriaModel
+
+@{
+  ViewBag.PageTitle = "Industry Profile";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Industry Profile";
+  ViewBag.Action = "Reports";
+}
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Industry Profile Report</h4>
+    </div>
+
+    <form class="needs-validation" novalidate asp-action="SummaryReport" method="post">
+      <div class="row g-2">
+
+        <div class="col-2 p-2">
+          <div class="form-group">
+            <label asp-for="StartYear" class="form-label"></label>
+            <select class="form-control" asp-for="StartYear" asp-items="@(await IndustryProfileLayer.GenerateReportYearSelectList(null))" required>
+            </select>
+            <div class="invalid-feedback">Start Date is required.</div>
+          </div>
+        </div>
+
+        <div class="col-2 p-2">
+          <div class="form-group">
+            <label asp-for="EndYear" class="form-label"></label>
+            <select class="form-control" asp-for="EndYear" asp-items="@(await IndustryProfileLayer.GenerateReportYearSelectList(null))" required>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div style="float: right">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Export (Microsoft Excel)</button>
+      </div>
+    </form>
+  </div>
+</div>

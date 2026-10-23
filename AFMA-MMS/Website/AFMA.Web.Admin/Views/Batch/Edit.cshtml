@@ -1,0 +1,106 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.BatchModel
+
+<link rel="stylesheet" href="~/css/summernote-lite.css">
+<link rel="stylesheet" href="~/vendor/summernote/summernote-lite.css">
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Distribution</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Batch</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Edit Batch</h3>
+  <p>Manages all distribution group related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <form class="needs-validation" novalidate asp-action="Edit" method="post">
+
+            <div class="row mt-2">
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="Description" class="form-label"></label>
+                  <input asp-for="Description" class="form-control" />
+                  <span asp-validation-for="Description"></span>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  <label asp-for="FromName" class="form-label"></label>
+                  <input asp-for="FromName" class="form-control" />
+                  <span asp-validation-for="FromName"></span>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  <label asp-for="FromEmail" class="form-label"></label>
+                  <input asp-for="FromEmail" class="form-control" />
+                  <span asp-validation-for="FromEmail"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12 mt-2">
+                <div class="form-group">
+                  <label asp-for="Subject" class="form-label"></label>
+                  <input asp-for="Subject" class="form-control" />
+                  <span asp-validation-for="Subject"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12 mt-2">
+                <div class="form-group">
+                  <label asp-for="Message" class="form-label"></label>
+                  <textarea asp-for="Message" class="summernote"></textarea>
+                  <span asp-validation-for="Message"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="Batch" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  <script src="~/vendor/summernote/summernote-lite.js"></script>
+  <script>
+    $(function() {
+
+      summernoteStyle()
+
+      $('.summernote').summernote({
+        minHeight: 500,
+        callbacks: {
+          onBlur: function() {
+            $("#Message").val($('#Message').code());
+          },
+          onChange: function(contents, $editable) {
+            // fix https://github.com/summernote/summernote/issues/2631
+            if ($(this).summernote('isEmpty') && contents != '') {
+              $(this).summernote('code', '')
+            }
+          }
+        }
+      })
+    })
+  </script>
+
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}

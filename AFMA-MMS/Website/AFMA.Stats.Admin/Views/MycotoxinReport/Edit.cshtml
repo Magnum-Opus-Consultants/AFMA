@@ -1,0 +1,123 @@
+﻿@using AFMA.ApplicationLayer.Interface
+@model AFMA.ApplicationLayer.Model.MycotoxinReportModel
+@inject IApplicationLayer ApplicationLayer
+@inject IMycotoxinLayer MycotoxinLayer
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Mycotoxins</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Mycotoxin Report</li>
+  </ol>
+</nav>
+
+<form asp-action="Edit" method="post">
+
+  @Html.HiddenFor(x => x.Id)
+  @Html.HiddenFor(x => x.MemberId)
+  @Html.HiddenFor(x => x.MemberBranchId)
+  @Html.HiddenFor(x => x.MemberAccountId)
+  @Html.HiddenFor(x => x.IsSubmitted)
+  @Html.HiddenFor(x => x.ReportMonth)
+  @Html.HiddenFor(x => x.ReportYear)
+
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-2">Edit Mycotoxin Report</h4>
+          </div>
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Id" class="form-label"></label>
+                <input asp-for="Id" class="form-control" readonly />
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Member" class="form-label"></label>
+                <input asp-for="Member" class="form-control" readonly />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="LaboratoryReportNo" class="form-label"></label>
+                <input asp-for="LaboratoryReportNo" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="MemberBranch" class="form-label"></label>
+                <input asp-for="MemberBranch" class="form-control" readonly />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2 mb-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="SubmittedDate" class="form-label"></label>
+                @Html.TextBoxFor(model => model.SubmittedDate, "{0:dd/MM/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="MemberAccount" class="form-label"></label>
+                <input asp-for="MemberAccount" class="form-control" readonly="" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12">
+              <div class="form-group">
+                <label asp-for="LaboratoryId" class="form-label"></label>
+                <select class="form-control" asp-for="LaboratoryId" asp-items="@(await ApplicationLayer.GenerateLaboratorySelectList(Model.LaboratoryId))">
+                  <option value="">-- Select Laboratory --</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="DueDate" class="form-label"></label>
+                @Html.TextBoxFor(model => model.DueDate, "{0:dd/MM/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="InfoFor" class="form-label"></label>
+                @Html.TextBoxFor(model => model.InfoFor, "{0:MMMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-2">
+            <div class="col-12">
+              <div class="form-group">
+                <label asp-for="Comment" class="form-label"></label>
+                <textarea rows="3" asp-for="Comment" class="form-control"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div style="float: right" class="mt-2">
+            <button type="submit" class="btn btn-success"><i class="fa-regular fa-save"></i> Save</button>
+            <a asp-controller="MycotoxinReport" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-default"><i class="fa-solid fa-times"></i> Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

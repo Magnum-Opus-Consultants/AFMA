@@ -1,0 +1,19 @@
+﻿@model IEnumerable<AFMA.ApplicationLayer.Model.Wims.MemberBranchAnimalFeedProductModel>
+
+@{
+  var afp = await WimsApplicationLayer.GetAnimalFeedProducts().ConfigureAwait(false);
+}
+
+<h5 class="fw-black">Animal Feed Products</h5>
+<div class="list-group">
+  @foreach (var product in afp)
+  {
+    var isSelected = Model.Any(x => x.AnimalFeedProductId == product.Id) ? "checked" : "";
+
+    <label class="list-group-item">
+      <input class="form-check-input me-1" type="checkbox" id="afp_@product.Id" name="afp_@product.Id" @isSelected>
+      @product.Description
+    </label>
+  }
+</div>
+

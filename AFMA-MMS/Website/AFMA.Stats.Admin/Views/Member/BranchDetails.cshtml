@@ -1,0 +1,179 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using AFMA.ApplicationLayer.Helpers
+@using AFMA.ApplicationLayer.Model
+@model AFMA.ApplicationLayer.Model.MemberBranchModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Members</a></li>
+    <li class="breadcrumb-item"><a href="#">Branches</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Branch Details</li>
+  </ol>
+</nav>
+
+<div class="row g-2">
+  <div class="col-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="fw-black">Branch Details</h4>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Member" class="form-label"></label>
+            <input asp-for="Member" class="form-control" disabled />
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Code" class="form-label"></label>
+            <input asp-for="Code" class="form-control" disabled />
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" disabled />
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Province" class="form-label"></label>
+            <input asp-for="Province" class="form-control" disabled />
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-check">
+            <input asp-for="Active" class="form-check-input" type="checkbox" checked disabled>
+            <label asp-for="Active" class="form-check-label">Active</label>
+          </div>
+        </div>
+
+        <div style="float: left" class="mt-2">
+          <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        </div>
+
+        <div style="float: right" class="mt-2">
+          <a asp-controller="Member" asp-action="EditBranch" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteBranchConfirm"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+
+    @if (ApplicationLayer.CheckMemberModule(Model.MemberId, ModuleEnum.Feedsales).Result)
+    {
+      <div class="col-lg-12 col-md-6 col-12 mt-2">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <h5 class="fw-black mb-2">Feedsales Submissions</h5>
+
+                <p class="small text-secondary mb-1">This Month</p>
+                <h6 class="mb-1">Raw Materials: <span id="fsrRMTotal">0</span> tons</h6>
+                <h6 class="mb-1">Finished Products: <span id="fsrFPTotal">0</span> tons</h6>
+
+                <p class="small text-secondary mb-1 mt-4">This Year</p>
+                <h6 class="mb-1"><span id="fsrOutstanding">0</span> report(s) outstanding</h6>
+                <h6 class="mb-1"><span id="fsrOverdue">0</span><span> report(s) overdue</span></h6>
+              </div>
+              <div class="col-6 d-flex align-items-center justify-content-center">
+                <div id="feedsalesReportSummary"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (await ApplicationLayer.CheckMemberModule(Model.MemberId, ModuleEnum.Salmonella))
+    {
+      <div class="col-lg-12 col-md-6 col-12 mt-2">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <h5 class="fw-black mb-2">Salmonella Submissions</h5>
+                <p class="small text-secondary mb-1">This Year</p>
+                <h6 class="mb-1"><span id="sroOutstanding">0</span> report(s) outstanding</h6>
+                <h6 class="mb-1"><span id="sroOverdue">0</span> report(s) overdue</h6>
+                <h6 class="mb-1"><span id="sroPositives">0</span> positive samples</h6>
+              </div>
+              <div class="col-6 d-flex align-items-center justify-content-center">
+                <div id="salmonellaReportSummary"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<partial name="DeleteBranchConfirmPartial" model="@(new NotificationModel{MemberId = Model.MemberId, MemberBranchId = Model.Id})" />
+
+<script src="~/vendor/apexcharts/apexcharts.js"></script>
+<script>
+
+  var options = {
+
+    series: [1, 2, 3, 4],
+    chart: {
+      height: 275,
+      width: 150,
+      type: 'pie',
+      toolbar: {
+        show: false,
+      },
+    },
+    labels: ['Total', 'Oustanding', 'Submitted', 'Overdue'],
+    dataLabels: {
+      enabled: false,
+    },
+    legend: {
+      show: true,
+      position: 'bottom',
+    },
+    stroke: {
+      width: 0,
+    },
+    noData: {
+      text: 'No data..',
+    },
+    colors: ['#6366f1', '#0dcaf0', '#facc15', '#ff0000'],
+  }
+
+  var fchart = new ApexCharts(document.querySelector("#feedsalesReportSummary"), options);
+  fchart.render();
+  var furl = '/Member/GetFeedsalesReportSummary?memberId=' + @Model.MemberId + '&branchId=' + @Model.Id;
+
+  $.getJSON(furl, function (response) {
+    fchart.updateSeries([response.totalReports, response.totalOutstanding, response.totalSubmitted, response.totalOverdue]);
+    $("#fsrOutstanding").text(response.totalOutstanding);
+    $("#fsrRMTotal").text(response.totalRawMaterial);
+    $("#fsrFPTotal").text(response.totalFinishedProduct);
+    $("#fsrOverdue").text(response.totalOverdue);
+  });
+
+  var schart = new ApexCharts(document.querySelector("#salmonellaReportSummary"), options);
+  schart.render();
+
+  var surl = '/Member/GetSalmonellaReportSummary?memberId=' + @Model.MemberId + '&branchId=' + @Model.Id;
+
+  $.getJSON(surl, function (response) {
+    schart.updateSeries([response.totalReports, response.totalOutstanding, response.totalSubmitted, response.totalOverdue]);
+    $("#sroOutstanding").text(response.totalOutstanding);
+    $("#sroOverdue").text(response.totalOverdue);
+    $("#sroPositives").text(response.totalPositives);
+  });
+
+</script>

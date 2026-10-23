@@ -1,0 +1,62 @@
+﻿@model AFMA.ApplicationLayer.Model.MemberBranchModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Members</a></li>
+    <li class="breadcrumb-item active" aria-current="page">New Branch</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>New Branch</h4>
+    </div>
+    
+    <form class="needs-validation" novalidate asp-action="CreateBranch" method="post">
+      <input asp-for="MemberId" type="hidden" />
+      <div class="row g-2">
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Code" class="form-label"></label>
+            <input asp-for="Code" class="form-control"/>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" required/>
+            <div class="invalid-feedback">Branch Name is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="ProvinceId" class="form-label"></label>
+            <select class="form-control" asp-for="ProvinceId" asp-items="@await LookupLayer.GetProvinceSelectList(null)"></select>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-check">
+            <input asp-for="Active" class="form-check-input" type="checkbox" checked>
+            <label asp-for="Active" class="form-check-label">Active</label>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="float: right">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+        <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+

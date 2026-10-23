@@ -1,0 +1,205 @@
+﻿@using Resolvetech.NetCore.Common.Helpers
+@model AFMA.ApplicationLayer.Model.SalmonellaReportModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Salmonella</a></li>
+    <li class="breadcrumb-item"><a href="#">Submit Reports</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Report</li>
+  </ol>
+</nav>
+
+<div class="row g-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-2">Salmonella Report</h4>
+        </div>
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="Id" class="form-label"></label>
+              <input asp-for="Id" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="Member" class="form-label"></label>
+              <input asp-for="Member" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="LaboratoryReportNo" class="form-label"></label>
+              <input asp-for="LaboratoryReportNo" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MemberBranch" class="form-label"></label>
+              <input asp-for="MemberBranch" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2 mb-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="SubmittedDate" class="form-label"></label>
+              @Html.TextBoxFor(model => model.SubmittedDate, "{0:dd/MM/yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MemberAccount" class="form-label"></label>
+              <input asp-for="MemberAccount" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="Sampler" class="form-label"></label>
+              <input asp-for="Sampler" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="Laboratory" class="form-label"></label>
+              <input asp-for="Laboratory" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="DueDate" class="form-label"></label>
+              @Html.TextBoxFor(model => model.DueDate, "{0:dd/MM/yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="InfoFor" class="form-label"></label>
+              @Html.TextBoxFor(model => model.InfoFor, "{0:MMMM yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+        </div>
+        
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="Comment" class="form-label"></label>
+              <textarea rows="3" asp-for="Comment" class="form-control" disabled></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="float: left" class="mt-2">
+          <a asp-controller="SalmonellaReport" asp-action="Index" class="btn btn-outline-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        </div>
+
+        <div style="float: right" class="mt-2">
+          <a asp-controller="SalmonellaReport" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+          @if (!Model.IsSubmitted)
+          {
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#submitSalmonellaReport"><i class="fa-solid fa-arrow-up"></i> Submit</button>
+          }
+          else
+          {
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#unsubmitSalmonellaReport"><i class="fa-solid fa-arrow-down"></i> Unsubmit</button>
+          }
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSalmonellaReport"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-2 mt-2">
+  <div class="col-12">
+    <div class="alert alert-info d-flex" role="alert">
+      <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+      </svg>
+      <div class="ms-3">
+        <h6 class="text-reset">Important</h6>
+        At least one sample must be added below in order to successfully submit the salmonella report.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Samples submitted for microbiological analysis</h4>
+        <div class="col-12 pb-3">
+          <a asp-controller="SalmonellaReport" asp-action="CreateSample" asp-route-salmonellaReportId="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-plus"></i> Add New Sample</a>
+        </div>
+        <table class="table table-bordered">
+          <thead class="table-secondary">
+            <tr>
+              <th>Id</th>
+              <th>Sample Type</th>
+              <th>Sample Id</th>
+              <th>Sample Detail</th>
+              <th>Additional Info</th>
+              <th>Notes</th>
+              <th>Salmonella</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var sample in Model.ReportItems)
+            {
+              <tr>
+                <td>@sample.Id</td>
+                <td>@sample.SalmonellaSampleType</td>
+                <td>
+                  @if (sample.SalmonellaSampleTypeId == 1)
+                  {
+                    @sample.Material
+                  }
+                  @if (sample.SalmonellaSampleTypeId == 2)
+                  {
+                    @sample.ProductGroup
+                  }
+                  @if (sample.SalmonellaSampleTypeId == 3)
+                  {
+                    @sample.SalmonellaSampleTypeItem
+                  }
+                </td>
+                <td>@sample.SalmonellaSampleTypeSubItem</td>
+                <td>@sample.AdditionalInfo</td>
+                <td>@sample.Note</td>
+                <td class="text-center">@Html.Raw(sample.SalmonellaDetected.ToCustomFormattedTrueFalse("danger",sample.SalmonellaType ?? "DETECTED","success","Not Detected"))</td>
+                <td class="text-center">
+                  <a asp-controller="SalmonellaReport" asp-action="DeleteSample" asp-route-salmonellaSampleId="@sample.Id" asp-route-salmonellaReportId="@Model.Id" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Delete</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<partial name="SubmitReportPartial" model="@Model.Id" />
+
+<partial name="UnsubmitReportPartial" model="@Model.Id" />
+
+<partial name="DeleteReportPartial" model="@Model.Id" />

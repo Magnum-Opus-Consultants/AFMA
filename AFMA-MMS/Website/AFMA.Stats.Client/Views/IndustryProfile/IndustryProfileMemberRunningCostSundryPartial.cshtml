@@ -1,0 +1,55 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model IEnumerable<AFMA.ApplicationLayer.Model.MemberRunningCostSundryModel>
+
+@{
+  var id = Convert.ToInt32(ViewData["IndustryProfileReportId"]);
+  Enum.TryParse(ViewData["CurrentPageAction"]?.ToString(), out CurrentPageAction currentPageAction);
+}
+
+<div class="row">
+  <div class="col-md-12">
+
+    <table class="table table-responsive table-sm table-bordered">
+      <tr>
+        <th class="td-afm-secondary"></th>
+        <th class="td-afm-secondary td-w-15">Total Cost</th>
+        <th class="td-afm-secondary td-w-15">Production</th>
+        <th class="td-afm-secondary td-w-15">Marketing</th>
+        <th class="td-afm-secondary td-w-15">Administration</th>
+        <th class="td-afm-secondary td-w-15">Road Transport</th>
+      </tr>
+
+      @foreach (var item in Model)
+      {
+        <tr>
+          <td>@item.ItemDescription</td>
+          <td style="text-align:right">@($"{(item.ProductionValue + item.SalesValue + item.AdministrationValue + item.RoadTransportValue):c}")</td>
+          <td style="text-align:right">@($"{item.ProductionValue:c}")</td>
+          <td style="text-align:right">@($"{item.SalesValue:c}")</td>
+          <td style="text-align:right">@($"{item.AdministrationValue:c}")</td>
+          <td style="text-align:right">@($"{item.RoadTransportValue:c}")</td>
+        </tr>
+      }
+
+      <tr>
+        <th class="td-afm-secondary">TOTAL</th>
+        <th class="td-afm-secondary" style="text-align:right">@($"{Model.Sum(a => a.ProductionValue) + Model.Sum(a => a.SalesValue) + Model.Sum(a => a.AdministrationValue) + Model.Sum(a => a.RoadTransportValue):c}")</th>
+        <th class="td-afm-secondary" style="text-align:right">@($"{Model.Sum(a => a.ProductionValue):c}")</th>
+        <th class="td-afm-secondary" style="text-align:right">@($"{Model.Sum(a => a.SalesValue):c}")</th>
+        <th class="td-afm-secondary" style="text-align:right">@($"{Model.Sum(a => a.AdministrationValue):c}")</th>
+        <th class="td-afm-secondary" style="text-align:right">@($"{Model.Sum(a => a.RoadTransportValue):c}")</th>
+      </tr>
+    </table>
+  </div>
+</div>
+
+@if (currentPageAction == CurrentPageAction.Manage)
+{
+  <div class="row g-2">
+    <div class="col-12">
+      <div style="float: right" class="mt-2">
+        <a asp-controller="IndustryProfile" asp-action="EditIndustryRunningCostSundries" asp-route-id="@id" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+      </div>
+    </div>
+  </div>
+}

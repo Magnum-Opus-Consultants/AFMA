@@ -1,0 +1,232 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@using AFMA.ApplicationLayer.Model.Wims
+@model AFMA.ApplicationLayer.Model.Wims.BatchModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Email Batches</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Batch</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">View Email Batch</h3>
+  <p>Manages all e-mail batches and related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row mt-2">
+            <div class="col-9 mt-2">
+              <div class="form-group">
+                <label asp-for="Description" class="form-label"></label>
+                <input asp-for="Description" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-3 mt-2">
+              <div class="form-group">
+                <label asp-for="Status" class="form-label"></label>
+                <input asp-for="Status" class="form-control" disabled />
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="FromName" class="form-label"></label>
+                <input asp-for="FromEmail" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="Subject" class="form-label"></label>
+                <input asp-for="Subject" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="CreatedDate" class="form-label"></label>
+                <input asp-for="CreatedDate" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="SubmissionDate" class="form-label"></label>
+                <input asp-for="SubmissionDate" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                @if (Model.DistributionGroupId != null)
+                {
+                  <label asp-for="DistributionGroup" class="form-label"></label>
+                  <input asp-for="DistributionGroup" class="form-control" disabled />
+                }
+                @if (Model.CommitteeId != null)
+                {
+                  <label asp-for="Committee" class="form-label"></label>
+                  <input asp-for="Committee" class="form-control" disabled />
+                }
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="RecipientCount" class="form-label"></label>
+                <input asp-for="RecipientCount" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-2">
+            <div class="col-12 mt-2">
+              <div class="accordion" id="accordionBasic">
+                <div class="accordion-item">
+
+                  <h6 class="accordion-header" id="headingBasicZero">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBasicZero" aria-expanded="false" aria-controls="collapseBasicZero">
+                      <div class="d-flex flex-column">
+                        <h6 class="text-reset">Message Preview</h6>
+                        <small class="text-secondary">Displays the message that the recipient will see</small>
+                      </div>
+                    </button>
+                  </h6>
+                  <div id="collapseBasicZero" class="accordion-collapse collapse" aria-labelledby="headingBasicZero" data-bs-parent="#accordionBasic">
+                    <div class="accordion-body">
+                      @Html.Raw(Model.Message)
+                      
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h6 class="accordion-header" id="headingBasicOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBasicOne" aria-expanded="false" aria-controls="collapseBasicOne">
+                      <div class="d-flex flex-column">
+                        <h6 class="text-reset">Recipients</h6>
+                        <small class="text-secondary">@Model.RecipientCount recipients</small>
+                      </div>
+                    </button>
+                  </h6>
+                  <div id="collapseBasicOne" class="accordion-collapse collapse" aria-labelledby="headingBasicOne" data-bs-parent="#accordionBasic">
+                    <div class="accordion-body">
+                      <table class="table table-sm table-bordered">
+                        <thead>
+                        <tr>
+                          <th>Contact Name</th>
+                          <th>Email Address</th>
+                          <th class="w-10"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var recipient in Model.Recipients)
+                        {
+                          <tr>
+                              <td>@recipient.ToName</td>
+                            <td>@recipient.ToEmail</td>
+                            <td class="text-center">
+                              @if (Model.Status == BatchStatus.Pending)
+                                {
+                                  <button class="btn btn-danger btn-sm remove-recipient"
+                                          data-id="@recipient.Id"
+                                          data-batchid2="@recipient.BatchId">
+                                    Remove
+                                  </button>                                                                
+                                }
+ 
+                              </td>
+                          </tr>
+                        }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="accordion-item">
+                  <h6 class="accordion-header" id="headingBasicTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBasicTwo" aria-expanded="false" aria-controls="collapseBasicTwo">
+                      <div class="d-flex flex-column">
+                        <h6 class="text-reset">Attachments</h6>
+                        <small class="text-secondary">@Model.Attachments.Count attachments</small>
+                      </div>
+                    </button>
+                  </h6>
+                  <div id="collapseBasicTwo" class="accordion-collapse collapse" aria-labelledby="headingBasicTwo" data-bs-parent="#accordionBasic">
+                    <div class="accordion-body">
+                      
+                      <div class="col-12 pb-3">
+                        <button type="button" class="btn btn-afm-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAttachmentModal"><i class="fa-solid fa-plus"></i> Add Attachment</button>
+                      </div>
+
+                      <table class="table table-sm table-bordered">
+                        <thead>
+                        <tr>
+                          <th>File Name</th>
+                          <th>File Type</th>
+                          <th>File Size</th>
+                          <th class="w-10"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var attachment in Model.Attachments)
+                        {
+                          <tr>
+                            <td>@attachment.AttachmentFileName</td>
+                            <td>@attachment.AttachmentContentType</td>
+                            <td>@attachment.AttachmentFileSize</td>
+                            <td class="text-center">
+                                @if (Model.Status == BatchStatus.Pending)
+                                {
+                                  <button class="btn btn-danger btn-sm remove-attachment"
+                                          data-id="@attachment.Id"
+                                          data-batchid="@attachment.BatchId">
+                                    Remove
+                                  </button>                                
+                                } 
+                            </td>
+                          </tr>
+                        }
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+
+
+                <div style="float: left" class="mt-4">
+                  <a asp-controller="Batch" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                </div>
+
+                <div style="float: right" class="mt-4">
+                  @if (Model.Status == BatchStatus.Pending)
+                  {
+                    <a asp-controller="Batch" asp-action="Submit" asp-route-id="@Model.Id" class="btn btn-afm-secondary"><i class="fa-solid fa-paper-plane"></i> Submit</a>
+                    <a asp-controller="Batch" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+                  }
+                  <a asp-controller="Batch" asp-action="Export" asp-route-id="@Model.Id" class="btn btn-afm-default"><i class="fa-solid fa-file-excel-o"></i> Export</a>
+                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteBatch"><i class="fa-solid fa-trash"></i> Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<partial name="AddAttachmentPartial" model="@(new BatchAttachmentModel { BatchId = Model.Id })" />
+<partial name="RemoveAttachmentPartial" model="@(new BatchAttachmentModel { Id = Model.Id, BatchId = Model.Id })" />
+<partial name="RemoveRecipientPartial" model="@(new BatchRecipientModel { Id = Model.Id, BatchId = Model.Id })" />
+<partial name="Delete" model="@(new DeleteViewModel { Id = Model.Id })" />

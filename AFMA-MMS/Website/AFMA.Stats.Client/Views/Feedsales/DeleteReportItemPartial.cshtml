@@ -1,0 +1,29 @@
+﻿@model int
+
+<div class="modal fade" id="deleteFeedsalesReportItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="deleteFeedsalesReportItemLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteFeedsalesReportItemLabel">Delete Feedsales Report Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form asp-route-feedsalesReportId="@Model" asp-action="DeleteFeedsalesReportItem" method="post">
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-12">
+              <input type="hidden" id="TReportItemId" name="TReportItemId" />
+              <input type="hidden" id="TReportItemType" name="TReportItemType" />
+              <p>Are you sure you want to delete this Feedsales Report item?</p>
+              <p>This action cannot be reversed!</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+          <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

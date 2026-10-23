@@ -1,0 +1,54 @@
+﻿@using Resolvetech.NetCore.Common.Helpers
+@model IEnumerable<AFMA.ApplicationLayer.Model.Wims.DocumentTypeModel>
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Document Types</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Document Types</h3>
+  <p>Manages all document types and related information</p>
+  <div class="card">
+    <div class="card-body">
+      <div class="col-12 pb-3">
+        <a asp-controller="DocumentType" asp-action="Create" class="btn btn-afm-primary"><i class="fa-solid fa-plus"></i> New</a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-sm table-bordered">
+          <thead>
+          <tr>
+            <th scope="col" class="w-25">Description</th>
+            <th scope="col" class="w-10">Require Template</th>
+            <th scope="col" class="w-25">Document Template</th>
+            <th class="w-5"></th>
+          </tr>
+          </thead>
+          <tbody>
+          @foreach (var item in Model)
+          {
+            <tr>
+              <td class="align-middle">
+                @item.Description
+              </td>
+              <td class="align-middle">
+                @Html.Raw(item.RequireTemplate.ToFormattedYesNo())
+              </td>
+              <td class="align-middle">
+                @item.DocumentTemplate
+              </td>
+              <td class="text-center">
+                  <a asp-action="Details" asp-controller="DocumentType" asp-route-id="@item.Id" class="btn btn-afm-primary btn-sm"><i class="fa-regular fa-eye"></i> View</a>
+              </td>
+            </tr>
+          }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

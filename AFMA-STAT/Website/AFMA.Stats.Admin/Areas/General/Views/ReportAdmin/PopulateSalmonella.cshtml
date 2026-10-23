@@ -1,0 +1,128 @@
+﻿<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item"><a href="#">Report Admin</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Populate Salmonella Reports</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Populate Salmonella Reports</h4>
+    </div>
+    
+    <form class="needs-validation" novalidate asp-action="PopulateSalmonella" method="post">
+      <div class="row g-2">
+
+        <div class="col-12">
+          <div class="alert alert-info">
+            <p>This function will pre-populate salmonella reports for all members, or a specific member or branch, and also for specific periods..</p>
+            <p>To populate reports for all members, select ALL MEMBERS from the list, or select a specific member to populate reports for a single member only.</p>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="MemberId" class="form-label">Member</label>
+            <select class="form-control" id="MemberId" name="MemberId" asp-items="@(await ApplicationLayer.GenerateMemberSelectList(true, ModuleEnum.Salmonella, null))" required>
+              <option value="">-- Select Member --</option>
+              <option value="0">-- ALL MEMBERS --</option>
+            </select>
+            <div class="invalid-feedback">Member is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="MemberBranchId" class="form-label">Branch</label>
+            <select class="form-control" id="MemberBranchId" name="MemberBranchId" required>
+              <option value="">-- Select Branch --</option>
+            </select>
+            <div class="invalid-feedback">Branch is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="MemberAccountId" class="form-label">Account</label>
+            <select class="form-control" id="MemberAccountId" name="MemberAccountId" required>
+              <option value="">-- Select Account --</option>
+            </select>
+            <div class="invalid-feedback">Account is required.</div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="form-group">
+            <label for="StartDate" class="form-label">Start Date</label>
+            <input for="StartDate" class="form-control" type="date" id="StartDate" name="StartDate" required />
+            <div class="invalid-feedback">Start Date is required.</div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="form-group">
+            <label for="EndDate" class="form-label">End Date</label>
+            <input for="EndDate" class="form-control" type="date" id="EndDate" name="EndDate" required />
+            <div class="invalid-feedback">End Date is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="float: right">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-solid fa-check"></i> Populate</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+
+  $(function () {
+
+      $("select#MemberId").change(function () {
+          var mid = $(this).val();
+          $("select#MemberBranchId").empty();
+          $("select#MemberAccountId").empty();
+          $("select#MemberAccountId").append(`<option value="">-- Select Account --</option>`);
+
+          $.getJSON(`/Member/GetMemberBranches?memberId=${mid}`,
+              function (data) {
+                  $("select#MemberBranchId").append(`<option value="">-- Select Branch --</option>`);
+                  $("select#MemberBranchId").append(`<option value="0">All Branches</option>`);
+                  $.each(data,
+                      function (i, item) {
+                          $("select#MemberBranchId").append(`<option value="${item.id}">${item.name}</option>`);
+                      });
+              });
+      });
+
+      $("select#MemberBranchId").change(function () {
+          var bid = $(this).val();
+          $("select#MemberAccountId").empty();
+
+          $.getJSON(`/Member/GetMemberBranchAccounts?branchId=${bid}&module=Salmonella`,
+              function (data) {
+                  $("select#MemberAccountId").append(`<option value="">-- Select Account --</option>`);
+                  $("select#MemberAccountId").append(`<option value="-1">Do not link to contact</option>`);
+                  if (bid === '0') {
+                      $("select#MemberAccountId").empty();
+                      $("select#MemberAccountId").append(`<option value="-1">Do not link to contact</option>`);
+                      $("select#MemberAccountId").append(`<option value="0">Primary Account For Branch</option>`);
+                  } else {
+                      $.each(data,
+                          function (i, item) {
+                              $("select#MemberAccountId").append(`<option value="${item.id}">${item.fullName}</option>`);
+                          });
+                  }
+              });
+      });
+
+  });
+
+</script>
+
+
+

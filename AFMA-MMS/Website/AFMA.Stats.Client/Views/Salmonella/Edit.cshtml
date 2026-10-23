@@ -1,0 +1,154 @@
+﻿@using Resolvetech.NetCore.Common.Helpers
+@model AFMA.ApplicationLayer.Model.SalmonellaReportModel
+
+@{
+  ViewBag.PageTitle = "Salmonella";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Salmonella";
+  ViewBag.Action = "Edit Report";
+}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+
+        @if (!Model.IsSubmitted)
+        {
+          <h4 class="card-title">Edit Salmonella Report</h4>
+          <p class="card-title-desc">Edits your salmonella report.</p>
+
+          <form class="needs-validation" novalidate method="post" asp-controller="Salmonella" asp-action="Edit">
+            <input type="hidden" asp-for="ReportMonth" />
+            <input type="hidden" asp-for="ReportYear" />
+            <input type="hidden" asp-for="MemberId" />
+            <input type="hidden" asp-for="MemberBranchId" />
+            <input type="hidden" asp-for="MemberAccountId" />
+            <div class="row">
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="Id" class="form-label"></label>
+                  <input asp-for="Id" class="form-control" disabled />
+                </div>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="Member" class="form-label"></label>
+                  <input asp-for="Member" class="form-control" disabled />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="LaboratoryReportNo" class="form-label"></label>
+                  <input asp-for="LaboratoryReportNo" class="form-control" />
+                  <div class="invalid-feedback">Laboratory report number is required.</div>
+                </div>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="MemberBranch" class="form-label"></label>
+                  <input asp-for="MemberBranch" class="form-control" disabled />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="SubmittedDate" class="form-label"></label>
+                  @Html.TextBoxFor(model => model.SubmittedDate, "{0:dd/MM/yyyy}", new { @class = "form-control", disabled = "disabled" })
+                </div>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="MemberAccount" class="form-label"></label>
+                  <input asp-for="MemberAccount" class="form-control" disabled />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="Sampler" class="form-label"></label>
+                  <input asp-for="Sampler" class="form-control" />
+                  <div class="invalid-feedback">Samples taken by is required.</div>
+                </div>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="Laboratory" class="form-label"></label>
+                  <select class="form-control" asp-for="LaboratoryId" asp-items="@(await ApplicationLayer.GenerateLaboratorySelectList(Model.LaboratoryId).ConfigureAwait(false))">
+                    <option value="">-- Select Laboratory --</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="DueDate" class="form-label"></label>
+                  @Html.TextBoxFor(model => model.DueDate, "{0:dd/MM/yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                </div>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label asp-for="InfoFor" class="form-label"></label>
+                  @Html.TextBoxFor(model => model.InfoFor, "{0:MMMM yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="form-group">
+                  <label asp-for="Comment" class="form-label"></label>
+                  <textarea rows="3" asp-for="Comment" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div style="float: left" class="mt-2">
+              <a asp-controller="Salmonella" asp-action="Index" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+            </div>
+
+            <div style="float: right" class="mt-2">
+              @if (!Model.IsSubmitted)
+              {
+                <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#submitSalmonellaReport"><i class="fa fa-save"></i> Save</button>
+              }
+            </div>
+
+          </form>
+
+        }
+        else
+        {
+          <div class="col-12">
+            <div class="card border border-danger mb-lg-0">
+              <div class="card-header bg-transparent border-danger">
+                <h5 class="my-0 text-danger text-truncate"><i class="mdi mdi-block-helper me-3"></i>Edit Salmonella Report</h5>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mt-0">Cannot edit report</h5>
+                <p class="card-text">Submitted salmonella reports cannot be edited. Contact AFMA to make alterations to this report.</p>
+              </div>
+            </div>
+            <div class="mt-3" style="float: left">
+              <a asp-controller="Salmonella" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

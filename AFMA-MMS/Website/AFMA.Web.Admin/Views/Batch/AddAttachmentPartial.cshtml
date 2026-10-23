@@ -1,0 +1,30 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.BatchAttachmentModel
+
+<div class="modal fade" id="addAttachmentModal" tabindex="-1" aria-labelledby="addAttachmentModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4">Add Attachment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-route-batchId="@Model.BatchId" asp-controller="Batch" asp-action="AddAttachment" method="post" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label asp-for="Attachment" class="form-label"></label>
+                <input asp-for="Attachment" class="form-control" type="file">
+                <span asp-validation-for="Attachment"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3 pull-right">
+            <div class="col-12">
+              <button type="submit" class="btn btn-success"><i class="fa-solid fa-upload"></i> Upload</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

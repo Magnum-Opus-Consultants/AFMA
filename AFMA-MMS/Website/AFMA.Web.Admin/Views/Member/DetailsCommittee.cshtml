@@ -1,0 +1,135 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.MemberCommitteeModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Members</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Member Committee</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">View Member Committee</h3>
+  <p>Manages all committees and related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row mt-2">
+            <div class="col-12">
+              <div class="form-group">
+                <label asp-for="Committee" class="form-label"></label>
+                <input asp-for="Committee" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          @if (Model.MemberId != null)
+          {
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="Member" class="form-label"></label>
+                  <input asp-for="Member" class="form-control" disabled />
+                </div>
+              </div>
+            </div>
+          }
+          else
+          {
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="MemberName" class="form-label"></label>
+                  <input asp-for="MemberName" class="form-control" disabled />
+                </div>
+              </div>
+            </div>
+          }
+
+          <div class="row mt-2">
+            <div class="col-12">
+              <div class="form-group">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12">
+              <div class="form-group">
+                <label asp-for="EmailAddress" class="form-label"></label>
+                <input asp-for="EmailAddress" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+          
+   
+            <div style="float: left" class="mt-4">
+              <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <a asp-controller="Member" asp-action="EditCommittee" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteMemberCommittee"><i class="fa-solid fa-trash"></i> Delete</button>
+            </div>
+
+       
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="col-md-12">
+    <h3 class="fw-black">Documents</h3>
+    <div class="card">
+      <div class="card-body">
+
+        <div class="row g-2">
+
+          <div class="table-responsive">
+            <table class="table table-striped table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col" class="w-15">Name</th>
+                  <th scope="col" class="w-15">Document Type</th>
+                  <th scope="col" class="w-15">Document Format</th>
+                  <th class="w-5"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var item in Model.Documents)
+                {
+                  <tr>
+                    <td class="align-middle">
+                      @item.Name
+                    </td>
+                    <td class="align-middle">
+                      @item.DocumentType
+                    </td>
+                    <td class="align-middle">
+                      @item.DocumentContentType
+                    </td>
+                    <td class="text-center">
+                      <a asp-action="DownloadDocument" asp-controller="Committee" asp-route-id="@item.Id" class="btn btn-afm-primary btn-sm"><i class="fa-solid fa-download"></i> Download</a>
+                     </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<partial name="DeleteCommittee" model='new DeleteViewModel { Id = Model.Id, ParentId = Model.MemberId }' />

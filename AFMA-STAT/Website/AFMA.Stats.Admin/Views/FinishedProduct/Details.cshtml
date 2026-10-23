@@ -1,0 +1,131 @@
+﻿@using Resolvetech.NetCore.Common.Helpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AFMA.ApplicationLayer.Model.ProductGroupModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item"><a href="#">Finished Products</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Finished Product</li>
+  </ol>
+</nav>
+
+<div class="row g-2">
+<div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="fw-black mb-2">Product Group</h4>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Code" class="form-label"></label>
+            <input asp-for="Code" class="form-control" disabled />
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" disabled />
+          </div>
+        </div>
+        
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="SalmonellaProductGroupCategoryId" class="form-label"></label>
+            <select class="form-control" disabled="disabled">
+              <option value="1">Dairy, Beef and Sheep</option>
+            </select>
+          </div>        
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-check">
+            <input asp-for="Active" class="form-check-input" type="checkbox" checked disabled>
+            <label asp-for="Active" class="form-check-label">Active</label>
+          </div>
+        </div>
+        
+        <div class="col-12 mt-2">
+          <div class="form-check">
+            <input asp-for="VisibleToMembers" class="form-check-input" type="checkbox" checked disabled>
+            <label asp-for="VisibleToMembers" class="form-check-label">Visible To Members</label>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-check">
+            <input asp-for="HideOnFeedsales" class="form-check-input" type="checkbox" disabled>
+            <label asp-for="HideOnFeedsales" class="form-check-label">Hidden In Feedsales</label>
+          </div>
+        </div>
+        
+        <div class="col-12 mt-2">
+          <div class="form-check">
+            <input asp-for="HideOnSalmonella" class="form-check-input" type="checkbox" disabled>
+            <label asp-for="HideOnSalmonella" class="form-check-label">Hidden In Salmonella</label>
+          </div>
+        </div>
+
+        <div style="float: left" class="mt-2">
+          <a asp-controller="Member" asp-action="Index" class="btn btn-link"><i class="fa-solid fa-arrow-left"></i> Back</a> 
+        </div>
+        
+        <div style="float: right" class="mt-2">
+          <a asp-controller="FinishedProduct" asp-action="Edit" class="btn btn-afm-default"><i class="fa-regular fa-edit"></i> Edit</a> 
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="fw-black mb-2">Products</h4>
+        </div>
+        
+        <div class="col-12 pb-3">
+          <a asp-controller="FinishedProduct" asp-action="Create" class="btn btn-afm-primary"><i class="fa-solid fa-plus"></i> New Product</a>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table table-striped table-sm table-bordered">
+            <thead>
+            <tr>
+              <th scope="col" class="w-10">Code</th>
+              <th scope="col" class="w-50">Name</th>
+              <th scope="col" class="w-5 text-center">Status</th>
+              <th class="w-10"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var product in Model.Products)
+            {
+              <tr>
+                <td class="align-middle">
+                  @product.Code
+                </td>
+                <td class="align-middle">
+                  @product.Name
+                </td>
+                <td class="align-middle text-center">
+                  @Html.Raw(product.Active.ToFormattedActiveInactive())
+                </td>
+                <td class="text-center">
+                  <a asp-action="Edit" asp-controller="FinishedProduct" asp-route-id="@product.Id" class="btn btn-afm-primary btn-sm"><i class="fa-regular fa-eye"></i> Edit</a>
+                </td>
+              </tr>
+            }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

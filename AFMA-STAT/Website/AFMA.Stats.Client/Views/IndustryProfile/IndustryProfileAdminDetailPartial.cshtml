@@ -1,0 +1,73 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model IEnumerable<AFMA.ApplicationLayer.Model.MemberIpAdminItemModel>
+
+@{
+  var groups = await ApplicationLayer.GetIpAdminGroups(false).ConfigureAwait(false);
+  var id = Convert.ToInt32(ViewData["IndustryProfileReportId"]);
+  Enum.TryParse(ViewData["CurrentPageAction"]?.ToString(), out CurrentPageAction currentPageAction);
+}
+
+<div class="row">
+  <div class="col-md-12">
+
+    @foreach (var group in groups)
+    {
+      <table class="table table-responsive table-sm table-bordered">
+        <tr>
+          <th class="td-afm-secondary td-w-5"></th>
+          <th class="td-afm-secondary"></th>
+          <th class="td-afm-secondary td-w-20 text-center"><strong>(@group.GroupMeasure)</strong></th>
+          <th class="td-afm-secondary td-w-30">Cost In Rands</th>
+        </tr>
+        <tr>
+          <th class="td-afm-secondary"><strong>@group.GroupCode</strong></th>
+          <th class="td-afm-secondary"><strong>@group.GroupName</strong></th>
+          <th class="td-afm-secondary"><strong>@($"{Model.Where(x => x.IpAdminGroupId == group.Id).Sum(x => x.Value):0}")</strong></th>
+          <th class="td-afm-secondary"></th>
+        </tr>
+
+        @foreach (var item in Model.Where(x => x.IpAdminGroupId == group.Id))
+        {
+          <tr>
+            <td></td>
+            <td>@item.ItemDescription</td>
+            <td>@($"{item.Value:0}")</td>
+            <td>@item.Description</td>
+          </tr>
+        }
+
+      </table>
+    }
+    <table class="table table-responsive table-striped table-sm table-bordered">
+      <tr>
+        <th class="td-afm-secondary td-w-5"></th>
+        <th class="td-afm-secondary">SUB TOTAL</th>
+        <th class="td-afm-secondary td-w-20"></th>
+        <th class="td-afm-secondary td-w-30"></th>
+      </tr>
+      <tr>
+        <th class="td-afm-secondary td-w-5"></th>
+        <th class="td-afm-secondary">TOTAL COST OF PRODUCTION, SALES, ADMIN & TRANSPORT</th>
+        <th class="td-afm-secondary td-w-20"></th>
+        <th class="td-afm-secondary td-w-30"></th>
+      </tr>
+      <tr>
+        <th class="td-afm-secondary td-w-5"></th>
+        <th class="td-afm-secondary">% OF TOTAL COST</th>
+        <th class="td-afm-secondary td-w-20"></th>
+        <th class="td-afm-secondary td-w-30"></th>
+      </tr>
+    </table>
+  </div>
+</div>
+
+@if (currentPageAction == CurrentPageAction.Manage)
+{
+  <div class="row g-2">
+    <div class="col-12">
+      <div style="float: right" class="mt-2">
+        <a asp-controller="IndustryProfile" asp-action="EditIndustryProfileBaseAdmin" asp-route-id="@id" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+      </div>
+    </div>
+  </div>
+}

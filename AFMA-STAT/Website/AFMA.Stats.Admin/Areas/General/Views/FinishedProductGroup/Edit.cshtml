@@ -1,0 +1,91 @@
+﻿@model AFMA.ApplicationLayer.Model.ProductGroupModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">System Admin</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item"><a href="#">Finished Product Groups</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Finished Product Group</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Edit Finished Product Group</h4>
+    </div>
+
+    <form class="needs-validation" novalidate asp-action="Edit" method="post">
+      <div class="row g-2">
+
+        <div class="col-2">
+          <div class="form-group">
+            <label asp-for="Code" class="form-label"></label>
+            <input asp-for="Code" class="form-control" required />
+            <div class="invalid-feedback">Code is required.</div>
+          </div>
+        </div>
+
+        <div class="col-9">
+          <div class="form-group">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" required />
+            <div class="invalid-feedback">Name is required.</div>
+          </div>
+        </div>
+
+        <div class="col-1">
+          <div class="form-group">
+            <label asp-for="DisplayOrder" class="form-label"></label>
+            <input asp-for="DisplayOrder" class="form-control" type="number" required />
+            <div class="invalid-feedback">Display Order is required.</div>
+          </div>
+        </div>
+        
+        <div class="col-12">
+          <div class="form-group">
+            <label asp-for="SalmonellaProductGroupCategoryId" class="form-label"></label>
+            <select class="form-control" asp-for="SalmonellaProductGroupCategoryId" asp-items="@(await SalmonellaLayer.GenerateSalmonellaProductGroupCategorySelectList(Model.SalmonellaProductGroupCategoryId).ConfigureAwait(false))">
+              <option value="">-- Select Salmonella Report Group Category --</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input asp-for="Active" class="form-check-input" type="checkbox">
+            <label asp-for="Active" class="form-check-label">Active</label>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input asp-for="VisibleToMembers" class="form-check-input" type="checkbox">
+            <label asp-for="VisibleToMembers" class="form-check-label">Visible To Members</label>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input asp-for="HideOnSalmonella" class="form-check-input" type="checkbox">
+            <label asp-for="HideOnSalmonella" class="form-check-label">Hidden For Salmonella</label>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input asp-for="HideOnFeedsales" class="form-check-input" type="checkbox">
+            <label asp-for="HideOnFeedsales" class="form-check-label">Hidden For Feedsales</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-2 float-md-end">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+        <a asp-area="General" asp-controller="FinishedProductGroup" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>

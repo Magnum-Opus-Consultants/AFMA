@@ -1,0 +1,57 @@
+﻿@using AFMA.Data.Entities
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AFMA.ApplicationLayer.Model.MycotoxinTypeModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item"><a href="#">Mycotoxins</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Mycotoxin Type</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Create Mycotoxin Type</h4>
+    </div>
+
+    <form class="needs-validation" novalidate asp-action="Create" method="post">
+      <div class="row g-2">
+
+        <div class="col-12">
+          <div class="form-group">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" required />
+            <div class="invalid-feedback">Name is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label asp-for="MycotoxinClassId" class="form-label"></label>
+            <select class="form-control" asp-for="MycotoxinClassId" asp-items="@(await MycotoxinLayer.GenerateMycotoxinClassSelectList(null))" required>
+              <option value="">-- Select Mycotoxin Class --</option>
+            </select>
+            <div class="invalid-feedback">Mycotoxin Class is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input asp-for="Active" class="form-check-input" type="checkbox" checked>
+            <label asp-for="Active" class="form-check-label">Active</label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-2 float-md-end">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+        <a asp-area="Mycotoxin" asp-controller="Type" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>

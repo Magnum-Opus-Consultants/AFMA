@@ -1,0 +1,27 @@
+﻿@model int
+
+<div class="modal fade" id="deleteIndustryProfileReport" tabindex="-1" aria-labelledby="deleteIndustryProfileReportLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4">Delete Industry Profile Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-route-industryProfileReportId="@Model" asp-action="DeleteReport" method="post">
+          <div class="row">
+            <div class="col-12">
+              <p>Are you sure you want to delete this Industry Profile Report?</p>
+              <p>This action cannot be reversed!</p>
+            </div>
+          </div>
+          <div class="row mt-2  float-end">
+            <div class="col-12">
+              <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

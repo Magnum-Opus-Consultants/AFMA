@@ -1,0 +1,90 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AFMA.ApplicationLayer.Model.ReportCriteriaModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Industry Profile</a></li>
+    <li class="breadcrumb-item"><a href="#">Reports</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Industry Profile Summary Report</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Industry Profile Report</h4>
+    </div>
+
+    <form class="needs-validation" novalidate asp-action="SummaryReport" method="post">
+
+      <div class="row g-2">
+        <div class="col-2">
+          <div class="form-group">
+            <label class="form-label">Member</label>
+            <select required="" id="MemberId" name="MemberId" class="form-control" asp-items="@(await ApplicationLayer.GenerateMemberSelectList(true, ModuleEnum.IndustryProfile, null))">
+              <option value="">-- Select Member --</option>
+            </select>
+            <div class="invalid-feedback">Member is required.</div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="form-group">
+            <label class="form-label">Branch</label>
+            <select required="" id="MemberBranchId" name="MemberBranchId" class="form-control" asp-items="@(await ApplicationLayer.GenerateMemberBranchSelectList(true, 0, null))">
+              <option value="">-- Select Branch --</option>
+            </select>
+            <div class="invalid-feedback">Member Branch is required.</div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="form-group">
+            <label asp-for="StartYear" class="form-label"></label>
+            <select class="form-control" asp-for="StartYear" asp-items="@(await IndustryProfileLayer.GenerateReportYearSelectList(null))" required>
+            </select>
+            <div class="invalid-feedback">Start Date is required.</div>
+
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="form-group">
+            <label asp-for="EndYear" class="form-label"></label>
+            <select class="form-control" asp-for="EndYear" asp-items="@(await IndustryProfileLayer.GenerateReportYearSelectList(null))" required>
+            </select>
+
+          </div>
+        </div>
+      </div>
+
+      <div style="float: right">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-file-excel"></i> Export</button>
+        <a asp-controller="Member" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+
+  $(function () {
+
+    $("select#MemberId").change(function () {
+      var mid = $(this).val();
+      $("select#MemberBranchId").empty();
+
+      $.getJSON(`/Member/GetMemberBranches?memberId=${mid}`,
+        function (data) {
+          $.each(data,
+            function (i, item) {
+              $("select#MemberBranchId").append(`<option value="${item.id}">${item.name}</option>`);
+            });
+        });
+    });
+  });
+
+</script>

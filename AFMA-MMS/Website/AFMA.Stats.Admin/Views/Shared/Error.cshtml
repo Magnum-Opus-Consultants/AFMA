@@ -1,0 +1,43 @@
+﻿@using AFMA.Stats.Admin.Models
+@model ErrorViewModel
+
+@{
+  ViewData["Title"] = "Error";
+}
+
+@if (Model?.ShowRequestId ?? false)
+{
+  <p>
+    <strong>Request ID:</strong> <code>@Model?.RequestId</code>
+  </p>
+}
+
+<div class="card">
+  <div class="card-body">
+    <div class="container pt-3">
+      <div class="row justify-content-center text-center">
+        <div class="col-8 col-lg-6 col-xl-5">
+          <img src="/img/error/500.svg" class="img-fluid" alt="Page not found" loading="lazy">
+        </div>
+        <div class="col-12 my-3">
+          <h1 class="fw-black">@Model.ErrorTitle</h1>
+          <p class="lead text-dark">@Model.ExceptionMessage</p>
+          <p class="small text-secondary">The server encountered an internal server error and was unable to complete your request.</p>
+          @if (!string.IsNullOrEmpty(Model.InnerExceptionMessage))
+          {
+            <p class="small text-secondary">Inner Exception: @Model.InnerExceptionMessage</p>
+          }
+          <p class="small text-secondary">Requested page: @Model.Path</p>
+
+          <button class="btn btn-afm-primary d-inline-flex align-items-center gap-2" type="button" onclick="history.back()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Go Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

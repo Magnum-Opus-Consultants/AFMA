@@ -1,0 +1,62 @@
+﻿@* @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using AFMA.ApplicationLayer.Helpers
+@using Resolvetech.NetCore.Common.Helpers
+@model IEnumerable<AFMA.ApplicationLayer.Model.Website.MainMenuModel>
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Content</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Menu Structure</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Menu Structure</h3>
+  <p>Manages the menu structures for the public website. Click on details to view the sub-menus for all the main menu items</p>
+  <div class="card">
+    <div class="card-body">
+      <div class="col-12 pb-3">
+        <a asp-controller="Menu" asp-action="Create" class="btn btn-afm-primary"><i class="fa-solid fa-plus"></i> New</a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-sm table-bordered">
+          <thead>
+          <tr>
+            <th scope="col" class="w-25">Menu Text</th>
+            <th scope="col" class="w-25">Friendly URL</th>
+            <th scope="col" class="w-5">Display Order</th>
+            <th scope="col" class="w-5">Visible</th>
+            <th class="w-5"></th>
+          </tr>
+          </thead>
+          <tbody>
+          @foreach (var item in Model.OrderBy(order => order.DisplayOrder))
+          {
+            <tr>
+              <td class="align-middle">
+                @item.MenuText
+              </td>
+              <td class="align-middle">
+                @item.FriendlyUrl
+              </td>
+              <td class="align-middle text-center">
+                <span class="badge bg-info">
+                  @item.DisplayOrder
+                </span>
+              </td>
+              <td class="align-middle text-center">
+                @Html.Raw(item.Visible.ToCustomFormattedTrueFalse("success", "Yes", "danger", "No"))
+              </td>
+              <td class="text-center">
+                <a asp-action="Edit" asp-controller="Menu" asp-route-id="@item.Id" class="btn btn-afm-primary btn-sm"><i class="fa-regular fa-edit"></i> Edit</a>
+              </td>
+            </tr>
+          }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div> *@

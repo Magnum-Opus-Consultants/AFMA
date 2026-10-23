@@ -1,0 +1,18 @@
+﻿@model IEnumerable<AFMA.ApplicationLayer.Model.Wims.MemberBranchManufacturerModel>
+
+@{
+  var mf = await WimsApplicationLayer.GetManufacturers().ConfigureAwait(false);
+}
+
+<h5 class="fw-black">Manufacturers</h5>
+<div class="list-group">
+  @foreach (var manufacturer in mf)
+  {
+    var isSelected = Model.Any(x => x.ManufacturerId == manufacturer.Id) ? "checked" : "";
+
+    <label class="list-group-item">
+      <input class="form-check-input me-1" type="checkbox" id="mf_@manufacturer.Id" name="mf_@manufacturer.Id" @isSelected>
+      @manufacturer.Description
+    </label>
+  }
+</div>

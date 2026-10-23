@@ -1,0 +1,60 @@
+﻿@model AFMA.ApplicationLayer.ViewModels.CompanyIndustryProfileViewModel
+
+@{
+  ViewBag.PageTitle = "Industry Profile";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Industry Profile";
+  ViewBag.Action = "Edit Report";
+}
+
+<div class="row g-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Edit Running Costs - Rented Fleet</h4>
+        <p class="card-title-desc">Edit your industry profile report data.</p>
+
+        <form class="needs-validation" novalidate asp-action="EditIndustryCostFleet" method="post">
+          <input asp-for="IndustryProfileReportId" type="hidden" />
+          <input asp-for="MemberId" type="hidden" />
+          <input asp-for="MemberBranchId" type="hidden" />
+          <input asp-for="MemberTypeId" type="hidden" />
+
+
+          <div class="row">
+            <div class="col-md-12">
+
+              <table class="table table-responsive table-condensed table-bordered">
+                <tr>
+                  <th class="td-afm-secondary td-w-5">Code</th>
+                  <th class="td-afm-secondary">Item</th>
+                  <th class="td-afm-secondary td-w-20">Note</th>
+                  <th class="td-afm-secondary td-w-10">Total Cost</th>
+                </tr>
+
+                @foreach (var item in Model.MemberRunningCostsFleet)
+                {
+                  <tr>
+                    <td class="align-middle">@item.RunningCostRentedFleetCode</td>
+                    <td class="align-middle">@item.ItemDescription</td>
+                    <td class="align-middle">@item.Note</td>
+                    <td>
+                      <input type="number" id="RunningCostRentalFleet_@item.Id" name="RunningCostRentalFleet_@item.Id" class="form-control" value="@item.Value" />
+                    </td>
+                  </tr>
+                }
+              </table>
+            </div>
+          </div>
+
+          <hr />
+          <div style="float: right">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+            <a asp-action="Details" asp-controller="IndustryProfile" asp-route-id="@Model.IndustryProfileReportId" class="btn btn-secondary"><i class="fa fa-times"></i> Cancel</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

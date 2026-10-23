@@ -1,0 +1,234 @@
+﻿@using AFMA.ApplicationLayer.Interface
+@model AFMA.ApplicationLayer.Model.MycotoxinSampleModel
+@inject IApplicationLayer ApplicationLayer
+@inject IMycotoxinLayer MycotoxinLayer
+
+@{
+  ViewBag.PageTitle = "Mycotoxins";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Mycotoxins";
+  ViewBag.Action = "Create Sample";
+}
+
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Create Mycotoxin Sample</h4>
+    <p class="card-title-desc">Displays your mycotoxin report with a summary of all items submitted.</p>
+
+    <form class="needs-validation" novalidate asp-action="CreateSample" method="post">
+      
+      <input type="hidden" asp-for="MycotoxinReportId" class="form-control" />
+
+      <div class="row">
+        
+        <div class="col-4 mb-3">
+          <div class="form-group">
+            <label asp-for="MycotoxinReportId" class="form-label"></label>
+            <input asp-for="MycotoxinReportId" class="form-control" readonly></input>
+          </div>
+        </div>
+        
+        <div class="col-4 mb-3">
+          <div class="form-group">
+            <label asp-for="Member" class="form-label"></label>
+            <input asp-for="Member" class="form-control" readonly></input>
+          </div>
+        </div>
+
+        <div class="col-4 mb-3">
+          <div class="form-group">
+            <label asp-for="MemberBranch" class="form-label"></label>
+            <input asp-for="MemberBranch" class="form-control" readonly></input>
+          </div>
+        </div>
+
+        <div class="col-12 mb-3">
+          <div class="form-group">
+            <label asp-for="MycotoxinSampleTypeId" class="form-label"></label>
+            <select class="form-control" asp-for="MycotoxinSampleTypeId" asp-items="@(await MycotoxinLayer.GenerateMycotoxinSampleTypeSelectList(null))" required="">
+              <option value="">-- Select Sample Type --</option>
+            </select>
+            <div class="invalid-feedback">Sample Type is required.</div>
+          </div>
+        </div>
+
+        <div id="rawMaterialSample" style="display: none">
+          <div class="col-12 mb-3">
+            <div class="form-group">
+              <label asp-for="MaterialId" class="form-label"></label>
+              <select class="form-control" asp-for="MaterialId" asp-items="@(await ApplicationLayer.GenerateMaterialSelectList(null))" required>
+                <option value="">-- Select Raw Material --</option>
+              </select>
+              <div class="invalid-feedback">Raw Material is required.</div>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="form-group">
+              <label asp-for="MaterialOriginId" class="form-label"></label>
+              <select class="form-control" asp-for="MaterialOriginId" asp-items="@(await ApplicationLayer.GenerateMaterialOriginSelectList(null))" required>
+                <option value="">-- Select Raw Material Origin --</option>
+              </select>
+              <div class="invalid-feedback">Raw Material Origin is required.</div>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3" id="rawMaterialLocal" style="display: none">
+            <div class="form-group">
+              <label asp-for="ProvinceId" class="form-label"></label>
+              <select class="form-control" asp-for="ProvinceId" asp-items="@(await ApplicationLayer.GenerateProvinceSelectList(null))">
+                <option value="">-- Select Raw Material Local Origin --</option>
+              </select>
+              <div class="invalid-feedback">Raw Material Local Origin is required.</div>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3" id="rawMaterialImported" style="display: none">
+            <div class="form-group">
+              <label asp-for="MaterialCountryOfOrigin" class="form-label"></label>
+              <input asp-for="MaterialCountryOfOrigin" class="form-control"/>
+              <div class="invalid-feedback">Raw Material Country Of Origin is required.</div>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="form-group">
+              <label asp-for="Note" class="form-label"></label>
+              <textarea asp-for="Note" rows="3" class="form-control"></textarea>
+              <div class="invalid-feedback">Note is required.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="finishedProductSample" style="display: none">
+          <div class="col-12 mb-3">
+            <div class="form-group">
+              <label asp-for="ProductId" class="form-label"></label>
+              <select class="form-control" asp-for="ProductId" asp-items="@(await ApplicationLayer.GenerateProductSelectList(null))" required>
+                <option value="">-- Select Finished Product --</option>
+              </select>
+              <div class="invalid-feedback">Finished Product is required.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 mb-3">
+          <div class="form-group">
+            <label asp-for="MycotoxinAnalysisId" class="form-label"></label>
+            <select class="form-control" asp-for="MycotoxinAnalysisId" asp-items="@(await MycotoxinLayer.GenerateMycotoxinAnalysisSelectList(null))" required>
+              <option value="">-- Select Mycotoxin Analysis Method --</option>
+            </select>
+            <div class="invalid-feedback">Mycotoxin Analysis Method is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12 mb-3" id="analysisOther" style="display: none">
+          <div class="form-group">
+            <label asp-for="MycotoxinAnalysisOther" class="form-label"></label>
+            <input asp-for="MycotoxinAnalysisOther" class="form-control"/>
+            <div class="invalid-feedback">Description is required when analysis method is Other.</div>
+          </div>
+        </div>
+
+        <div class="col-12 mb-3">
+          <div class="form-group">
+            <input asp-for="MycotoxinDetected" class="form-check-input" type="checkbox">
+            <label asp-for="MycotoxinDetected" class="form-check-label">Mycotoxins Detected</label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-2 float-md-end">
+        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+        <a asp-area="" asp-controller="Mycotoxin" asp-action="Details" asp-route-id="@Model.MycotoxinReportId" class="btn btn-secondary"><i class="fa fa-xmark"></i> Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+
+  $("#MycotoxinSampleTypeId").on('change', function (e) {
+      var optionSelected = $("option:selected", this);
+      var valueSelected = this.value;
+
+      switch (valueSelected) {
+          case "1":
+              $("#MaterialId").attr("required");
+              $("#MaterialOriginId").attr("required");
+              $("#ProductId").removeAttr("required");
+              $("#SalmonellaSampleTypeItemId").removeAttr("required");
+              $("#SalmonellaSampleTypeSubItemId").removeAttr("required");
+
+              $("#rawMaterialSample").show();
+              $("#finishedProductSample").hide();
+              break;
+
+          case "2":
+              $("#ProductId").attr("required");
+              $("#MaterialId").removeAttr("required");
+              $("#MaterialOriginId").removeAttr("required");
+              $("#SalmonellaSampleTypeItemId").removeAttr("required");
+              $("#SalmonellaSampleTypeSubItemId").removeAttr("required");
+
+              $("#rawMaterialSample").hide();
+              $("#finishedProductSample").show();
+              break;
+
+          default:
+              $("#rawMaterialSample").hide();
+              $("#finishedProductSample").hide();
+      }
+  });
+
+  $("#MaterialOriginId").on('change', function (e) {
+      var optionSelected = $("option:selected", this);
+      $("#ProvinceId").val("");
+      $("#MaterialCountryOfOrigin").val("");
+      var valueSelected = this.value;
+
+      switch (valueSelected) {
+          case "1":
+              $("#ProvinceId").prop("required", true);
+              $("#MaterialCountryOfOrigin").prop("required", false);
+              $("#rawMaterialLocal").show();
+              $("#rawMaterialImported").hide();
+              break;
+
+          case "2":
+              $("#MaterialCountryOfOrigin").prop("required", true);
+              $("#ProvinceId").prop("required", false);
+              $("#rawMaterialImported").show();
+              $("#rawMaterialLocal").hide();
+              break;
+
+          default:
+              $("#rawMaterialImported").hide();
+              $("#rawMaterialLocal").hide();
+      }
+  });
+
+  $("#MycotoxinAnalysisId").on('change', function (e) {
+      var valueSelected = this.value;
+      $.ajax({
+          type: "GET",
+          url: "/Mycotoxin/Analysis/GetMycotoxinAnalysisMethod",
+          data: { id: valueSelected },
+          success: function (result) {
+              if (result.other == true) {
+                  $("#analysisOther").show();
+                  $("#MycotoxinAnalysisOther").prop("required", true);
+              }
+              else {
+                  $("#analysisOther").hide();
+                  $("#MycotoxinAnalysisOther").prop("required", false);
+              }
+              return result.other;
+          }
+      });
+
+  });
+</script>

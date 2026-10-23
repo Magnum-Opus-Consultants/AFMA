@@ -1,0 +1,155 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model IEnumerable<AFMA.ApplicationLayer.Model.MemberPcbCostItemModel>
+
+@{
+  var groups = await IndustryProfileLayer.GetPcbSubGroups().ConfigureAwait(false);
+  var totals = await IndustryProfileLayer.PopulateDefaultTotalValues(IndustryProfileDisplayType.Other, Model.First().MemberTypeId, Model.First().IndustryProfileReportId, Model.First().MemberBranchId).ConfigureAwait(false);
+  var id = Convert.ToInt32(ViewData["IndustryProfileReportId"]);
+  var pcbItem = (PcbItem)Model.First().PcbCostMainGroupId;
+  Enum.TryParse(ViewData["CurrentPageAction"]?.ToString(), out CurrentPageAction currentPageAction);
+}
+
+<div class="row">
+  <div class="col-md-12">
+
+    @foreach (var subGroup in groups.Where(x => x.Active && x.PcbCostMainGroupId == Model.First().PcbCostMainGroupId))
+    {
+      foreach (var itemGroup in subGroup.PcbCostItemGroups.Where(x => x.Active))
+      {
+        <table class="table table-responsive table-sm table-bordered">
+          <tr>
+            <th class="td-afm-secondary td-w-100" colspan="3">@($"{itemGroup.ItemGroupCode} {itemGroup.ItemGroupName}")</th>
+          </tr>
+          <tr>
+            <td style="text-align:left" colspan="3"><p>@itemGroup.ItemGroupHelpText</p></td>
+          </tr>
+
+          @foreach (var item in itemGroup.PcbCostItems.OrderBy(x => x.DisplayOrder))
+          {
+            <tr>
+              <td class="td-w-30">
+                @try
+                {
+                  @Model.Single(x => x.PcbCostItemId == item.Id).ItemDescription
+                }
+                catch
+                {
+                  @item.ItemDescription
+                }
+              </td>
+              <td class="td-w-25">
+                @if (item.ReadOnly)
+                {
+                  @("XXX")
+                }
+                else
+                {
+                  try
+                  {
+                    @decimal.Round(Model.Single(x => x.PcbCostItemId == item.Id).Value, 0)
+                  }
+                  catch
+                  {
+                    @decimal.Round(item.Value, 0)
+                  }
+                }
+
+              </td>
+              <td></td>
+            </tr>
+          }
+          <tr>
+
+            <th class="td-afm-secondary">
+              TOTAL
+            </th>
+            <th class="td-afm-secondary">
+              @decimal.Round(Model.Where(x => x.PcbCostItemGroupId == itemGroup.Id && x.AddToTotal).Select(a => a.Value).Sum(), 0)
+            </th>
+
+            <th class="td-afm-secondary"></th>
+
+          </tr>
+
+        </table>
+      }
+
+    }
+
+    <table class="table table-responsive table-striped table-condensed table-bordered">
+      <tr>
+        @if (Model.First().PcbCostMainGroupId == 1)
+        {
+          <th class="td-afm-secondary td-w-30">TONNAGE PELLETS PRODUCED</th>
+          <td class="td-w-25">
+            @decimal.Round(await IndustryProfileLayer.GetValueFromMemberIpBaseTable(Model.First().IndustryProfileReportId, Model.First().PcbCostMainGroupId, null).ConfigureAwait(false), 0)
+          </td>
+        }
+
+        @if (Model.First().PcbCostMainGroupId == 2)
+        {
+          <th class="td-afm-secondary td-w-30">TONNAGE OF CRUMBLES PRODUCED</th>
+          <td class="td-w-25" style="width:25%">
+            @decimal.Round(await IndustryProfileLayer.GetValueFromMemberIpBaseTable(Model.First().IndustryProfileReportId, Model.First().PcbCostMainGroupId, null).ConfigureAwait(false), 0)
+          </td>
+        }
+
+        @if (Model.First().PcbCostMainGroupId == 3)
+        {
+          <th class="td-afm-secondary td-w-30">TONNAGE OF MEAL BAGGED</th>
+          <td class="td-w-25">
+            @decimal.Round(await IndustryProfileLayer.GetValueFromMemberIpBaseTable(Model.First().IndustryProfileReportId, Model.First().PcbCostMainGroupId, null).ConfigureAwait(false), 0)
+          </td>
+        }
+        <td></td>
+      </tr>
+    </table>
+    <table class="table table-responsive table-striped table-condensed table-bordered">
+      <tr>
+        <th class="td-afm-secondary td-w-30">
+          @switch (Model.First().PcbCostMainGroupId)
+          {
+            case 1:
+              <span>COST OF PELLETING</span>
+              break;
+            case 2:
+              <span>COST OF CRUMBLING</span>
+              break;
+            case 3:
+              <span>COST OF BAGGING</span>
+              break;
+            default:
+              <span>TOTAL COST</span>
+              break;
+          }
+        </th>
+        <td class="td-w-25">
+          @if (Model.First().PcbCostMainGroupId == 1)
+          {
+            @Convert.ToInt32(totals.Where(x => x.IndustryProfileSection == IndustryProfileSection.Pelleting).Select(s => s.Total).Sum())
+          }
+          @if (Model.First().PcbCostMainGroupId == 2)
+          {
+            @Convert.ToInt32(totals.Where(x => x.IndustryProfileSection == IndustryProfileSection.Crumbling).Select(s => s.Total).Sum())
+          }
+          @if (Model.First().PcbCostMainGroupId == 3)
+          {
+            @Convert.ToInt32(totals.Where(x => x.IndustryProfileSection == IndustryProfileSection.Bagging).Select(s => s.Total).Sum())
+          }
+        </td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+@if (currentPageAction == CurrentPageAction.Manage)
+{
+  <div class="row g-2">
+    <div class="col-12">
+      <div style="float: right" class="mt-2">
+        <a asp-controller="IndustryProfile" asp-action="EditPcbCost" asp-route-id="@id" asp-route-pcbItem="@pcbItem" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+      </div>
+    </div>
+  </div>
+}

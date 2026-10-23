@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Resolvetech.NetCore.Common</id>
+    <version>1.0.3.1004</version>
+    <authors>Resolvetech</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Repackaged from the production binary (1.0.3.1004) recovered from the AFMA VPS on 2026-09-24; the original private feed is no longer available.</description>
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="Microsoft.AspNetCore.Mvc.ViewFeatures" version="2.2.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

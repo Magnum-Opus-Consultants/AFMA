@@ -1,0 +1,50 @@
+﻿@using AFMA.Service.Communication.Model
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<EmailMessageModel>
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Communication</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Email Sent</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Email Sent</h3>
+  <p>Manages all bulk communications</p>
+  <div class="card">
+    <div class="card-body">
+
+      <div class="table-responsive">
+        <table class="table table-striped table-sm table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" class="w-10">Recipient</th>
+              <th scope="col" class="w-10">Email Address</th>
+              <th scope="col" class="w-15">Subject</th>
+              <th scope="col" class="w-5">Retries</th>
+              <th scope="col" class="w-10">Received</th>
+              <th scope="col" class="w-25">Server Message</th>
+              <th scope="col" class="w-10">Delivery Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach(var message in Model)
+            {
+              <tr>
+                <td class="align-middle">@message.RecipientName</td>
+                <td class="align-middle">@message.RecipientEmail</td>
+                <td class="align-middle text-center">@message.Subject</td>
+                <td class="align-middle text-center">@message.Retries</td>
+                <td class="align-middle text-center">@message.DateReceived</td>
+                <td class="align-middle text-center">@message.ServerMessage</td>
+                <td class="align-middle text-center">@message.DeliveryStatus</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

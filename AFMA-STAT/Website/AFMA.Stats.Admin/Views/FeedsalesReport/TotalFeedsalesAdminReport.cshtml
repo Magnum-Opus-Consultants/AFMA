@@ -1,0 +1,42 @@
+﻿@model AFMA.ApplicationLayer.Model.ReportCriteriaModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Feedsales</a></li>
+    <li class="breadcrumb-item"><a href="#">Reports</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Total Feedsales Report</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Total Feedsales Report</h4>
+    </div>
+    
+    <form class="needs-validation" novalidate asp-action="TotalFeedsalesAdminReport" method="post">
+      <div class="row g-2">
+        <div class="col-2">
+          <div class="form-group">
+            <label asp-for="StartDate" class="form-label"></label>
+            <input asp-for="StartDate" class="form-control" type="date"/>
+          </div>
+        </div>
+        
+        <div class="col-2">
+          <div class="form-group">
+            <label asp-for="EndDate" class="form-label"></label>
+            <input asp-for="EndDate" class="form-control" type="date"/>
+          </div>
+        </div>
+      </div>
+      
+      <div style="float: right">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-file-excel"></i> Export</button>
+        <a asp-controller="Member" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>

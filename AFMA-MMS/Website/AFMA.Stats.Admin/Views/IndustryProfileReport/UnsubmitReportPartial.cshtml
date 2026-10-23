@@ -1,0 +1,26 @@
+﻿@model int
+
+<div class="modal fade" id="unsubmitIndustryProfileReport" tabindex="-1" aria-labelledby="unsubmitIndustryProfileReportLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4">Unsubmit Industry Profile Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="needs-validation" novalidate asp-route-industryProfileReportId="@Model" asp-action="Unsubmit" method="post">
+          <div class="row">
+            <div class="col-12">
+              <p>Are you sure you want to unsubmit this Industry Profile Report?</p>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <button type="submit" class="btn btn-afm-primary"><i class="fa fa-check"></i> Unsubmit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

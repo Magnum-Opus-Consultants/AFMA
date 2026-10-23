@@ -1,0 +1,104 @@
+﻿@using AFMA.Data.Entities
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AFMA.ApplicationLayer.Model.ProductModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item"><a href="#">Finished Products</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Finished Product</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Create Finished Product Group</h4>
+    </div>
+
+    <form class="needs-validation" novalidate asp-action="Create" method="post">
+      <div class="row g-2">
+
+        <div class="col-2">
+          <div class="form-group">
+            <label asp-for="Code" class="form-label"></label>
+            <input asp-for="Code" class="form-control" required />
+            <div class="invalid-feedback">Code is required.</div>
+          </div>
+        </div>
+
+        <div class="col-9">
+          <div class="form-group">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" required />
+            <div class="invalid-feedback">Name is required.</div>
+          </div>
+        </div>
+        
+        <div class="col-1">
+          <div class="form-group">
+            <label asp-for="DisplayOrder" class="form-label"></label>
+            <input asp-for="DisplayOrder" class="form-control" type="number" required />
+            <div class="invalid-feedback">Display Order is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label asp-for="ProductGroupId" class="form-label"></label>
+            <select class="form-control" asp-for="ProductGroupId" asp-items="@(await SalmonellaLayer.GenerateSalmonellaProductGroupCategorySelectList(null))">
+              <option value="">-- Select Product Group --</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input asp-for="Active" class="form-check-input" type="checkbox" checked>
+            <label asp-for="Active" class="form-check-label">Active</label>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input asp-for="VisibleToMembers" class="form-check-input" type="checkbox" checked>
+            <label asp-for="VisibleToMembers" class="form-check-label">Visible To Members</label>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input asp-for="Other" class="form-check-input" type="checkbox">
+            <label asp-for="Other" class="form-check-label">Requires Other Description</label>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input asp-for="AllowDuplicates" class="form-check-input" type="checkbox">
+            <label asp-for="AllowDuplicates" class="form-check-label">Allow Duplicate Submissions</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-2 mt-2">
+        <div class="col-12">
+          <div class="alert alert-info">
+            <p>Options explanation:</p>
+            <ul>
+              <li><strong>REQUIRES OTHER DESCRIPTION</strong> - When this option is enabled, the user will be asked to enter more information about the submission. Typically used when an OTHER or generic product name is selected.</li>
+              <li><strong>ALLOW DUPLICATE SUBMISSIONS</strong> - Normally a product or material can only be added to a report once. Enabling this option will allow the user to add this product or material more than once on a single report.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-2 float-md-end">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+        <a asp-area="General" asp-controller="FinishedProduct" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>

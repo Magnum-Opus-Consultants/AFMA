@@ -1,0 +1,82 @@
+﻿@model AFMA.ApplicationLayer.ViewModels.CompanyIndustryProfileViewModel
+
+@{
+  var groups = IndustryProfileLayer.GetPcbCostSubGroups(false).Result.Where(x => x.PcbCostMainGroupId == Model.MemberPcbCostItems.First().PcbCostMainGroupId);
+}
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Industry Profile</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Industry Profile Reports</li>
+  </ol>
+</nav>
+
+<div class="row g-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-3">Edit Pellet/Crumbling/Bagged Costs</h4>
+        </div>
+
+        <form class="needs-validation" novalidate asp-action="EditPcbCost" method="post">
+          <input asp-for="IndustryProfileReportId" type="hidden" />
+          <input asp-for="MemberId" type="hidden" />
+          <input asp-for="MemberBranchId" type="hidden" />
+          <input asp-for="MemberTypeId" type="hidden" />
+          <input id="PcbMainGroupId" name="PcbMainGroupId" type="hidden" value="@Model.MemberPcbCostItems.First().PcbCostMainGroupId" />
+
+          <div class="row">
+            <div class="col-12">
+              @foreach (var subGroup in groups)
+              {
+                <div style="width:100%;text-align:center"><h3><strong>@($"{subGroup.SubGroupName!.ToUpper()}")</strong></h3></div>
+
+                <br />
+
+                foreach (var itemGroup in subGroup.PcbCostItemGroups.Where(x => x.Active))
+                {
+                  <table class="table table-responsive table-striped table-sm table-bordered">
+                    <tr>
+                      <th class="td-afm-secondary" colspan="3" style="width:100%">@($"{itemGroup.ItemGroupCode} {itemGroup.ItemGroupName}")</th>
+                    </tr>
+                    <tr>
+                      <td style="text-align:left" colspan="3"><p>@itemGroup.ItemGroupHelpText</p></td>
+                    </tr>
+
+                    @foreach (var item in Model.MemberPcbCostItems.Where(x => x.PcbCostItemGroupId == itemGroup.Id))
+                    {
+                      <tr>
+                        <td class="td-w-30">
+                          @($"* {item.ItemDescription}")
+                        </td>
+                        <td class="td-w-25">
+                          @if (item.Readonly)
+                          {
+                            @($"{"XXX"}")
+                          }
+                          else
+                          {
+                            <input type="text" id="PCBCostItem_@item.Id" name="PCBCostItem_@item.Id" class="form-control" value="@item.Value" />
+                          }
+                        </td>
+                        <td></td>
+                      </tr>
+                    }
+                  </table>
+                }
+              }
+            </div>
+          </div>
+
+          <div style="float: right">
+            <button type="submit" class="btn btn-afm-default"><i class="fa-solid fa-save"></i> Save</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

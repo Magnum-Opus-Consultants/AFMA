@@ -1,0 +1,18 @@
+﻿@model IEnumerable<AFMA.ApplicationLayer.Model.Wims.MemberBranchServiceModel>
+
+@{
+  var ss = await WimsApplicationLayer.GetServices().ConfigureAwait(false);
+}
+
+<h5 class="fw-black">Services</h5>
+<div class="list-group">
+  @foreach (var service in ss)
+  {
+    var isSelected = Model.Any(x => x.ServiceId == service.Id) ? "checked" : "";
+
+    <label class="list-group-item">
+      <input class="form-check-input me-1" type="checkbox" id="ss_@service.Id" name="ss_@service.Id" @isSelected>
+      @service.Description
+    </label>
+  }
+</div>

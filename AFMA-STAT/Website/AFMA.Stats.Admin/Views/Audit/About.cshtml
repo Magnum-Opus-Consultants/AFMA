@@ -1,0 +1,21 @@
+﻿<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">System Admin</a></li>
+    <li class="breadcrumb-item"><a href="#">Audit</a></li>
+    <li class="breadcrumb-item active" aria-current="page">About</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>About</h4>
+    </div>
+    <p>AFMA Statistics Administration Portal</p>
+    <p>Release Date: 01/06/2023</p>
+    <p>@Html.Raw(ApplicationLayer.ApplicationVersion())</p>
+    <hr/>
+    <p>Your IP address: @ViewBag.IpAddress</p>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.DistributionGroupModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Distribution</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Distribution Group</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">View Distribution Group</h3>
+  <p>Manages all distribution group and related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" disabled />
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Description" class="form-label"></label>
+                <input asp-for="Description" class="form-control" disabled />
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="Owner" class="form-label"></label>
+                <input asp-for="Owner" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="FromAddress" class="form-label"></label>
+                <input asp-for="FromAddress" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <input asp-for="Private" class="form-check-input" type="checkbox" disabled>
+                <label asp-for="Private" class="form-check-label">Public</label>
+              </div>
+            </div>
+          </div>
+
+          <div style="float: left" class="mt-4">
+            <a asp-controller="Distribution" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+          </div>
+
+          <div style="float: right" class="mt-4">
+            <a asp-controller="Distribution" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+            <a asp-controller="Distribution" asp-action="Export" asp-route-id="@Model.Id" class="btn btn-afm-secondary"><i class="fa-solid fa-file-excel-o"></i> Export</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteDistributionGroup"><i class="fa-solid fa-trash"></i> Delete</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<div class="col-md-12">
+  <h3 class="fw-black">Group Members</h3>  
+<div class="card">
+  <div class="card-body">
+
+    <div class="row g-2">
+      <div class="col-12 pb-2">
+        <a asp-controller="Distribution" asp-action="CreateMember" asp-route-memberid="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-plus"></i> New</a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-sm table-bordered">
+          <thead>
+          <tr>
+            <th scope="col" class="w-15">Contact Name</th>
+            <th scope="col">Email Address</th>
+            <th scope="col" class="w-25">Contact Number</th>
+            <th class="w-1"></th>
+            <th class="w-15"></th>
+          </tr>
+          </thead>
+          <tbody>
+          @foreach (var item in Model.DistributionGroupMembers)
+          {
+            <tr>
+              <td class="align-middle">
+                @item.ContactName
+              </td>
+              <td class="align-middle">
+                @item.EmailAddress
+              </td>
+              <td class="align-middle">
+                @item.ContactNumber
+              </td>
+              <td class="align-middle text-center">
+                @if (item.MemberBranchContactId.HasValue)
+                {
+                  <i class="fa fa-2x @(item.MemberBranchContactMatch ? "fa-check-circle text-success" : "fa-exclamation-triangle text-danger")"
+                      title="@(item.MemberBranchContactMatch ? "The distribution group member details match the branch contact." : "The distribution group member details do not match the branch contact.")"></i>
+                }
+              </td>
+              <td class="text-center">
+                @if(item.ContactName.Contains("Member User"))
+                {
+                  <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteDistributionGroupMemberUser" onclick="$('#deleteMemberUserId').val('@item.Id');"><i class="fa-solid fa-trash"></i> Delete</button>
+                }
+                else
+                {
+                      <a asp-action="EditMember" asp-controller="Distribution" asp-route-id="@item.Id" asp-route-match="@item.MemberBranchContactMatch" class="btn btn-afm-primary btn-sm"><i class="fa-regular fa-eye"></i> Edit</a>
+                  <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteDistributionGroupMember" onclick="$('#deleteMemberId').val('@item.Id');"><i class="fa-solid fa-trash"></i> Delete</button>
+                }
+              </td>
+            </tr>
+          }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+  </div>
+</div>
+</div>
+
+<partial name="Delete" model='new DeleteViewModel { Id = Model.Id }' />
+<partial name="DeleteMember" model='new DeleteViewModel { ParentId = Model.Id }' />
+<partial name="DeleteMemberUser" model='new DeleteViewModel { ParentId = Model.Id }' />

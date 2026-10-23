@@ -1,0 +1,95 @@
+﻿@model AFMA.ApplicationLayer.ViewModels.CompanyIndustryProfileViewModel
+
+@{
+  ViewBag.PageTitle = "Industry Profile";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Industry Profile";
+  ViewBag.Action = "Edit Report";
+  var groups = IndustryProfileLayer.GetRunningCostSundryExpense(false).Result.ToList();
+}
+
+<div class="row g-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Edit Running Costs - Sundries</h4>
+        <p class="card-title-desc">Edit your industry profile report data.</p>
+
+        <form class="needs-validation" novalidate asp-action="EditIndustryRunningCostSundries" method="post">
+          <input asp-for="IndustryProfileReportId" type="hidden" />
+          <input asp-for="MemberId" type="hidden" />
+          <input asp-for="MemberBranchId" type="hidden" />
+          <input asp-for="MemberTypeId" type="hidden" />
+
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-responsive table-condensed table-bordered">
+                <tr>
+                  <th class="td-afm-secondary">Item</th>
+                  <th class="td-afm-secondary td-w-15 text-center">Production</th>
+                  <th class="td-afm-secondary td-w-15 text-center">Marketing</th>
+                  <th class="td-afm-secondary td-w-15 text-center">Administration</th>
+                  <th class="td-afm-secondary td-w-15 text-center">Road Transport</th>
+                </tr>
+                @foreach (var item in Model.MemberRunningCostsSundries)
+                {
+                  <tr>
+                    <td class="align-middle">@item.ItemDescription</td>
+                    <td>
+                      @if (groups.First(x => x.Id == item.RunningCostSundryExpenseId).ProductionEnabled)
+                      {
+                        <input type="text" id="RunningCostSundryExpenseProduction_@item.Id" name="RunningCostSundryExpenseProduction_@item.Id" class="form-control" value="@item.ProductionValue" />
+                      }
+                      else
+                      {
+                        <div style="text-align:center">XXXXX</div>
+                      }
+                    </td>
+                    <td>
+                      @if (groups.First(x => x.Id == item.RunningCostSundryExpenseId).MarketingEnabled)
+                      {
+                        <input type="text" id="RunningCostSundryExpenseMarketing_@item.Id" name="RunningCostSundryExpenseMarketing_@item.Id" class="form-control" value="@item.SalesValue" />
+                      }
+                      else
+                      {
+                        <div style="text-align:center">XXXXX</div>
+                      }
+                    </td>
+                    <td>
+                      @if (groups.First(x => x.Id == item.RunningCostSundryExpenseId).AdministrationEnabled)
+                      {
+                        <input type="text" id="RunningCostSundryExpenseAdministration_@item.Id" name="RunningCostSundryExpenseAdministration_@item.Id" class="form-control" value="@item.AdministrationValue" />
+                      }
+                      else
+                      {
+                        <div style="text-align:center">XXXXX</div>
+                      }
+                    </td>
+                    <td>
+                      @if (groups.First(x => x.Id == item.RunningCostSundryExpenseId).RoadTransportEnabled)
+                      {
+                        <input type="text" id="RunningCostSundryExpenseRoadTransport_@item.Id" name="RunningCostSundryExpenseRoadTransport_@item.Id" class="form-control" value="@item.RoadTransportValue" />
+                      }
+                      else
+                      {
+                        <div style="text-align:center">XXXXX</div>
+                      }
+                    </td>
+                  </tr>
+                }
+
+              </table>
+            </div>
+          </div>
+
+          <hr />
+          <div style="float: right">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+            <a asp-action="Details" asp-controller="IndustryProfile" asp-route-id="@Model.IndustryProfileReportId" class="btn btn-secondary"><i class="fa fa-times"></i> Cancel</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

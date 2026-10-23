@@ -1,0 +1,92 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@using GeneralHelpers = AFMA.ApplicationLayer.Helpers.GeneralHelpers
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">System Admin</a></li>
+    <li class="breadcrumb-item"><a href="#">Report Admin</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Populate Industry Profile</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>New Industry Profile Report</h4>
+    </div>
+
+    <form class="needs-validation" novalidate asp-action="PopulateIndustryProfile" method="post">
+      <div class="row g-2">
+        
+        <div class="col-12">
+          <div class="alert alert-info">
+            <p>This function will pre-populate an industry profile report for a specific member for a specific year.</p>
+          </div>
+        </div>
+
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="MemberId" class="form-label">Member</label>
+            <select class="form-control" id="MemberId" name="MemberId" asp-items="@(await ApplicationLayer.GenerateMemberSelectList(true, ModuleEnum.IndustryProfile, null))" required>
+              <option value="">-- Select Member --</option>
+            </select>
+            <div class="invalid-feedback">Member is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label for="MemberBranchId" class="form-label">Branch</label>
+            <select class="form-control" id="MemberBranchId" name="MemberBranchId" required>
+              <option value="">-- Select Branch --</option>
+            </select>
+            <div class="invalid-feedback">Branch is required.</div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="form-group">
+            <div class="form-group">
+              <label for="MemberId" class="form-label">Report Year</label>
+              <select class="form-control" id="ReportYear" name="ReportYear" asp-items="@(GeneralHelpers.GenerateYearSelectList(DateTime.Now.Year))" required>
+                <option value="">-- Select Report Year --</option>
+              </select>
+              <div class="invalid-feedback">Report Year is required.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="float: right">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-solid fa-check"></i> Populate</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+
+  $(function () {
+
+    $("select#MemberId").change(function () {
+      var mid = $(this).val();
+      $("select#MemberBranchId").empty();
+      $("select#MemberAccountId").empty();
+      $("select#MemberAccountId").append(`<option value="">-- Select Account --</option>`);
+
+      $.getJSON(`/Member/GetMemberBranches?memberId=${mid}`,
+        function (data) {
+          $("select#MemberBranchId").append(`<option value="">-- Select Branch --</option>`);
+          //$("select#MemberBranchId").append(`<option value="0">All Branches</option>`);
+          $.each(data,
+            function (i, item) {
+              $("select#MemberBranchId").append(`<option value="${item.id}">${item.name}</option>`);
+            });
+        });
+    });
+
+  });
+
+</script>

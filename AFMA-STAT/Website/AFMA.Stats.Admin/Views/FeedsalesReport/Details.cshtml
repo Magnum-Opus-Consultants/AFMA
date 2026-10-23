@@ -1,0 +1,247 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model AFMA.ApplicationLayer.Model.FeedsalesReportModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Feedsales</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Feedsales Reports</li>
+  </ol>
+</nav>
+
+<div class="row g-2">
+  <div class="col-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-2">Feedsales Report</h4>
+        </div>
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="Id" class="form-label"></label>
+              <input asp-for="Id" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="SubmittedDate" class="form-label"></label>
+              <input asp-for="SubmittedDate" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="Member" class="form-label"></label>
+              <input asp-for="Member" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MemberBranch" class="form-label"></label>
+              <input asp-for="MemberBranch" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2 mb-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MemberAccount" class="form-label"></label>
+              <input asp-for="MemberAccount" class="form-control" disabled />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="InfoFor" class="form-label"></label>
+              @Html.TextBoxFor(model => model.InfoFor, "{0:MMMM yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+        </div>
+        
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="DifferenceReason" class="form-label"></label>
+              <textarea asp-for="DifferenceReason" rows="2" class="form-control" disabled></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="Comment" class="form-label"></label>
+              <textarea asp-for="Comment" rows="2" class="form-control" disabled></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="float: left" class="mt-3">
+          <a asp-controller="FeedsalesReport" asp-action="Index" class="btn btn-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        </div>
+
+        <div style="float: right" class="mt-3">
+          <a asp-controller="FeedsalesReport" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-afm-default"><i class="fa-regular fa-edit"></i> Edit</a>
+          @if (Model.IsSubmitted)
+          {
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#unsubmitFeedsalesReport"><i class="fa-solid fa-arrow-down"></i> Unsubmit</button>
+          }
+          else
+          {
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#submitFeedsalesReport"><i class="fa-solid fa-arrow-up"></i> Submit</button>
+          }
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFeedsalesReport"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-2">Total Finished Products</h4>
+          </div>
+          <h1 style="font-size:1.8rem" class="text-center">@Model.ProductsCurrentMonth tons</h1>
+          <p class="card-text">Previous Month: @Model.ProductsPreviousMonth tons</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mt-2">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-2">Total Raw Materials</h4>
+          </div>
+          <h1 style="font-size:1.8rem" class="text-center">@Model.MaterialsCurrentMonth tons</h1>
+          <p class="card-text">Previous Month: @Model.MaterialsPreviousMonth tons</p>
+        </div>
+      </div>
+    </div>
+        <div class="col-12 mt-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-2">Variance</h4>
+                    </div>
+                    <h1 style="font-size:1.8rem" class="text-center">@Model.Variance %</h1>
+                </div>
+            </div>
+        </div>
+  </div>
+</div>
+
+<div class="row g-2 mt-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Finished Product Submission</h4>
+        <table class="table table-bordered">
+          <thead class="table-secondary">
+            <tr>
+              <th scope="col" class="w-5">Code</th>
+              <th scope="col">Finished Product</th>
+              <th scope="col" class="w-10">This Month</th>
+              <th scope="col" class="w-10">Previous</th>
+              <th scope="col" class="w-10">Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var product in Model.ReportItems.Where(x => x.ProductId.HasValue))
+            {
+              var previousValue = Model.ReportItemsPreviousMonth.Where(x => x.ProductId == product.ProductId).Sum(s => s.Value);
+              var percentage = GeneralHelpers.GetPercentageIncreaseOrDecrease(product.Value, previousValue);
+
+              <tr>
+                <td>@product.ProductCode</td>
+                <td>@product.Product</td>
+                <td>@product.Value</td>
+                <td>@previousValue</td>
+                @if (previousValue > product.Value)
+                {
+                  <td style="color: red">
+                    <span><i class="fa-solid fa-arrow-down"></i></span>
+                    <span class="pull-right">@($"{percentage:0.00} %")</span>
+                  </td>
+                }
+                else if (previousValue == 0)
+                {
+                  <td>
+                    <span class="pull-right">@($"{percentage:0.00} %")</span>
+                  </td>
+                }
+                else
+                {
+                  <td style="color: green">
+                    <span><i class="fa-solid fa-arrow-up"></i></span>
+                    <span class="pull-right">@($"{percentage:0.00} %")</span>
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <h4 class="card-title mt-4">Raw Material Submission</h4>
+        <table class="table table-bordered">
+          <thead class="table-secondary">
+            <tr>
+              <th scope="col" class="w-5">Code</th>
+              <th scope="col">Raw Material</th>
+              <th scope="col" class="w-10">This Month</th>
+              <th scope="col" class="w-10">Previous</th>
+              <th scope="col" class="w-10">Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var material in Model.ReportItems.Where(x => x.MaterialId.HasValue))
+            {
+              var previousValue = Model.ReportItemsPreviousMonth.Where(x => x.MaterialId == material.MaterialId).Sum(s => s.Value);
+              var percentage = GeneralHelpers.GetPercentageIncreaseOrDecrease(material.Value, previousValue);
+
+              <tr>
+                <td>@material.MaterialCode</td>
+                <td>@material.Material</td>
+                <td>@material.Value</td>
+                <td>@previousValue</td>
+                @if (previousValue > material.Value)
+                {
+                  <td style="color: red">
+                    <span><i class="fa-solid fa-arrow-down"></i></span>
+                    <span class="pull-right">@($"{percentage:0.00} %")</span>
+                  </td>
+                }
+                else if (previousValue == 0)
+                {
+                  <td>
+                    <span class="pull-right">@($"{percentage:0.00} %")</span>
+                  </td>
+                }
+                else
+                {
+                  <td style="color: green">
+                    <span><i class="fa-solid fa-arrow-up"></i></span>
+                    <span class="pull-right">@($"{percentage:0.00} %")</span>
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<partial name="SubmitReportPartial" model="@Model.Id" />
+
+<partial name="UnsubmitReportPartial" model="@Model.Id" />
+
+<partial name="DeleteReportPartial" model="@Model.Id" />

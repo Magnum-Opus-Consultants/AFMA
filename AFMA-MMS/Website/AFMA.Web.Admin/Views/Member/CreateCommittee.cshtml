@@ -1,0 +1,88 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.MemberCommitteeModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Member Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Commitee Member</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Create Committee Member</h3>
+  <p>Manages all member related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <form class="needs-validation" novalidate asp-action="CreateCommittee" method="post">
+
+            <input type="hidden" asp-for="MemberId" />
+
+            <div class="row mt-2">
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="CommitteeId" class="form-label"></label>
+                  <select class="form-control" asp-for="CommitteeId" asp-items="@await WimsApplicationLayer.GenerateCommitteeSelectList(null)"></select>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="MemberBranchContactId" class="form-label"></label>
+                  <select class="form-control" asp-for="MemberBranchContactId" asp-items="@await WimsApplicationLayer.GenerateMemberAccountSelectListByMember(Model.MemberId, null)">
+                    <option value="">-- Select Contact --</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="Name" class="form-label"></label>
+                  <input asp-for="Name" class="form-control" />
+                  <span asp-validation-for="Name"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="EmailAddress" class="form-label"></label>
+                  <input asp-for="EmailAddress" class="form-control" />
+                  <span asp-validation-for="EmailAddress"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+<script>
+    $("select#MemberBranchContactId").change(function () {
+      var mid = $(this).val();
+      $("select#MemberAccountId").empty();
+      $.getJSON(`/Member/GetMemberBranchContact?memberBranchContactId=${mid}`,
+          function (data) {
+            $("#Name").val(data.firstName + ' ' + data.surname);
+            $("#EmailAddress").val(data.emailAddress);
+          });
+  });
+
+</script>

@@ -1,0 +1,9 @@
+﻿global using AFMA.ApplicationLayer.Model;
+global using AFMA.Data.Entities;
+global using AFMA.Shared.Infrastructure.Commands;
+global using Alpha.Services.NHibernate.Repository.Attributes;
+global using System;
+global using System.Collections.Generic;
+global using System.ComponentModel.DataAnnotations;
+global using System.Linq;
+global using System.Threading.Tasks;

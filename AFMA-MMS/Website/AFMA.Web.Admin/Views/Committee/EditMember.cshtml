@@ -1,0 +1,105 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model AFMA.ApplicationLayer.Model.Wims.MemberCommitteeModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Committee Member</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Edit Committee Member</h3>
+  <p>Manages committees related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          @if (Model.MemberBranchContactId.HasValue && !Model.MemberBranchContactMatch)
+          {
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="alert alert-warning d-flex" role="alert">
+                  <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                  </svg>
+                  <div class="ms-3">
+                    <h5 class="text-reset">Branch Contact Mismatch</h5>
+                    The comittee contact and branch contact do not match. Click <i>Update Contact</i> to sync this contact with the branch contact.
+                    <br />
+                    <div class="row mt-4">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <button class="btn btn-afm-primary" id="updateContact">Update Contact</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+          <form class="needs-validation" novalidate asp-action="EditMember" method="post">
+
+            <input asp-for="CommitteeId" type="hidden" />
+            <input asp-for="MemberId" type="hidden" />
+            <input asp-for="MemberBranchContactId" type="hidden" />
+            <input asp-for="Id" type="hidden" />
+
+            <div class="row mt-2">
+              <div class="col-4">
+                <div class="form-group">
+                  <label asp-for="MemberName" class="form-label"></label>
+                  <input asp-for="MemberName" class="form-control" readonly />
+                  <span asp-validation-for="MemberName"></span>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label asp-for="Name" class="form-label"></label>
+                  <input asp-for="Name" class="form-control" />
+                  <span asp-validation-for="Name"></span>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label asp-for="EmailAddress" class="form-label"></label>
+                  <input asp-for="EmailAddress" class="form-control" />
+                  <span asp-validation-for="EmailAddress"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="Committee" asp-action="Details" asp-route-id="@Model.CommitteeId" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  <script>
+
+  $("#updateContact").click(function () {
+    var mid = @Model.MemberBranchContactId;
+
+    $.getJSON(`/Member/GetMemberBranchContact?memberBranchContactId=${mid}`,
+        function (data) {
+          $("#Name").val(data.firstName + ' ' + data.surname);
+          $("#EmailAddress").val(data.emailAddress);
+        });
+  });
+
+  </script>
+
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}

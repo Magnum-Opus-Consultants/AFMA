@@ -1,0 +1,140 @@
+﻿@page
+@using AFMA.Stats.Client.Areas.Identity.Pages.Account
+@model AFMA.Stats.Client.Areas.Identity.Pages.Account.LoginModel
+
+@{
+  ViewData["Title"] = "Login";
+  Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<style scoped>
+
+  .font-size-28 {
+    font-size: 28px !important;
+  }
+
+  .font-size-30 {
+    font-size: 40px !important;
+  }
+
+</style>
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+<div class="account-pages my-5 pt-sm-5">
+  <div class="container">
+    <div class="row justify-content-center">
+
+      <div class="col-md-12">
+        <div class="card overflow-hidden">
+          <div class="row g-0">
+
+            <div class="col-6 p-5 p-4 align-middle">
+              <div class="font-size-28 text-gray-700 fw-bold fs-6 d-grid"><strong>AFMA Statistics Portal</strong></div>
+              <div class="font-size-15 text-gray-700 fw-bold fs-6 d-grid">Animal Feed Sales and related information</div>
+            </div>
+            <div class="col-6 p-5" style="text-align:right">
+              <a href=@Url.Action("Index", "Home") class="1auth-logo">
+                <img src="~/assets/images/afma-logo-1.png" alt="" height="90">
+              </a>
+            </div>
+            <hr />
+            <div class="col-12 text-center pb-3">
+              <div class="text-center text-gray-700 fw-bold fs-5 d-grid pt-1">Welcome to the AFMA Statistics Portal.</div>
+              <div class="text-center text-gray-700 fw-bold fs-6 d-grid pt-3 pb-3">A platform where feed sales statistics are captured and feed safety monitoring & industry profiling is done on behalf of AFMA members.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card overflow-hidden">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="p-lg-5 p-4">
+
+                <div>
+                  <h5>Welcome Back !</h5>
+                </div>
+
+                <div class="mt-4 pt-3">
+                  <form id="account" method="post">
+
+                    <div class="mb-3">
+                      <label asp-for="Input.Email" class="form-label fw-bold"></label>
+                      <input asp-for="Input.Email" class="form-control" placeholder="Enter your username or email address" autocomplete="off" autofocus="">
+                      <span asp-validation-for="Input.Email" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="mb-3 mb-4">
+                      <label asp-for="Input.Password" class="form-label fw-bold"></label>
+                      <input asp-for="Input.Password" type="password" class="form-control" placeholder="Enter your password">
+                      <span asp-validation-for="Input.Password" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="row align-items-center">
+                      <div class="col-6">
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input font-size-16" id="remember-check">
+                          <label class="form-check-label" for="remember-check">Remember me</label>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="text-end">
+                          <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mt-4">
+                      <a asp-area="Identity" asp-page="ForgotPassword" class="text-muted"><i class="mdi mdi-lock me-1"></i> Forgot your password?</a>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="p-lg-5 p-4 bg-auth h-100 d-none d-lg-block">
+                <div class=""></div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-0">
+            <div class="col-6 bg-light">
+              <div class="p-lg-5 p-4">
+                <p class="text-gray-700 fw-bold fs-6 d-grid">The Statistics Portal is divided into 4 Modules namely Feed Sales, Salmonella, Industry Profile and Mycotoxins. Each user (designated person from an AFMA member) will upon login be directed to the relevant module(s) for the submission of monthly data.</p>
+                <p class="text-gray-700 fw-bold fs-6 d-grid">The valuable data contributions of AFMA members through this Portal allows for a robust statistics model which provides essential industry information on the manufacturing, sale and contamination trends observed in animal feed and raw materials. Feed industry benchmarking and lobbying with Government and other livestock value chain partners are based on the information submitted by AFMA members through this Portal, and are published annually in the AFMA Chairman·s Report.</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-lg-5 p-4">
+                <h2 class="text-gray-700 fw-bold d-grid">Please note:</h2>
+                <p>
+                  <ul>
+                    <li><span class="text-gray-700 fw-bold fs-6">All transactions and data are encrypted.</span></li>
+                    <li class="pt-2"><span class="text-gray-700 fw-bold fs-6">Send an email to <a href="mailto:stats@afma.co.za">stats@afma.co.za</a> if you experience any difficulty.</span></li>
+                    <li class="pt-2"><span class="text-gray-700 fw-bold fs-6">Phone the AFMA office at <strong>012 663 9087</strong> for more information.</span></li>
+                  </ul>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end card -->
+        <div class="mt-5 text-center">
+          <p>
+            Copyright © <script>document.write(new Date().getFullYear())</script> <b>Animal Feed Manufacturers Association (AFMA)</b>.<br />
+            Registration Number: 1988/005169/08<br />
+            Association incorporated under section 21 I 024-025-NPO
+          </p>
+        </div>
+      </div>
+      <!-- end col -->
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- end container -->
+</div>
+<!-- end account page -->
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,510 @@
+﻿@model AFMA.ApplicationLayer.Model.FeedsalesReportModel
+@inject IApplicationLayer ApplicationLayer
+@inject IFeedsalesLayer FeedsalesLayer
+
+@{
+  ViewBag.PageTitle = "Feedsales";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Feedsales";
+  ViewBag.Action = "Manage Report";
+}
+
+<style scoped>
+  .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #abad23;
+  }
+</style>
+
+<div class="row g-2">
+  <div class="col-9">
+    <div class="card">
+      <div class="card-body">
+
+        @if (!Model.IsSubmitted)
+        {
+          <h4 class="card-title">Manage Feedsales Report</h4>
+          <p class="card-title-desc">Manage your feedsales report. Add Raw Materials and Finished Products.</p>
+
+          <div class="col-12">
+            <div class="alert alert-info d-flex" role="alert">
+              <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+              </svg>
+              <div class="ms-3">
+                <h6 class="text-reset">Important</h6>
+                Remember to complete all the tabs (Feedsales and Raw Materials before submitting your report)
+              </div>
+            </div>
+          </div>
+
+          <ul class="nav nav-pills" role="tablist" id="feedsalesReportsTab">
+            <li class="nav-item waves-effect waves-light">
+              <a class="nav-link active" data-bs-toggle="tab" href="#fp" role="tab">
+                <span class="d-block d-sm-none"><i class="fa fa-home"></i></span>
+                <span class="d-none d-sm-block">Feedsales</span>
+              </a>
+            </li>
+            <li class="nav-item waves-effect waves-light">
+              <a class="nav-link" data-bs-toggle="tab" href="#rm" role="tab">
+                <span class="d-block d-sm-none"><i class="fa fa-user"></i></span>
+                <span class="d-none d-sm-block">Raw Materials</span>
+              </a>
+            </li>
+            <li class="nav-item waves-effect waves-light">
+              <a class="nav-link" data-bs-toggle="tab" href="#summary" role="tab">
+                <span class="d-block d-sm-none"><i class="fa fa-envelope"></i></span>
+                <span class="d-none d-sm-block">Summary</span>
+              </a>
+            </li>
+          </ul>
+
+          <hr />
+
+          <div class="tab-content" p-3 id="feedsaslesTabsContent">
+            <div class="tab-pane fade show active" id="fp" role="tabpanel" aria-labelledby="feedsales-tab">
+              <div class="accordion" id="accordionBasic">
+                @foreach (var productGroup in await FeedsalesLayer.GetFinishedProductGroups())
+                {
+                  <div class="accordion-item">
+                    <h6 class="accordion-header" id="headingBasicOne-@productGroup.Id">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBasicOne-@productGroup.Id" aria-expanded="false" aria-controls="collapseBasicOne-@productGroup.Id">
+                        <div class="d-flex flex-column">
+                          <h6 class="text-reset">@productGroup.Name</h6>
+                          <small class="text-secondary">@Model.ReportItems.Where(x => x.ProductGroupId == productGroup.Id).Sum(s => s.Value) tons</small>
+                        </div>
+                      </button>
+                    </h6>
+                    <div id="collapseBasicOne-@productGroup.Id" class="accordion-collapse collapse" aria-labelledby="headingBasicOne-@productGroup.Id" data-bs-parent="#accordionBasic">
+                      <div class="accordion-body text-secondary">
+                        <div class="col-12 pb-3">
+                          <a class="btn btn-primary" onclick="GetAvailableFinishedProducts(@productGroup.Id)"><i class="fa fa-plus"></i> Add @productGroup.Name</a>
+                        </div>
+                        <table class="table table-bordered">
+                          <thead class="table-secondary">
+                            <tr>
+                              <th scope="row" class="w-10">Code</th>
+                              <th scope="row">Product</th>
+                              <th scope="row" class="w-10">Amount</th>
+                              <th scope="row" class="w-10">Previous</th>
+                              <th scope="row" class="w-10"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach (var product in Model.ReportItems.Where(x => x.ProductGroupId == productGroup.Id))
+                            {
+                              <tr>
+                                <td>@product.ProductCode</td>
+                                <td>@product.Product @(!string.IsNullOrEmpty(product.Other) ? $" ({product.Other})" : "")</td>
+                                <td>@product.Value</td>
+                                <td>@Model.ReportItemsPreviousMonth.Where(x => x.ProductId == product.ProductId).Sum(x => x.Value)</td>
+                                <td class="text-center">
+                                  <button onclick="DeleteReportItemId(@product.Id, 'fp')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                                </td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="tab-pane fade" id="rm" role="tabpanel" aria-labelledby="rawmaterial-tab">
+              <div class="col-12 pb-3">
+                <a class="btn btn-primary" onclick="GetAvailableRawMaterials()"><i class="fa fa-plus"></i> Add Raw Material</a>
+              </div>
+              <table class="table table-bordered">
+                <thead class="table-secondary">
+                  <tr>
+                    <th scope="row" class="w-10">Code</th>
+                    <th scope="row">Material</th>
+                    <th scope="row" class="w-10">Amount</th>
+                    <th scope="row" class="w-10">Previous</th>
+                    <th scope="row" class="w-10"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach (var material in Model.ReportItems.Where(x => x.MaterialId != null))
+                  {
+                    <tr>
+                      <td>@material.MaterialCode</td>
+                      <td>@material.Material @(!string.IsNullOrEmpty(material.Other) ? $" ({material.Other})" : "")</td>
+                      <td>@material.Value</td>
+                      <td>@Model.ReportItemsPreviousMonth.Where(x => x.MaterialId == material.MaterialId).Sum(x => x.Value)</td>
+                      <td class="text-center">
+                        <button onclick="DeleteReportItemId(@material.Id, 'rm')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+              <form asp-controller="Feedsales" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                <div classs="row">
+                  <div class="col-12">
+                    <table class="table table-bordered">
+                      <tr>
+                        <th scope="row" class="w-25">(A) Total Raw Material Usage</th>
+                        <td>@Model.RawMaterialTotal</td>
+                      </tr>
+                      <tr>
+                        <th scope="row" class="w-25">(B) Total Finished Product Usage</th>
+                        <td>@Model.FinishedProductTotal</td>
+                      </tr>
+                      <tr>
+                        <th scope="row" class="w-25">Difference Between (A) and (B)</th>
+                        <td>@Model.Variance %</td>
+                      </tr>
+                      <tr>
+                        <th scope="row" class="w-25">Reason For Difference</th>
+                        <td>
+                          <textarea rows="3" asp-for="DifferenceReason" class="form-control"></textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row" class="w-25">Comment</th>
+                        <td>
+                          <input asp-for="Comment" class="form-control" />
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="row mt-2 pull-right">
+                  <div class="col-12">
+                    @if (!Model.IsSubmitted)
+                    {
+                      <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                      <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#submitFeedsalesReport"><i class="fa fa-arrow-up"></i> Submit</button>
+                    }
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+        }
+        else
+        {
+          <div class="col-12">
+            <div class="card border border-danger mb-lg-0">
+              <div class="card-header bg-transparent border-danger">
+                <h5 class="my-0 text-danger text-truncate"><i class="mdi mdi-block-helper me-3"></i>Edit Feedsales Report</h5>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title mt-0">Cannot edit report</h5>
+                <p class="card-text">Submitted feedsales reports cannot be edited. Contact AFMA to make alterations to this report.</p>
+              </div>
+            </div>
+            <div class="mt-3" style="float: left">
+              <a asp-controller="Feedsales" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+            </div>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Feedsales Total</h4>
+        <p style="font-size: 1.8rem" class="fw-bold text-center">@Model.FinishedProductTotal tons</p>
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="card-body">
+        <h4 class="card-title">Raw Material Total</h4>
+        <p style="font-size:1.8rem" class="fw-bold text-center">@Model.RawMaterialTotal tons</p>
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="card-body">
+        <h4 class="card-title">Variance</h4>
+        <p style="font-size:1.8rem" class="fw-bold text-center">@Model.Variance %</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal fade" id="addRawMaterial" tabindex="-1" aria-labelledby="addRawMaterialLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4" id="addRawMaterialLabel">Add Raw Material</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="needs-validation" novalidate asp-action="AddRawMaterial" method="post">
+          <input type="hidden" asp-for="Id" class="form-control" />
+          <input type="hidden" asp-for="MemberAccountId" class="form-control" />
+          <input type="hidden" asp-for="MemberBranchId" class="form-control" />
+          <input type="hidden" asp-for="MemberId" class="form-control" />
+          <div class="row">
+            <div class="col-10">
+              <div class="form-group">
+                <label class="form-label">Material</label>
+                <select id="TMaterialId" name="TMaterialId" class="form-control" required></select>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group">
+                <label class="form-label">Value</label>
+                <input asp-for="TAmount" class="form-control" required />
+                <div class="invalid-feedback">Value is required.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2" id="showAlertMessage" style="display: none">
+            <div class="col-12 mt-2">
+              <div class="alert alert-danger">
+                <p><i class="fa fa-exclamation-circle fa-2x"></i> <strong><span id="alertMessage"></span></strong></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2" id="otherMaterialRequired" style="display: none">
+            <div class="col-12 mt-2">
+              <div class="alert alert-danger">
+                <p><i class="fa fa-bullhorn fa-2x"></i> The Finished Product you selected requires more information. Please complete the field below. <strong>Note that you can add multiple entries for this Finished Product.</strong></p>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label class="form-label"><span id="otherMaterialName">Value</span></label>
+                <input asp-for="TMOther" class="form-control" required />
+                <div class="invalid-feedback">Other description is required.</div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addFinishedProduct" tabindex="-1" aria-labelledby="addFinishedProductLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4" id="addFinishedProductLabel">Add Finished Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="needs-validation" novalidate asp-action="AddFinishedProduct" method="post">
+          <input type="hidden" asp-for="Id" class="form-control" />
+          <input type="hidden" asp-for="MemberAccountId" class="form-control" />
+          <input type="hidden" asp-for="MemberBranchId" class="form-control" />
+          <input type="hidden" asp-for="MemberId" class="form-control" />
+          <div class="row">
+            <div class="col-10">
+              <div class="form-group">
+                <label class="form-label">Product</label>
+                <select id="TProductId" name="TProductId" class="form-control" required></select>
+                <div class="invalid-feedback">Product is required.</div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group">
+                <label class="form-label">Value</label>
+                <input asp-for="TAmount" class="form-control" required />
+                <div class="invalid-feedback">Value is required.</div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2" id="otherProductRequired" style="display: none">
+            <div class="col-12 mt-2">
+              <div class="alert alert-danger">
+                <p><i class="fa fa-bullhorn fa-2x"></i> The Finished Product you selected requires more information. Please complete the field below. <strong>Note that you can add multiple entries for this Finished Product.</strong></p>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label class="form-label"><span id="otherProductName">Value</span></label>
+                <input asp-for="TPOther" class="form-control" required />
+                <div class="invalid-feedback">Other description is required.</div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<partial name="SubmitReportPartial" model="@Model.Id" />
+
+<partial name="DeleteReportItemPartial" model="@Model.Id" />
+
+<script>
+
+  $(document).ready(function () {
+
+    $('#feedsalesReportsTab a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+
+    $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+      var id = $(e.target).attr("href").substr(1);
+      window.location.hash = id;
+    });
+
+    var hash = window.location.hash;
+    $('#feedsalesReportsTab a[href="' + hash + '"]').tab('show');
+
+  });
+
+  $("select#TProductId").change(function () {
+    var pid = $(this).val();
+    $.getJSON(`/Feedsales/IsOtherFinishedProduct?productId=${pid}`,
+      function (data) {
+        if (data.other === true) {
+          $("#otherProductName").text("Name of " + data.name + " (Required)");
+          $("#TPOther").attr("required");
+          $("#otherProductRequired").show();
+        } else {
+          $("#otherProductRequired").hide();
+          $("#TPOther").removeAttr("required");
+        }
+      });
+  });
+
+  $("select#TMaterialId").change(function () {
+    var mid = $(this).val();
+    $.getJSON(`/Feedsales/IsOtherRawMaterial?materialId=${mid}`,
+      function (data) {
+        if (data.other === true) {
+          $("#otherMaterialName").text("Name of " + data.name + " (Required)");
+          $("#TMOther").attr("required");
+          $("#otherMaterialRequired").show();
+        } else {
+          $("#otherMaterialRequired").hide();
+          $("#TMOther").removeAttr("required");
+        }
+
+        if (data.showAlert === true) {
+          $("#alertMessage").text(data.alertMessage);
+          $("#showAlertMessage").show();
+        } else {
+          $("#showAlertMessage").hide();
+          $("#alertMessage").text("");
+        }
+      });
+  });
+
+  function GetAvailableFinishedProducts(productGroupId) {
+
+    var feedsalesReportId = @Model.Id;
+
+    $.ajax({
+      type: "GET",
+      url: "/Feedsales/GenerateFinishedProductSelectList",
+      data: { productGroupId: productGroupId, feedsalesReportId: feedsalesReportId },
+      success: function (result) {
+        var s = '<option value="">-- Select a Finished Product --</option>';
+        for (var i = 0; i < result.length; i++) {
+          s += '<option value="' + result[i].id + '">' + result[i].name + '</option>';
+        }
+        $("#TProductId").html(s);
+      }
+    });
+    $("#addFinishedProduct").modal("show");
+  }
+
+  function GetAvailableRawMaterials() {
+
+    var feedsalesReportId = @Model.Id;
+
+    $.ajax({
+      type: "GET",
+      url: "/Feedsales/GenerateRawMaterialSelectList",
+      data: { materialCategoryId: 0, feedsalesReportId: feedsalesReportId },
+      success: function (result) {
+        var s = '<option value="">-- Select a Raw Material --</option>';
+        for (var i = 0; i < result.length; i++) {
+          s += '<option value="' + result[i].id + '">' + result[i].name + '</option>';
+        }
+        $("#TMaterialId").html(s);
+      }
+    });
+
+    $("#addRawMaterial").modal("show");
+  }
+
+  function DeleteReportItemId(reportItemId, reportItemType) {
+    $("#deleteFeedsalesReportItem").modal("show");
+    $("#TReportItemId").val(reportItemId);
+    $("#TReportItemType").val(reportItemType);
+  }
+
+</script>
+
+@*<div class="row">
+  <div class="col-8">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Feedsales Reports</h4>
+        <p class="card-title-desc">Displays a list of all outstanding and submitted feedsales reports.</p>
+
+        <form class="needs-validation" novalidate>
+
+          <div class="row">
+            <div class="col-6">
+              <label asp-for="Id" class="form-label"></label>
+              <input asp-for="Id" class="form-control" required>
+              <div class="invalid-feedback">Report No is required</div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Total Finished Products</h4>
+          <p class="card-title-desc">Displays a list of all outstanding and submitted feedsales reports.</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Total Raw Materials</h4>
+          <p class="card-title-desc">Displays a list of all outstanding and submitted feedsales reports.</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>*@

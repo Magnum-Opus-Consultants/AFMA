@@ -1,0 +1,88 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+    <UserSecretsId>aspnet-AFMA.Stats.Admin-846BE235-3550-4E64-9FE7-EDDA91CC688A</UserSecretsId>
+    <Version>2.0.1.0</Version>
+    <Product>Web Service</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Areas\General\Views\Province\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
+    <PackageReference Include="EPPlus" Version="6.2.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.11" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+    <PackageReference Include="Resolvetech.NetCore.Common" Version="1.0.3.1004" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.6.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="SweetAlert" Version="1.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\AFMA.Shared.Services\AFMA.Shared.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Feedsales\Controllers\" />
+    <Folder Include="Areas\Feedsales\Data\" />
+    <Folder Include="Areas\Feedsales\Models\" />
+    <Folder Include="Areas\General\Data\" />
+    <Folder Include="Areas\General\Models\" />
+    <Folder Include="Areas\IndustryProfile\Data\" />
+    <Folder Include="Areas\IndustryProfile\Models\" />
+    <Folder Include="Areas\Mycotoxin\Data\" />
+    <Folder Include="Areas\Mycotoxin\Models\" />
+    <Folder Include="Areas\Salmonella\Data\" />
+    <Folder Include="Areas\Salmonella\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\General\Views\Province\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\General\Views\Province\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\FeedsalesReport\RawMaterialUsageReport.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\General\Views\Province\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\Identity\Pages\Account\ForgotPassword.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Identity\Pages\Account\ForgotPasswordConfirmation.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Identity\Pages\Account\ResetPassword.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Identity\Pages\Account\ResetPasswordConfirmation.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\FeedsalesReport\RawMaterialUsageReport.cshtml" />
+  </ItemGroup>
+
+</Project>

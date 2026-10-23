@@ -1,0 +1,26 @@
+﻿@model int
+
+<div class="modal fade" id="submitIndustryProfileReport" tabindex="-1" aria-labelledby="submitIndustryProfileReportLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4">Submit Industry Profile Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="needs-validation" novalidate asp-route-industryProfileReportId="@Model" asp-action="Submit" method="post">
+          <div class="row">
+            <div class="col-12">
+              <p>Are you sure you want to submit this Industry Profile Report?</p>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <button type="submit" class="btn btn-afm-primary"><i class="fa fa-check"></i> Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

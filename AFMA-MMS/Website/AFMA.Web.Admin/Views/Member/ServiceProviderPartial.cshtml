@@ -1,0 +1,18 @@
+﻿@model IEnumerable<AFMA.ApplicationLayer.Model.Wims.MemberBranchServiceProviderModel>
+
+@{
+  var sp = await WimsApplicationLayer.GetServiceProviders().ConfigureAwait(false);
+}
+
+<h5 class="fw-black">Affiliate Member Types</h5>
+<div class="list-group">
+  @foreach (var provider in sp)
+  {
+    var isSelected = Model.Any(x => x.ServiceProviderId == provider.Id) ? "checked" : "";
+
+    <label class="list-group-item">
+      <input class="form-check-input me-1" type="checkbox" id="sp_@provider.Id" name="sp_@provider.Id" @isSelected>
+      @provider.Description
+    </label>
+  }
+</div>

@@ -1,0 +1,153 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.MemberModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Member Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Member</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Create Member</h3>
+  <p>Manages all member related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <form class="needs-validation" novalidate asp-action="Create" method="post">
+
+            <div class="row mt-2">
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="MemberType" class="form-label"></label>
+                  <select class="form-control" asp-for="MemberTypeId" asp-items="@await WimsApplicationLayer.GenerateMemberTypeSelectList(null)"></select>
+                  <span asp-validation-for="MemberTypeId"></span>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="MemberIdentificationId" class="form-label"></label>
+                  <input asp-for="MemberIdentificationId" class="form-control" />
+                  <span asp-validation-for="MemberIdentificationId"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="MemberTradeName" class="form-label"></label>
+                  <input asp-for="MemberTradeName" class="form-control" />
+                  <span asp-validation-for="MemberTradeName"></span>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="MemberLegalName" class="form-label"></label>
+                  <input asp-for="MemberLegalName" class="form-control" />
+                  <span asp-validation-for="MemberLegalName"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="RegistrationNo" class="form-label"></label>
+                  <input asp-for="RegistrationNo" class="form-control" />
+                  <span asp-validation-for="RegistrationNo"></span>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="VatRegistrationNo" class="form-label"></label>
+                  <input asp-for="VatRegistrationNo" class="form-control" />
+                  <span asp-validation-for="VatRegistrationNo"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="MemberOtherName" class="form-label"></label>
+                  <input asp-for="MemberOtherName" class="form-control" />
+                  <span asp-validation-for="MemberOtherName"></span>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="Province" class="form-label"></label>
+                  <select class="form-control" asp-for="ProvinceId" asp-items="@await WimsApplicationLayer.GenerateProvinceSelectList(null)"></select>
+                  <span asp-validation-for="ProvinceId"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="PhysicalAddress" class="form-label"></label>
+                  <textarea asp-for="PhysicalAddress" class="form-control" rows="3"></textarea>
+                  <span asp-validation-for="PhysicalAddress"></span>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="PostalAddress" class="form-label"></label>
+                  <textarea asp-for="PostalAddress" class="form-control" rows="3"></textarea>
+                  <span asp-validation-for="PostalAddress"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="TelephoneNo" class="form-label"></label>
+                  <input asp-for="TelephoneNo" class="form-control" />
+                  <span asp-validation-for="TelephoneNo"></span>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="Website" class="form-label"></label>
+                  <input asp-for="Website" class="form-control" />
+                  <span asp-validation-for="Website"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mt-2">
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="GpsCoordinates" class="form-label"></label>
+                  <input asp-for="GpsCoordinates" class="form-control" />
+                  <span asp-validation-for="GpsCoordinates"></span>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <label asp-for="Active" class="form-label"></label>
+                <select class="form-control" asp-for="Active" asp-items="@WimsApplicationLayer.GenerateActiveInactiveList(null)"></select>
+              </div>
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="Member" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}

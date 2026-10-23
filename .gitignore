@@ -1,0 +1,30 @@
+# ---- Build output ----
+[Bb]in/
+[Oo]bj/
+[Pp]ublish/
+[Pp]ublished/
+*.user
+*.suo
+.vs/
+.vscode/
+*.dll.config
+
+# ---- Secrets: never commit real config (use appsettings.Example.json) ----
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+appsettings.*.local.json
+*.pfx
+*.key
+
+# ---- Backups / scratch ----
+*.bak
+*.tmp
+*.log
+
+# ---- OS ----
+Thumbs.db
+.DS_Store
+
+# moved-out nested git backups
+.git_azure_bak/

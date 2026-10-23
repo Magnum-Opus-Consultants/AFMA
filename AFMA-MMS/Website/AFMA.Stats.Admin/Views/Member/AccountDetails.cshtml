@@ -1,0 +1,132 @@
+﻿@using AFMA.ApplicationLayer.Model
+@model AFMA.ApplicationLayer.Model.MemberAccountModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Members</a></li>
+    <li class="breadcrumb-item"><a href="#">Accounts</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Account Details</li>
+  </ol>
+</nav>
+
+<div class="row g-2">
+  <div class="col-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="fw-black mb-2">Account Details</h4>
+        </div>
+
+        <div class="row g-2">
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="FullName" class="form-label"></label>
+              <input asp-for="FullName" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="Email" class="form-label"></label>
+              <input asp-for="Email" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="UserName" class="form-label"></label>
+              <input asp-for="UserName" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="Registered" class="form-label"></label>
+              <input asp-for="Registered" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="LastLogin" class="form-label"></label>
+              <input asp-for="LastLogin" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-group">
+              <label asp-for="UserId" class="form-label"></label>
+              <input asp-for="UserId" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="Active" class="form-check-input" type="checkbox" checked disabled>
+              <label asp-for="Active" class="form-check-label">Active</label>
+            </div>
+          </div>
+
+        </div>
+        <div style="float: left" class="mt-2">
+          <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        </div>
+
+        <div style="float: right" class="mt-2">
+          <a asp-controller="Member" asp-action="EditAccount" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+          <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#resetAccountPassword"><i class="fa-solid fa-lock"></i> Reset & Email Password</button>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#changeAccountPassword"><i class="fa-solid fa-unlock"></i> Change Password</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountConfirm"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-4">
+    <div class="col-lg-12 col-md-6 col-12">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <h5 class="fw-black mb-2">Linked Branches</h5>
+              <ul>
+                <li>
+                  <p class="small text-secondary mb-1">@Model.MemberBranch</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 col-md-6 col-12 mt-2">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <h5 class="fw-black mb-2">Linked Modules</h5>
+              <ul>
+                @foreach (var module in Model.Modules)
+                {
+                  <li>
+                    <p class="small text-secondary mb-1">@module.Module</p>
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="~/vendor/apexcharts/apexcharts.js"></script>
+
+<partial name="ResetPasswordPartial" model="@(new NotificationModel{MemberAccountId = Model.Id, UserId = Model.UserId})" />
+
+<partial name="ChangePasswordPartial" model="@(new NotificationModel{MemberAccountId = Model.Id, UserId = Model.UserId})" />
+
+<partial name="DeleteAccountConfirmPartial" model="@(new NotificationModel{MemberId = Model.MemberId, MemberAccountId = Model.Id})" />

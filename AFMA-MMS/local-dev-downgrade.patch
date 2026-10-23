@@ -1,0 +1,119 @@
+diff --git a/Application/AFMA.ApplicationLayer/AFMA.ApplicationLayer.csproj b/Application/AFMA.ApplicationLayer/AFMA.ApplicationLayer.csproj
+index 05c6ae6..d7d1f7c 100644
+--- a/Application/AFMA.ApplicationLayer/AFMA.ApplicationLayer.csproj
++++ b/Application/AFMA.ApplicationLayer/AFMA.ApplicationLayer.csproj
+@@ -10,13 +10,13 @@
+   </PropertyGroup>
+ 
+   <ItemGroup>
+-    <PackageReference Include="Alpha.Services.Extensions" Version="9.0.20" />
+-    <PackageReference Include="Alpha.Services.NHibernate.Repository" Version="9.0.20" />
+-    <PackageReference Include="Alpha.Services.Notifications" Version="9.0.20" />
+-    <PackageReference Include="Alpha.Services.Notifications.Templates" Version="9.0.20" />
++    <PackageReference Include="Alpha.Services.Extensions" Version="9.0.18" />
++    <PackageReference Include="Alpha.Services.NHibernate.Repository" Version="9.0.18" />
++    <PackageReference Include="Alpha.Services.Notifications" Version="9.0.18" />
++    <PackageReference Include="Alpha.Services.Notifications.Templates" Version="9.0.18" />
+     <PackageReference Include="AutoMapper" Version="12.0.1" />
+     <PackageReference Include="EPPlus" Version="6.2.10" />
+-    <PackageReference Include="Resolvetech.NetCore.Common" Version="1.0.3.1004" />
++    <ProjectReference Include="..\..\Shared\Resolvetech.NetCore.Common.Shim\Resolvetech.NetCore.Common.Shim.csproj" />
+     <PackageReference Include="Serilog" Version="3.1.1" />
+     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
+diff --git a/Application/AFMA.ApplicationLayer/WimsApplicationLayer.cs b/Application/AFMA.ApplicationLayer/WimsApplicationLayer.cs
+index 0705d47..387a79b 100644
+--- a/Application/AFMA.ApplicationLayer/WimsApplicationLayer.cs
++++ b/Application/AFMA.ApplicationLayer/WimsApplicationLayer.cs
+@@ -705,7 +705,12 @@
+     public async Task<SaveOrUpdateResult> Merge<TSource>(TSource source)
+     {
+       var mapped = _mapper.Map(source, source!.GetType(), source!.GetAttribute<MapToAttribute>()!.EntityType);
+-      var result = await _applicationRepository.MergeAndCommitAsync(mapped);
++      // LOCAL-DEV DOWNGRADE: MergeAndCommitAsync only exists in Alpha.Services 9.0.20,
++      // which is not on the local NuGet feed. SaveOrUpdateAndCommitAsync is the nearest
++      // 9.0.18 equivalent; it differs for detached instances whose id is already tracked
++      // by the session (Merge copies state, SaveOrUpdate throws NonUniqueObjectException).
++      // Restore MergeAndCommitAsync once 9.0.20 is available.
++      var result = await _applicationRepository.SaveOrUpdateAndCommitAsync(mapped);
+ 
+       return new SaveOrUpdateResult
+       {
+diff --git a/Application/AFMA.AutoMapping/AFMA.AutoMapping.csproj b/Application/AFMA.AutoMapping/AFMA.AutoMapping.csproj
+index 753e58b..fe998b9 100644
+--- a/Application/AFMA.AutoMapping/AFMA.AutoMapping.csproj
++++ b/Application/AFMA.AutoMapping/AFMA.AutoMapping.csproj
+@@ -7,7 +7,7 @@
+   </PropertyGroup>
+ 
+   <ItemGroup>
+-    <PackageReference Include="Alpha.Services.Models" Version="9.0.20" />
++    <PackageReference Include="Alpha.Services.Models" Version="9.0.18" />
+     <PackageReference Include="AutoMapper" Version="12.0.1" />
+   </ItemGroup>
+ 
+diff --git a/Data/AFMA.Data.Entities/AFMA.Data.Entities.csproj b/Data/AFMA.Data.Entities/AFMA.Data.Entities.csproj
+index 18c2fc4..107095e 100644
+--- a/Data/AFMA.Data.Entities/AFMA.Data.Entities.csproj
++++ b/Data/AFMA.Data.Entities/AFMA.Data.Entities.csproj
+@@ -9,7 +9,7 @@
+   </PropertyGroup>
+ 
+   <ItemGroup>
+-    <PackageReference Include="Alpha.Services.NHibernate.Repository" Version="9.0.20" />
++    <PackageReference Include="Alpha.Services.NHibernate.Repository" Version="9.0.18" />
+   </ItemGroup>
+ 
+ </Project>
+diff --git a/Data/AFMA.Data.Mappings/AFMA.Data.Mappings.csproj b/Data/AFMA.Data.Mappings/AFMA.Data.Mappings.csproj
+index e36c7cd..1f4a0ea 100644
+--- a/Data/AFMA.Data.Mappings/AFMA.Data.Mappings.csproj
++++ b/Data/AFMA.Data.Mappings/AFMA.Data.Mappings.csproj
+@@ -7,7 +7,7 @@
+   </PropertyGroup>
+ 
+   <ItemGroup>
+-    <PackageReference Include="Alpha.Services.NHibernate.Repository" Version="9.0.20" />
++    <PackageReference Include="Alpha.Services.NHibernate.Repository" Version="9.0.18" />
+     <PackageReference Include="FluentNHibernate" Version="3.3.0" />
+   </ItemGroup>
+ 
+diff --git a/Shared/AFMA.Shared.Infrastructure/AFMA.Infrastructure.csproj b/Shared/AFMA.Shared.Infrastructure/AFMA.Infrastructure.csproj
+index 49d906b..bb3dcd0 100644
+--- a/Shared/AFMA.Shared.Infrastructure/AFMA.Infrastructure.csproj
++++ b/Shared/AFMA.Shared.Infrastructure/AFMA.Infrastructure.csproj
+@@ -29,7 +29,7 @@
+   </ItemGroup>
+ 
+   <ItemGroup>
+-    <PackageReference Include="Alpha.Services.NHibernate.Repository" Version="9.0.20" />
++    <PackageReference Include="Alpha.Services.NHibernate.Repository" Version="9.0.18" />
+   </ItemGroup>
+ 
+ </Project>
+diff --git a/Shared/AFMA.Shared.Services/AFMA.Shared.Services.csproj b/Shared/AFMA.Shared.Services/AFMA.Shared.Services.csproj
+index 9c46a8a..5e9844b 100644
+--- a/Shared/AFMA.Shared.Services/AFMA.Shared.Services.csproj
++++ b/Shared/AFMA.Shared.Services/AFMA.Shared.Services.csproj
+@@ -7,7 +7,7 @@
+   </PropertyGroup>
+ 
+   <ItemGroup>
+-    <PackageReference Include="Alpha.Services.Core" Version="9.0.20" />
++    <PackageReference Include="Alpha.Services.Core" Version="9.0.18" />
+     <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
+     <PackageReference Include="DNTCaptcha.Core" Version="4.9.1" />
+     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+diff --git a/Website/AFMA.Stats.Admin/AFMA.Stats.Admin.csproj b/Website/AFMA.Stats.Admin/AFMA.Stats.Admin.csproj
+index 4c89a53..6407990 100644
+--- a/Website/AFMA.Stats.Admin/AFMA.Stats.Admin.csproj
++++ b/Website/AFMA.Stats.Admin/AFMA.Stats.Admin.csproj
+@@ -19,7 +19,7 @@
+     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.15" />
+     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.11" />
+     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+-    <PackageReference Include="Resolvetech.NetCore.Common" Version="1.0.3.1004" />
++    <ProjectReference Include="..\..\Shared\Resolvetech.NetCore.Common.Shim\Resolvetech.NetCore.Common.Shim.csproj" />
+     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+     <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />

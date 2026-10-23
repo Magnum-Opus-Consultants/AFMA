@@ -1,0 +1,158 @@
+﻿@model AFMA.ApplicationLayer.ViewModels.CompanyIndustryProfileViewModel
+
+@{
+  ViewData["IndustryProfileReportId"] = Model.IndustryProfileReportId;
+}
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Industry Profile</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Industry Profile Reports</li>
+  </ol>
+</nav>
+
+<div class="row g-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-2">Industry Profile Report</h4>
+        </div>
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MemberName" class="form-label"></label>
+              <input asp-for="MemberName" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MemberBranch" class="form-label"></label>
+              <input asp-for="MemberBranch" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="ReportYear" class="form-label"></label>
+              <input asp-for="ReportYear" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="IndustryProfileReportId" class="form-label"></label>
+              <input asp-for="IndustryProfileReportId" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2 mb-2">
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="MemberType" class="form-label"></label>
+              <input asp-for="MemberType" class="form-control" disabled />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label asp-for="CreatedByUser" class="form-label"></label>
+              <input asp-for="CreatedByUser" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div style="float: left" class="mt-2">
+          <a asp-controller="IndustryProfileReport" asp-action="Index" class="btn btn-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        </div>
+
+        <div style="float: right" class="mt-2">
+          @if (!Model.IsSubmitted)
+          {
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#submitIndustryProfileReport"><i class="fa-solid fa-arrow-up"></i> Submit</button>
+          }
+          else
+          {
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#unsubmitIndustryProfileReport"><i class="fa-solid fa-arrow-down"></i> Unsubmit</button>
+          }
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteIndustryProfileReport"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-2 mt-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-2">Submissions</h4>
+        </div>
+        <ul class="nav nav-tabs" id="industryProfileTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="industry-profile-tab" data-bs-toggle="tab" data-bs-target="#industry-profile" type="button" role="tab" aria-controls="industry-profile" aria-selected="true">Industry Profile</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="industry-cost-tab" data-bs-toggle="tab" data-bs-target="#industry-cost" type="button" role="tab" aria-controls="industry-cost" aria-selected="false">Industry Cost</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="running-cost-tab" data-bs-toggle="tab" data-bs-target="#running-cost" type="button" role="tab" aria-controls="running-cost" aria-selected="false">Running Cost</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="running-cost-sundries-tab" data-bs-toggle="tab" data-bs-target="#running-cost-sundries" type="button" role="tab" aria-controls="running-cost-sundries" aria-selected="false">Running Cost - Sundries</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pellet-cost-tab" data-bs-toggle="tab" data-bs-target="#pellet-cost" type="button" role="tab" aria-controls="pellet-cost" aria-selected="false">Pellet Cost</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="cumbling-cost-tab" data-bs-toggle="tab" data-bs-target="#crumbling-cost" type="button" role="tab" aria-controls="crumbling-cost" aria-selected="false">Crumbling Cost</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="bagging-cost-tab" data-bs-toggle="tab" data-bs-target="#bagging-cost" type="button" role="tab" aria-controls="bagging-cost" aria-selected="false">Bagging Cost</button>
+          </li>
+        </ul>
+        <div class="tab-content p-3" id="industryProfileTabContent">
+          <div class="tab-pane fade show active" id="industry-profile" role="tabpanel" aria-labelledby="industry-profile-tab">
+            <partial name="IndustryProfileBaseDetailPartial" model="@Model.MemberIpBaseItems" view-data="ViewData" />
+            <hr />
+            <partial name="IndustryProfileAdminDetailPartial" model="@Model.MemberIpAdminItems" view-data="ViewData" />
+            <hr />
+            <partial name="IndustryProfileAdditionalDetailPartial" model="@Model.MemberIpAdditionalItems" view-data="ViewData" />
+          </div>
+          <div class="tab-pane fade" id="industry-cost" role="tabpanel" aria-labelledby="industry-cost-tab">
+            <partial name="IndustryCostDetailPartial" model="@Model.IndustryCostsGroups" view-data="ViewData" />
+          </div>
+          <div class="tab-pane fade" id="running-cost" role="tabpanel" aria-labelledby="running-cost-tab">
+            <partial name="IndustryProfileMemberRunningCostPartial" model="@Model.MemberRunningCosts" view-data="ViewData" />
+            <hr />
+            <partial name="IndustryProfileMemberRunningCostFleetPartial" model="@Model.MemberRunningCostsFleet" />
+          </div>
+          <div class="tab-pane fade" id="running-cost-sundries" role="tabpanel" aria-labelledby="running-cost-sundries-tab">
+            <partial name="IndustryProfileMemberRunningCostSundryPartial" model="@Model.MemberRunningCostsSundries" />
+          </div>
+          <div class="tab-pane fade" id="pellet-cost" role="tabpanel" aria-labelledby="pellet-cost-tab">
+            <partial name="IndustryProfileMemberPcbCostPartial" model="@Model.MemberPelletCostItems" />
+          </div>
+          <div class="tab-pane fade" id="crumbling-cost" role="tabpanel" aria-labelledby="crumbling-cost-tab">
+            <partial name="IndustryProfileMemberPcbCostPartial" model="@Model.MemberCrumblingCostItems" />
+          </div>
+          <div class="tab-pane fade" id="bagging-cost" role="tabpanel" aria-labelledby="bagging-cost-tab">
+            <partial name="IndustryProfileMemberPcbCostPartial" model="@Model.MemberBaggingCostItems" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<partial name="SubmitReportPartial" model="@Model.IndustryProfileReportId" />
+
+<partial name="UnsubmitReportPartial" model="@Model.IndustryProfileReportId" />
+
+<partial name="DeleteReportPartial" model="@Model.IndustryProfileReportId" />

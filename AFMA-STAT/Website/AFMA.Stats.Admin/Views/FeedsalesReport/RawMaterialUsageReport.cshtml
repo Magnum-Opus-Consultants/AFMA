@@ -1,0 +1,65 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@using AFMA.ApplicationLayer.Interface
+@model AFMA.ApplicationLayer.Model.ReportCriteriaModel
+@inject IApplicationLayer ApplicationLayer
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Feedsales</a></li>
+    <li class="breadcrumb-item"><a href="#">Reports</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Raw Material Usage Report</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Raw Material Usage Report</h4>
+    </div>
+
+    <form class="needs-validation" novalidate asp-action="RawMaterialUsageByMaterialAndDate" method="post">
+      <div class="row g-2">
+        <div class="col-12">
+          <div class="form-group">
+            <label class="form-label">Member</label>
+            <select name="MemberId" id="MemberId" class="dselect form-select" data-dselect-search="true" multiple asp-items="@(await ApplicationLayer.GenerateMemberSelectList(true, ModuleEnum.Feedsales, null))">
+              <option value="">-- ALL ---</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="col-12">
+          <div class="form-group">
+            <label asp-for="MaterialId" class="form-label"></label>
+            <select name="MaterialId" id="MaterialId" class="dselect form-select" data-dselect-search="true" multiple asp-items="@(await ApplicationLayer.GenerateMaterialSelectList(null))">
+              <option value="">-- ALL ---</option>
+            </select>
+        </div>
+        </div>
+
+        <div class="col-2">
+          <div class="form-group">
+            <label asp-for="StartDate" class="form-label"></label>
+            <input asp-for="StartDate" class="form-control" type="date" required />
+            <div class="invalid-feedback">Start Date is required.</div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="form-group">
+            <label asp-for="EndDate" class="form-label"></label>
+            <input asp-for="EndDate" class="form-control" type="date" required />
+            <div class="invalid-feedback">End Date is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="float: right">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-file-excel"></i> Export</button>
+        <a asp-controller="Member" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>

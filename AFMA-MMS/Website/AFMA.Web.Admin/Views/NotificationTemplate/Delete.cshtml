@@ -1,0 +1,22 @@
+﻿@model DeleteViewModel
+
+<div class="modal fade" id="deleteNotificationTemplate" tabindex="-1" aria-labelledby="deleteNotificationTemplateLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form asp-route-id="@Model.Id" asp-action="Delete" method="post">
+        <input type="hidden" name="ParentId" value="@Model.ParentId" />
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteNotificationTemplateLabel">Delete Notification Template</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>Are you sure you want to delete this notification template?</div><br />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-close"></i> Cancel</button>
+          <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

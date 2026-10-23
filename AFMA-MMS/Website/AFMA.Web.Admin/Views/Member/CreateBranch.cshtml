@@ -1,0 +1,187 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model AFMA.ApplicationLayer.Model.Wims.MemberBranchModel
+
+@{
+  var memberType = await WimsApplicationLayer.GetMemberType(Model.MemberId).ConfigureAwait(false);
+}
+
+<link href="~/css/flatpickr.min.css" rel="stylesheet" />
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Member Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Branch</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Create Branch</h3>
+  <p>Manages all member related information</p>
+  <form class="needs-validation" novalidate asp-action="CreateBranch" method="post">
+    <div class="row g-2">
+      <div class="col-9">
+
+        <div class="card">
+          <div class="card-body">
+
+            <input type="hidden" asp-for="MemberId"/>
+
+            <div class="row mt-2">
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="MemberIdentificationId" class="form-label"></label>
+                  <input asp-for="MemberIdentificationId" class="form-control"/>
+                  <span asp-validation-for="MemberIdentificationId"></span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label asp-for="Province" class="form-label"></label>
+                  <select class="form-control" asp-for="ProvinceId" asp-items="@await WimsApplicationLayer.GenerateProvinceSelectList(null)"></select>
+                  <span asp-validation-for="ProvinceId"></span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="BranchName" class="form-label"></label>
+                  <input asp-for="BranchName" class="form-control"/>
+                  <span asp-validation-for="BranchName"></span>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="TelephoneNumber" class="form-label"></label>
+                  <input asp-for="TelephoneNumber" class="form-control"/>
+                  <span asp-validation-for="TelephoneNumber"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="PhysicalAddress" class="form-label"></label>
+                  <textarea asp-for="PhysicalAddress" class="form-control" rows="3"></textarea>
+                  <span asp-validation-for="PhysicalAddress"></span>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="form-group">
+                  <label asp-for="PostalAddress" class="form-label"></label>
+                  <textarea asp-for="PostalAddress" class="form-control" rows="3"></textarea>
+                  <span asp-validation-for="PostalAddress"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-4 mt-2">
+                <div class="form-group">
+                  <label asp-for="OtherMemberIdentificationId" class="form-label"></label>
+                  <input asp-for="OtherMemberIdentificationId" class="form-control"/>
+                  <span asp-validation-for="OtherMemberIdentificationId"></span>
+                </div>
+              </div>
+              <div class="col-4 mt-2">
+                <div class="form-group">
+                  <label asp-for="DateOfMembership" class="form-label"></label>
+                  <div class="input-group">
+                    <input asp-for="DateOfMembership" class="form-control datepicker"/>
+                    <span class="input-group-text">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                  <span asp-validation-for="DateOfMembership"></span>
+                </div>
+              </div>
+              <div class="col-4 mt-2">
+                <div class="form-group">
+                  <label asp-for="DateOfIssue" class="form-label"></label>
+                  <div class="input-group">
+                    <input asp-for="DateOfIssue" class="form-control datepicker"/>
+                    <span class="input-group-text">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
+                  <span asp-validation-for="DateOfIssue"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12 mt-2">
+                <div class="form-group">
+                  <label asp-for="Comments" class="form-label"></label>
+                  <textarea asp-for="Comments" class="form-control" rows="6"></textarea>
+                  <span asp-validation-for="Comments"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="float: right" class="mt-3">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+      
+      @if (memberType == MemberTypeEnum.Full)
+      {
+        <div class="col-3">
+          <div class="card">
+            <div class="card-body">
+              @await Html.PartialAsync("AnimalFeedProductPartial", Model.AnimalFeedProducts)
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (memberType == MemberTypeEnum.Affiliate)
+      {
+        <div class="col-3">
+          <div class="card">
+            <div class="card-body">
+              @await Html.PartialAsync("ServiceProviderPartial", Model.ServiceProviders)
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (memberType == MemberTypeEnum.Associate)
+      {
+        <div class="col-3">
+          <div class="card">
+            <div class="card-body">
+              @await Html.PartialAsync("ManufacturerPartial", Model.Manufacturers)
+            </div>
+          </div>
+          <div class="card mt-3">
+            <div class="card-body">
+              @await Html.PartialAsync("SupplierPartial", Model.Suppliers)
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </form>
+</div>
+
+<script src="~/vendor/flatpickr/flatpickr.min.js"></script>
+
+<script>
+  flatpickr('.datepicker')
+</script>
+
+@section Scripts
+{
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}

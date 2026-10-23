@@ -1,0 +1,60 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IEnumerable<AFMA.ApplicationLayer.Model.LoginHistoryModel>
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">System Admin</a></li>
+    <li class="breadcrumb-item"><a href="#">Audit</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Login History</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Login History</h4>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-sm table-bordered">
+        <thead>
+        <tr>
+          <th scope="col" class="w-5">Username</th>
+          <th scope="col" class="w-10">Member/Branch</th>
+          <th scope="col" class="w-5">Login Date</th>
+          <th scope="col" class="w-5">IP Address</th>
+          <th scope="col" class="w-25">Browser</th>
+          <th scope="col" class="w-5">User Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+          <tr>
+            <td class="align-middle">
+              @item.UserName
+            </td>
+            <td class="align-middle">
+              @item.Member/@item.Memberbranch
+            </td>
+            <td class="align-middle">
+              @item.LoginDate
+            </td>
+            <td class="align-middle">
+              @item.IpAddress
+            </td>
+              <td class="align-middle">
+                @item.Browser
+              </td>
+            <td class="align-middle text-center">
+              @item.UserType
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+      @Html.PagedListPager((IPagedList)Model, page => Url.Action("LoginHistory", new { page }))
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.NotificationContactModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Notification Contact</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Edit Notification Contact</h3>
+  <p>Manages notification template related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <form class="needs-validation" novalidate asp-action="EditContact" method="post">
+            
+            <input asp-for="NotificationTemplateId" type="hidden" />
+
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group">
+                  <label asp-for="FullName" class="form-label"></label>
+                  <input asp-for="FullName" class="form-control"/>
+                  <span asp-validation-for="FullName"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12 mt-2">
+                <div class="form-group">
+                  <label asp-for="EmailAddress" class="form-label"></label>
+                  <input asp-for="EmailAddress" class="form-control"/>
+                  <span asp-validation-for="EmailAddress"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="NotificationTemplate" asp-action="Details" asp-route-id="@Model.NotificationTemplateId" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}

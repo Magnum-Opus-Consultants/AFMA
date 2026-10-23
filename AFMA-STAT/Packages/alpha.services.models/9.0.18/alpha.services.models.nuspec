@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Alpha.Services.Models</id>
+    <version>9.0.18</version>
+    <authors>JJ Swart</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="6fbecf47e53523658300bb8f3ce44b2a52b9370b" />
+    <dependencies>
+      <group targetFramework="net8.0" />
+    </dependencies>
+  </metadata>
+</package>

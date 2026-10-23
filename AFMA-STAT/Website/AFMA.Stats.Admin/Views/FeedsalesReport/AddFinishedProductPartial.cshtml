@@ -1,0 +1,25 @@
+﻿@using AFMA.ApplicationLayer.Interface
+@using AFMA.ApplicationLayer.Model
+@using AFMA.Data.Entities
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AFMA.ApplicationLayer.ViewModels.FinishedProductAddViewModel
+@inject IApplicationLayer ApplicationLayer
+
+<div class="modal fade" id="exampleModalXl" tabindex="-1" aria-labelledby="exampleModalXlLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4" id="exampleModalXlLabel">Extra large modal</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12">
+          <div class="form-group">
+            <label asp-for="ProductId" class="form-label"></label>
+            <select class="form-control" asp-for="ProductId" asp-items="@(await ApplicationLayer.GenerateGenericSelectList<Product>(null))"></select>
+          </div>        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.DocumentTemplateModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Document Template</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">View Document Template</h3>
+  <p>Manages all document templates and related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row mt-2">
+            <div class="col-12">
+              <div class="form-group">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-2">
+            <div class="col-5 mt-2">
+              <div class="form-group">
+                <label asp-for="TemplateContentType" class="form-label"></label>
+                <input asp-for="TemplateContentType" class="form-control" disabled />
+              </div>
+            </div>
+            
+            <div class="col-5 mt-2">
+              <div class="form-group">
+                <label asp-for="TemplateFileName" class="form-label"></label>
+                <input asp-for="TemplateFileName" class="form-control" disabled />
+              </div>
+            </div>
+            
+            <div class="col-2 mt-2">
+              <div class="form-group">
+                <label asp-for="TemplateFileSize" class="form-label"></label>
+                <input asp-for="TemplateFileSize" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div style="float: left" class="mt-4">
+            <a asp-controller="DocumentTemplate" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+          </div>
+
+          <div style="float: right" class="mt-4">
+            <a asp-controller="DocumentTemplate" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+            <a asp-controller="DocumentTemplate" asp-action="DownloadDocument"  asp-route-id="@Model.Id" class="btn btn-afm-secondary"><i class="fa-solid fa-download"></i> Download</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteDocumentTemplate"><i class="fa-solid fa-trash"></i> Delete</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<partial name="Delete" model='new DeleteViewModel { Id = Model.Id }' />

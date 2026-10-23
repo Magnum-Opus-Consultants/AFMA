@@ -1,0 +1,126 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.MemberUserModel
+
+@{
+  var canUpdate = Model.CanEdit || User.IsInRole("Admin");
+}
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Member Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Member User</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">View Member User</h3>
+  <p>Manages all member related information</p>
+  <div class="row g-2">
+    <div class="col-8">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row mt-2">
+            <div class="col-12">
+              <div class="form-group">
+                <label asp-for="Member" class="form-label"></label>
+                <input asp-for="Member" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control" disabled />
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 mt-2">
+              <div class="form-group">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="UserId" class="form-label"></label>
+                <input asp-for="UserId" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="LastLogin" class="form-label"></label>
+                <input asp-for="LastLogin" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="CanEdit" class="form-label"></label>
+                <input class="form-control" disabled value="@(canUpdate ? "Yes" : "No")" />
+              </div>
+            </div>
+
+            <div class="col-6 mt-2">
+              <label asp-for="IsActive" class="form-label"></label>
+              <input class="form-control" disabled value="@(canUpdate ? "Active" : "Inactive")" />
+            </div>
+          </div>        
+
+          <div style="float: left" class="mt-4">
+            <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+          </div>
+
+          <div style="float: right" class="mt-4">
+            @if (canUpdate)
+            {
+              <a asp-controller="Member" asp-action="EditUser" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+              <button type="button" class="btn btn-afm-secondary" data-bs-toggle="modal" data-bs-target="#resetPasswordConfirm"><i class="fa-solid fa-key"></i> Reset Password</button>
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteMemberUser"><i class="fa-solid fa-trash"></i> Delete</button>
+            }
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="fw-black">Branch Access</h5>
+          <p>This user has access to the following branches</p>
+          <ul class="list-group">
+            @foreach (var branch in Model.Branches)
+            {
+              <li class="list-group-item">
+                <h6 class="mb-0"
+                  style="color:@(branch.CanEdit ? "green" : "red")">@branch.MemberBranch @(branch.CanEdit ? " (Full Access)" : " (View Only)")
+                </h6>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>   
+
+  </div>
+</div>
+
+<partial name="ResetMemberUserPasswordPartial" model="@(Model.Id )" />
+<partial name="DeleteMemberUser" model='new DeleteViewModel { Id = Model.Id, ParentId = Model.MemberId }' />

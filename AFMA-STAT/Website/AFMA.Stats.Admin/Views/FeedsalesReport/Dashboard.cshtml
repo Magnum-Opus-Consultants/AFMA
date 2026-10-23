@@ -1,0 +1,153 @@
+﻿<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Feedsales</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+  </ol>
+</nav>
+
+<div class="row g-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-2">Feedsales Dashboard</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row g-2">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title"><h5>Current Year</h5></div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="col-6">
+              <p class="mb-1"><strong>Total Reports: </strong><span id="cyTotal">0</span></p>
+              <p class="mb-1"><strong>Submitted: </strong><span id="cySubmitted">0</span></p>
+              <p class="mb-1"><strong>Not Submitted: </strong><span id="cyNotSubmitted">0</span></p>
+              <p class="mb-1"><strong>Total Raw Materials: </strong><span id="cyMaterial">0</span> tons</p>
+              <p class="mb-1"><strong>Total Finished Products: </strong><span id="cyProduct">0</span> tons</p>
+            </div>
+            <div class="col-6">
+              <div id="fsCurrentYear"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title"><h5>Current Month</h5></div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="col-6">
+              <p class="mb-1"><strong>Total Reports: </strong><span id="cmTotal">0</span></p>
+              <p class="mb-1"><strong>Submitted: </strong><span id="cmSubmitted">0</span></p>
+              <p class="mb-1"><strong>Not Submitted: </strong><span id="cmNotSubmitted">0</span></p>
+              <p class="mb-1"><strong>Total Raw Materials: </strong><span id="cmMaterial">0</span> tons</p>
+              <p class="mb-1"><strong>Total Finished Products: </strong><span id="cmProduct">0</span> tons</p>
+            </div>
+            <div class="col-6">
+              <div id="fsCurrentMonth"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title"><h5>Previous Month</h5></div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="col-6">
+              <p class="mb-1"><strong>Total Reports: </strong><span id="pmTotal">0</span></p>
+              <p class="mb-1"><strong>Submitted: </strong><span id="pmSubmitted">0</span></p>
+              <p class="mb-1"><strong>Not Submitted: </strong><span id="pmNotSubmitted">0</span></p>
+              <p class="mb-1"><strong>Total Raw Materials: </strong><span id="pmMaterial">0</span> tons</p>
+              <p class="mb-1"><strong>Total Finished Products: </strong><span id="pmProduct">0</span> tons</p>
+            </div>
+            <div class="col-6">
+              <div id="fsPreviousMonth"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="~/vendor/apexcharts/apexcharts.js"></script>
+<script>
+
+  var options = {
+
+      series: [],
+      chart: {
+          height: 350,
+          type: 'pie',
+          toolbar: {
+              show: false,
+          },
+      },
+      labels: ['Oustanding', 'Submitted'],
+      dataLabels: {
+          enabled: false,
+      },
+      legend: {
+          show: true,
+      },
+      stroke: {
+          width: 0,
+      },
+      noData: {
+          text: 'No data..',
+      },
+      colors: ['#ff0000', '#006400'],
+  }
+
+  var fscychart = new ApexCharts(document.querySelector("#fsCurrentYear"), options);
+  fscychart.render();
+
+  var fscmchart = new ApexCharts(document.querySelector("#fsCurrentMonth"), options);
+  fscmchart.render();
+
+  var fspmchart = new ApexCharts(document.querySelector("#fsPreviousMonth"), options);
+  fspmchart.render();
+
+  var furl = '/FeedsalesReport/GenerateDashboard';
+
+  $.getJSON(furl, function (response) {
+      for (let x in response) {
+          switch (response[x].dashboardCode) {
+              case "cy":
+                  fscychart.updateSeries([response[x].notSubmitted, response[x].submitted]);
+                  $("#cyTotal").text(response[x].reportCount);
+                  $("#cySubmitted").text(response[x].submitted);
+                  $("#cyNotSubmitted").text(response[x].notSubmitted);
+                  $("#cyMaterial").text(response[x].totalMaterials);
+                  $("#cyProduct").text(response[x].totalProducts);
+                  break;
+
+              case "cm":
+                  fscmchart.updateSeries([response[x].notSubmitted, response[x].submitted]);
+                  $("#cmTotal").text(response[x].reportCount);
+                  $("#cmSubmitted").text(response[x].submitted);
+                  $("#cmNotSubmitted").text(response[x].notSubmitted);
+                  $("#cmMaterial").text(response[x].totalMaterials);
+                  $("#cmProduct").text(response[x].totalProducts);
+                  break;
+
+              case "pm":
+                  fspmchart.updateSeries([response[x].notSubmitted, response[x].submitted]);
+                  $("#pmTotal").text(response[x].reportCount);
+                  $("#omSubmitted").text(response[x].submitted);
+                  $("#pmNotSubmitted").text(response[x].notSubmitted);
+                  $("#pmMaterial").text(response[x].totalMaterials);
+                  $("#pmProduct").text(response[x].totalProducts);
+                  break;
+          }
+      }
+  });
+
+</script>

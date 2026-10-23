@@ -1,0 +1,175 @@
+﻿@using Resolvetech.NetCore.Common.Helpers
+@model AFMA.ApplicationLayer.Model.SalmonellaReportModel
+
+@{
+  ViewBag.PageTitle = "Salmonella";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Salmonella";
+  ViewBag.Action = "View Report";
+}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">View Salmonella Report</h4>
+        <p class="card-title-desc">Displays your salmonella report with a summary of all items submitted.</p>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="Id" class="form-label"></label>
+              <input asp-for="Id" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="Member" class="form-label"></label>
+              <input asp-for="Member" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="LaboratoryReportNo" class="form-label"></label>
+              <input asp-for="LaboratoryReportNo" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="MemberBranch" class="form-label"></label>
+              <input asp-for="MemberBranch" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="SubmittedDate" class="form-label"></label>
+              @Html.TextBoxFor(model => model.SubmittedDate, "{0:dd/MM/yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="MemberAccount" class="form-label"></label>
+              <input asp-for="MemberAccount" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="Sampler" class="form-label"></label>
+              <input asp-for="Sampler" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="Laboratory" class="form-label"></label>
+              <input asp-for="Laboratory" class="form-control" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="DueDate" class="form-label"></label>
+              @Html.TextBoxFor(model => model.DueDate, "{0:dd/MM/yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label asp-for="InfoFor" class="form-label"></label>
+              @Html.TextBoxFor(model => model.InfoFor, "{0:MMMM yyyy}", new { @class = "form-control", disabled = "disabled" })
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 mb-3">
+            <div class="form-group">
+              <label asp-for="Comment" class="form-label"></label>
+              <textarea rows="3" asp-for="Comment" class="form-control" disabled></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="float: left" class="mt-2">
+          <a asp-controller="Salmonella" asp-action="Index" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-2">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Samples submitted for microbiological analysis</h4>
+        
+        <table class="table table-bordered">
+          <thead class="table-secondary">
+            <tr>
+              <th class="w-5">Id</th>
+              <th class="w-12">Sample Type</th>
+              <th class="w-12">Sample Id</th>
+              <th class="w-12">Sample Detail</th>
+              <th>Additional Info</th>
+              <th>Notes</th>
+              <th class="w-15"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var sample in Model.ReportItems)
+            {
+              <tr>
+                <td class="align-middle">@sample.Id</td>
+                <td class="align-middle">@sample.SalmonellaSampleType</td>
+                <td class="align-middle">
+                  @if (sample.SalmonellaSampleTypeId == 1)
+                  {
+                    @sample.Material
+                  }
+                  @if (sample.SalmonellaSampleTypeId == 2)
+                  {
+                    @sample.ProductGroup
+                  }
+                  @if (sample.SalmonellaSampleTypeId == 3)
+                  {
+                    @sample.SalmonellaSampleTypeItem
+                  }
+                </td>
+                <td class="align-middle">@sample.SalmonellaSampleTypeSubItem</td>
+                <td class="align-middle">@sample.AdditionalInfo</td>
+                <td class="align-middle">@sample.Note</td>
+                <td class="text-center align-middle">
+                  @if (sample.SalmonellaDetected)
+                  {
+                    <span class="afm-badge bg-danger">@(sample.SalmonellaType ?? "DETECTED")</span>
+                  }
+                  else
+                  {
+                    <span class="afm-badge bg-success">Not Detected</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<partial name="SubmitReportPartial" model="@Model.Id" />

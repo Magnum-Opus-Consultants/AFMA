@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Alpha.Services.Core" Version="9.0.20" />
+    <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
+    <PackageReference Include="DNTCaptcha.Core" Version="4.9.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\AFMA.ApplicationLayer\AFMA.ApplicationLayer.csproj" />
+    <ProjectReference Include="..\..\Application\AFMA.AutoMapping\AFMA.AutoMapping.csproj" />
+    <ProjectReference Include="..\..\Data\AFMA.Data.Entities.Wims\AFMA.Data.Entities.Wims.csproj" />
+    <ProjectReference Include="..\..\Data\AFMA.Data.Mappings.Wims\AFMA.Data.Mappings.Wims.csproj" />
+    <ProjectReference Include="..\..\Data\AFMA.Data.Mappings\AFMA.Data.Mappings.csproj" />
+  </ItemGroup>
+
+</Project>

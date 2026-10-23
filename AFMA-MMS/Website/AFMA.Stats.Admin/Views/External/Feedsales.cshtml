@@ -1,0 +1,478 @@
+﻿@using System.Text.Json
+@using AFMA.ApplicationLayer.Helpers
+@model AFMA.ApplicationLayer.Model.ExternalApi.FeedsalesApiDashboardModel
+
+<style scoped>
+  .overflow-x-hide{
+    max-height: 350px;
+    overflow-x: hidden!important;
+  }
+</style>
+
+@{
+  Layout = "_ApiLayout";
+  var categoriesJson = JsonSerializer.Serialize(Model.Months.Select(a => a.Name));
+  var seriesData = "";
+  var seriesDataJson = JsonSerializer.Serialize(Model.Data.Where(x => x.IsSubmitted && x.ProductMaterial == ProductMaterial.FinishedProduct).GroupBy(s => new
+    {
+      s.ReportYear,
+      s.ReportMonth,
+      s.IsSubmitted,
+      s.ProductMaterial
+    })
+    .Select(g => new
+    {
+      Year = g.Key.ReportYear,
+      Month = g.Key.ReportMonth,
+      Total = g.Sum(x => x.SubmittedValue),
+      IsSubmitted = g.Key.IsSubmitted,
+      ProductMaterial = g.Key.ProductMaterial
+    })
+    //.Where(y => y.Year == 2024)
+    .OrderBy(x => x.Year)
+    .ThenBy(x => x.Month)
+    .ToList().Select(a => a.Total)
+    );
+
+  var labelsJson = JsonSerializer.Serialize(Model.RawMaterialCategories.Select(a => a.Name));
+  var rmSeriesDataJson = JsonSerializer.Serialize(Model.Data.Where(x => x.IsSubmitted && x.ProductMaterial == ProductMaterial.RawMaterial).GroupBy(s => new
+    {
+      s.ReportYear,
+      s.ReportMonth,
+      s.IsSubmitted,
+      s.ProductMaterial
+    })
+    .Select(g => new
+    {
+      Year = g.Key.ReportYear,
+      Month = g.Key.ReportMonth,
+      Total = g.Sum(x => x.SubmittedValue),
+      IsSubmitted = g.Key.IsSubmitted,
+      ProductMaterial = g.Key.ProductMaterial
+    })
+    .Where(y => y.Year == 2024)
+    .OrderBy(x => x.Year)
+    .ThenBy(x => x.Month)
+    .ToList().Select(a => a.Total).Take(9)
+  );
+
+}
+
+<link rel="stylesheet" href="~/css/dselect.css">
+
+<h2>FEED DASHBOARDS</h2>
+<div class="row g-4">
+  <div class="col-lg-4 col-md-6 col-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <h5 class="mb-2">ANIMAL FEED PRODUCED (CURRENT MONTH)</h5>
+            <p class="small text-secondary mb-1">@Model.AnimalFeedProducedCurrentMonthDescription.ToUpper()</p>
+            <h4 class="mb-3">@Model.AnimalFeedProducedCurrentMonth</h4>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <h5 class="mb-2">ANIMAL FEED PRODUCED (PREVIOUS MONTH)</h5>
+            <p class="small text-secondary mb-1">@Model.AnimalFeedProducedPreviousMonthDescription</p>
+            <h4 class="mb-3">@Model.AnimalFeedProducedPreviousMonth</h4>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-6 col-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <h5 class="mb-2">ANIMAL FEED PRODUCED (PREVIOUS YEARS MONTH)</h5>
+            <p class="small text-secondary mb-1">@Model.AnimalFeedProducedPreviousYearMonthDescription</p>
+            <h4 class="mb-3">@Model.AnimalFeedProducedPreviousYearMonth</h4>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mt-1">
+  <div class="col-lg-3 col-md-6 col-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <select multiple id="feedProducts" name="FeedProducts" class="form-select dselect refresh-data" asp-items="@Model.FeedCategories.ToSelectList(x => x.Id, x => x.Name, null)">
+              <option value="">Select Feed Products</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <select id="feedReportPeriod" name="FeedReportPeriod" class="form-control refresh-data">
+              <option value="">Select Report Period</option>
+              <option value="1">Monthly</option>
+              <option value="4">Quarterly</option>
+              <option value="12">Annually</option>
+
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <select multiple id="feedYears" name="FeedYears" class="form-select dselect refresh-data" asp-items="@Model.Years.ToSelectList(x => x, x => x, null)">
+              <option value="">Select Years</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <select multiple id="feedMonths" name="Months" class="form-select dselect refresh-data">
+              <option value="">Select Months</option>
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-afm-primary btn-block">Download Selected Data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-3 col-md-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-sm-flex justify-content-between align-items-center">
+          <h6 class="mb-sm-0">Total Animal Feed produced annually</h6>
+        </div>
+        <div id="feedProduced"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-3 col-md-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-sm-flex justify-content-between align-items-center">
+          <h6 class="mb-sm-0">Percentage change on selected</h6>
+        </div>
+        <div id="percentageChanged"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overflow-scroll overflow-x-hide col-lg-3 col-md-6 col-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                <tr>
+                  <th scope="col">Period</th>
+                  <th scope="col">Feedsales</th>
+                  <th scope="col">Growth</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var period in Model.YearlyData.OrderByDescending(x => x.ReportYear))
+                {
+                  <tr>
+                    <td>@period.ReportYear</td>
+                    <td>@period.TotalSubmitted</td>
+                    <td>0</td>
+                  </tr>
+                }
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mt-1">
+  <div class="col-lg-3 col-md-6 col-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <select multiple id="rawMaterials" name="RawMaterials" class="form-select dselect refresh-data" asp-items="@Model.RawMaterialCategories.ToSelectList(x => x.Id, x => x.Name, null)">
+              <option value="">Select Raw Materials</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <select id="rmReportPeriod" name="RmReportPeriod" class="form-control refresh-data">
+              <option value="">Select Report Period</option>
+              <option value="1">Monthly</option>
+              <option value="4">Quarterly</option>
+              <option value="12">Annually</option>
+
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <select multiple id="rmYears" name="RmYears" class="form-select dselect refresh-data" asp-items="@Model.Years.ToSelectList(x => x, x => x, null)">
+              <option value="">Select Years</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <select multiple id="rmMonths" name="RmMonths" class="form-select dselect refresh-data">
+              <option value="">Select Months</option>
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-afm-primary btn-block">Download Selected Data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-3 col-md-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-sm-flex justify-content-between align-items-center mb-3">
+          <h6 class="mb-sm-0">Total Raw Material used annually</h6>
+        </div>
+        <div id="rawMaterialUsed"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-3 col-md-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-sm-flex justify-content-between align-items-center mb-3">
+          <h6 class="mb-sm-0">Annual Total Raw material used: % change </h6>
+        </div>
+        <div id="rawMaterialPercentageChanged"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overflow-scroll overflow-x-hide col-lg-3 col-md-6 col-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">Period</th>
+                    <th scope="col">Usage</th>
+                    <th scope="col">Growth</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach (var period in Model.RmYearlyData.OrderByDescending(x => x.ReportYear))
+                  {
+                    <tr>
+                      <td>@period.ReportYear</td>
+                      <td>@period.TotalSubmitted</td>
+                      <td>0</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="~/vendor/dselect/dselect.js"></script>
+<script src="~/vendor/apexcharts/apexcharts.js"></script>
+
+<script>
+  
+  $(function () {
+      
+    $(".refresh-data").on('change', function (e) {
+          // console.log($("#feedProducts").val());
+          // console.log($("#feedReportPeriod").val());
+          // console.log($("#feedYears").val());
+          // console.log($("#feedMonths").val());
+
+          var seriesData1 = @Html.Raw(seriesDataJson);
+          console.log(seriesData1);
+          seriesData = seriesData1.filter(x => x.Year === 2024);
+          console.log(seriesData);
+      });
+  });
+
+   new ApexCharts(document.querySelector('#feedProduced'), {
+    chart: {
+      type: 'bar',
+      height: 260,
+      toolbar: {
+        show: false,
+      }
+    },
+    colors: ['#facc15'],
+    series: [{
+        name: 'Feed Produced (tons)',
+        data: @Html.Raw(seriesDataJson)
+      },
+    ],
+    xaxis: {
+      categories: @Html.Raw(seriesDataJson)
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: '30%',
+        borderRadius: 4,
+      },
+    },
+    dataLabels: {
+      enabled: false
+    },
+    legend: {
+      show: false,
+    }
+  }).render()
+
+    new ApexCharts(document.querySelector('#percentageChanged'), {
+      chart: {
+        type: 'bar',
+        height: 260,
+        toolbar: {
+          show: false,
+        }
+      },
+      colors: ['#6366f1'],
+      series: [{
+          name: '% change',
+          data: [17, 32, 50, 47, 19, 11, 30, 40, 13, 11, 14, 66]
+        },
+      ],
+      xaxis: {
+        categories: @Html.Raw(categoriesJson)
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '30%',
+          borderRadius: 4,
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      legend: {
+        show: false,
+      }
+    }).render()
+
+      new ApexCharts(document.querySelector('#rawMaterialUsed'), {
+      series: @Html.Raw(rmSeriesDataJson),
+      chart: {
+        height: 360,
+        type: 'donut',
+        toolbar: {
+          show: false,
+        },
+      },
+      labels: @Html.Raw(labelsJson),
+      dataLabels: {
+        enabled: true,
+      },
+      legend: {
+        show: true,        
+        position: 'bottom'
+      },
+      stroke: {
+        width: 0,
+      },
+      colors: ['#6366f1', '#0dcaf0', '#facc15', '#73b761', '#eb5757', '#002050', '#ae3535', '#b5dafe', '#262a76'],
+    }).render()
+
+        new ApexCharts(document.querySelector('#rawMaterialPercentageChanged'), {
+      chart: {
+        type: 'bar',
+        height: 260,
+        toolbar: {
+          show: false,
+        }
+      },
+      colors: ['#facc15', '#6366f1', '#eb5757'],
+     series: [{
+            name: 'Roughage',
+          data: [17, 32, 50, 47, 19, 11, 30, 40, 13]
+        },
+        {
+          name: 'Animal Protein Sources',
+          data: [34, 65, 104, 94, 38, 23, 61, 80, 26]
+        },
+        {
+          name: 'Fats and Oil',
+          data: [134, 165, 40, 64, 138, 123, 161, 180, 126]
+        },
+      ],
+      xaxis: {
+        categories: @Html.Raw(categoriesJson)
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '30%',
+          borderRadius: 4,
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      legend: {
+        show: true,
+        position: 'bottom'
+      }
+    }).render()
+
+
+</script>

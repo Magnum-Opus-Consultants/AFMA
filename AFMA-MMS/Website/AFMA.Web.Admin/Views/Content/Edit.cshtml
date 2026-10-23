@@ -1,0 +1,194 @@
+﻿@* @model AFMA.ApplicationLayer.Model.Website.ContentPageModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Content</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Content Page</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Edit Content Page</h3>
+  <p>Manages all the content pages for the public website</p>
+  
+  <form asp-controller="Content" asp-action="Edit" method="post" class="needs-validation" novalidate="">
+    <div class="card">
+      <div class="card-body">
+        <div class="col-12">
+          <div class="form-group">
+            <label asp-for="PageTitle" class="form-label"></label>
+            <input asp-for="PageTitle" class="form-control" />
+            <span asp-validation-for="PageTitle"></span>
+          </div>
+        </div>
+      
+        <div class="col-12 mt-2">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label asp-for="BannerImage" class="form-label"></label>
+                <select class="form-control" asp-for="BannerImage" asp-items="WebApplicationLayer.GenerateBannerImageSelectList(Context, Model.BannerImage)">
+                  <option value="">-- Select banner image --</option>
+                </select>
+                <span asp-validation-for="BannerImage"></span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label asp-for="OverviewImage" class="form-label"></label>
+                <select class="form-control" asp-for="OverviewImage" asp-items="WebApplicationLayer.GenerateOverviewImageSelectList(Context, Model.OverviewImage)">
+                  <option value="">-- Select overview image --</option>
+                </select>
+                <span asp-validation-for="OverviewImage"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label asp-for="MainMenuId" class="form-label"></label>
+                <select class="form-control" asp-for="MainMenuId" asp-items="WebApplicationLayer.GenerateMainMenuSelectList(@Model.MainMenuId)">
+                  <option value="">-- Select main menu item --</option>
+                </select>
+                <span asp-validation-for="MainMenuId"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label asp-for="ParentContentPageId" class="form-label"></label>
+                <select class="form-control" asp-for="ParentContentPageId" asp-items="WebApplicationLayer.GenerateContentPageSelectList(@Model.ParentContentPageId)">
+                  <option value="">-- Select parent content page --</option>
+                </select>
+                <span asp-validation-for="ParentContentPageId"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="col-md-12 mt-2">
+          <div class="alert alert-info d-flex" role="alert">
+            <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div class="ms-3">
+              <h6 class="text-reset">Menu Item vs Parent Content Page</h6>
+              You can link this to either a menu item or link it as a sub content page to a parent content page. You can only choose one or the other, do not select both as this will cause unexpected behaviour.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label asp-for="DisplayOrder" class="form-label"></label>
+                <input asp-for="DisplayOrder" class="form-control"/>
+                <span asp-validation-for="DisplayOrder"></span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label asp-for="PublishedDate" class="form-label"></label>
+                <input asp-for="PublishedDate" class="form-control" />
+                <span asp-validation-for="PublishedDate"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="FriendlyUrl" class="form-label"></label>
+            <input asp-for="FriendlyUrl" class="form-control" />
+            <span asp-validation-for="FriendlyUrl"></span>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <input asp-for="Published" class="form-check-input" type="checkbox">
+            <label asp-for="Published" class="form-check-label">Published</label>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-check">
+            <input asp-for="ShowPageTitle" class="form-check-input" type="checkbox">
+            <label asp-for="ShowPageTitle" class="form-check-label">Show Page Title</label>
+          </div>
+        </div>
+      
+        <div class="card-body bg-light shadow-none mt-3">
+          <h4>Advanced Options</h4>
+          <p class="text-danger">If you are unsure what should go here, just leave it as is</p>
+        
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="HasSubItems" class="form-check-input" type="checkbox">
+              <label asp-for="HasSubItems" class="form-check-label">Has Sub Items</label>
+            </div>
+          </div>
+        
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="DynamicPage" class="form-check-input" type="checkbox">
+              <label asp-for="DynamicPage" class="form-check-label">Dynamic Page</label>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="DynamicController" class="form-label"></label>
+              <input asp-for="DynamicController" class="form-control" />
+              <span asp-validation-for="DynamicController"></span>
+            </div>
+          </div>
+        
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="DynamicAction" class="form-label"></label>
+              <input asp-for="DynamicAction" class="form-control" />
+              <span asp-validation-for="DynamicAction"></span>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="DynamicId" class="form-label"></label>
+              <input asp-for="DynamicId" class="form-control" />
+              <span asp-validation-for="DynamicId"></span>
+            </div>
+          </div>
+        
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="UserId" class="form-label"></label>
+              <input asp-for="UserId" class="form-control" readonly="readonly" />
+              <span asp-validation-for="UserId"></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="float: left" class="mt-2">
+          <a asp-controller="Content" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        </div>
+
+        <div style="float: right" class="mt-2">
+          <button type="submit" class="btn btn-success"><i class="fa-solid fa-save"></i> Save</button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteContentPageConfirm"><i class="fa-solid fa-trash"></i> Cancel</button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>
+
+@section Scripts
+{
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+} *@

@@ -1,0 +1,271 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model AFMA.ApplicationLayer.Model.Wims.MemberBranchModel
+
+@{
+  var memberType = await WimsApplicationLayer.GetMemberType(Model.MemberId).ConfigureAwait(false);
+}
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Member Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Member Branch</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">View Member Branch</h3>
+  <p>Manages all member related information</p>
+  <div class="row g-2">
+    <div class="col-9">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="MemberIdentificationId" class="form-label"></label>
+                <input asp-for="MemberIdentificationId" class="form-control" disabled />
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Member" class="form-label"></label>
+                <input asp-for="Member" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 mt-2">
+              <div class="form-group">
+                <label asp-for="BranchName" class="form-label"></label>
+                <input asp-for="BranchName" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="PhysicalAddress" class="form-label"></label>
+                <textarea asp-for="PhysicalAddress" class="form-control" rows="3" disabled></textarea>
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="PostalAddress" class="form-label"></label>
+                <textarea asp-for="PostalAddress" class="form-control" rows="3" disabled></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="TelephoneNumber" class="form-label"></label>
+                <input asp-for="TelephoneNumber" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <label asp-for="OtherMemberIdentificationId" class="form-label"></label>
+              <input asp-for="OtherMemberIdentificationId" class="form-control" disabled />
+            </div>
+          </div>
+          
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="DateOfMembership" class="form-label"></label>
+                <input asp-for="DateOfMembership" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <label asp-for="DateOfIssue" class="form-label"></label>
+              <input asp-for="DateOfIssue" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 mt-2">
+              <div class="form-group">
+                <label asp-for="Comments" class="form-label"></label>
+                <textarea asp-for="Comments" class="form-control" rows="4" disabled></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div style="float: left" class="mt-4">
+            <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+          </div>
+
+          <div style="float: right" class="mt-4">
+            <a asp-controller="Member" asp-action="EditBranch" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteBranch"><i class="fa-solid fa-trash"></i> Delete</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  @if (memberType == MemberTypeEnum.Full)
+  {
+        
+    <div class="col-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="fw-black">Animal Feed Products</h5>
+          <ul class="list-group">
+            @foreach (var product in Model.AnimalFeedProducts)
+            {
+              <li class="list-group-item">
+                <h6 class="mb-0">@product.AnimalFeedProduct</h6>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (memberType == MemberTypeEnum.Affiliate)
+  {
+    <div class="col-3">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="fw-black">Affiliate Member Types</h5>
+          <ul class="list-group">
+            @foreach (var provider in Model.ServiceProviders)
+            {
+              <li class="list-group-item">
+                <h6 class="mb-0">@provider.ServiceProvider</h6>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  }
+  
+  @if (memberType == MemberTypeEnum.Associate)
+  {
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="fw-black">Manufacturer</h5>
+          <ul class="list-group">
+            @foreach (var manufacturer in Model.Manufacturers)
+            {
+              <li class="list-group-item">
+                <h6 class="mb-0">@manufacturer.Manufacturer</h6>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 class="fw-black">Supplier</h5>
+            <ul class="list-group">
+              @foreach (var supplier in Model.Suppliers)
+              {
+                <li class="list-group-item">
+                  <h6 class="mb-0">@supplier.Supplier</h6>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+    </div>
+  }
+
+  </div>
+</div>
+
+<hr />
+
+<div class="col-md-12">
+  <h3 class="fw-black">Contacts</h3>
+  <p>Manages all contact persons for the selected branch</p>
+  <div class="row g-2">
+    
+  <div class="card">
+    <div class="card-body">
+      <div class="row mt-2">
+        <div class="col-12 pb-2">
+          <a asp-controller="Member" asp-action="CreateBranchContact" asp-route-memberid="@Model.MemberId" asp-route-branchid="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-plus"></i> New</a>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12 mt-2">
+          <div class="accordion" id="accordionBasic">
+          
+            @foreach (var contactType in Model.CategorizedContacts)
+            {
+              <div class="accordion-item">
+                <h6 class="accordion-header" id="headingBasic-@contactType.Id">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBasic-@contactType.Id" aria-expanded="false" aria-controls="collapseBasic-@contactType.Id">
+                    <div class="d-flex flex-column">
+                      <h6 class="text-reset">@contactType.Description</h6>
+                      <small class="text-secondary">@contactType.MemberBranchContacts.Count contacts</small>
+                    </div>
+                  </button>
+                </h6>
+                <div id="collapseBasic-@contactType.Id" class="accordion-collapse collapse" aria-labelledby="headingBasic-@contactType.Id" data-bs-parent="#accordionBasic">
+                  <div class="accordion-body">
+                    <div class="row mt-2">
+                      @foreach (var contact in contactType.MemberBranchContacts)
+                      {
+                        <div class="col-3 col-lg-3 mt-3">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title mb-3"><i class="fa fa-user"></i> @contact.MemberContactType</h4>
+                              @if(contact.CompanyContact)
+                              {
+                                <h6 class="card-title text-danger">Company Contact</h6>    
+                              }
+                              <div class="card-text"><strong>Title:</strong> @contact.Title</div>
+                              <div class="card-text"><strong>Name:</strong> @contact.FirstName @contact.Surname</div>
+                              <div class="card-text"><strong>Designation:</strong> @contact.Designation</div>
+                              <div class="card-text"><strong>Telephone No:</strong> @contact.TelephoneNo</div>
+                              <div class="card-text"><strong>Mobile No:</strong> @contact.MobileNo</div>
+                              <div class="card-text"><strong>Email:</strong> @contact.EmailAddress</div>
+                              <div style="float: right" class="mt-2">
+                                  <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteBranchContact" onclick="$('#deleteBranchContactId').val('@contact.Id');"><i class="fa-solid fa-trash"></i> Delete</button>
+                                  <a asp-controller="Member" asp-action="EditBranchContact" asp-route-id="@contact.Id" class="btn btn-afm-primary btn-sm"><i class="fa-solid fa-edit"></i> Edit</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  </div>
+</div>
+
+<partial name="DeleteBranch" model='new DeleteViewModel { Id = Model.Id, ParentId = Model.MemberId }' />
+<partial name="DeleteBranchContact" model='new DeleteViewModel { Id = Model.Id, ParentId = Model.Id }' />
+
+<script>
+  $('#deleteBranchContact').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var contactId = button.data('id');
+
+      $('#deleteBranchContactId').val(contactId);
+  });
+</script>

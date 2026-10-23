@@ -1,0 +1,68 @@
+﻿@using FluentNHibernate.Conventions
+@using AFMA.ApplicationLayer.Helpers
+@model IEnumerable<AFMA.ApplicationLayer.ViewModels.MemberModuleAccessViewModel>
+
+@{
+  var modules = await ApplicationLayer.GetModules().ConfigureAwait(false);
+}
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">System Admin</a></li>
+    <li class="breadcrumb-item"><a href="#">Audit</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Branch Module Access</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Member Module Access</h4>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table table-striped table-sm table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col" class="w-10">Member Type</th>
+            @foreach (var module in modules.OrderBy(x => x.Description))
+            {
+              <th scope="col" class="w-10 text-center">@module.Description</th>
+            }
+            <th class="w-10"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var member in Model)
+          {
+            <tr>
+              <td class="align-middle">
+                @member.Member
+              </td>
+              <td class="align-middle">
+                @member.MemberType
+              </td>
+              @foreach (var module in modules.OrderBy(x => x.Description))
+              {
+                @if (member.MemberModules.Any(x => x.ModuleId == (ModuleEnum)module.Id && x.HasAccess))
+                {
+                  <td class="text-center"><i class="text-success fa-solid fa-2x fa-check"></i></td>
+                }
+                else
+                {
+                  <td class="text-center"><i class="text-danger fa-solid fa-2x fa-times"></i></td>
+                }
+              }
+              <td class="text-center">
+                <a asp-action="Details" asp-controller="Member" asp-route-id="@member.MemberId" class="btn btn-afm-primary btn-sm"><i class="fa-regular fa-eye"></i> View Member</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,52 @@
+﻿@using AFMA.ApplicationLayer.Model
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AFMA.ApplicationLayer.Model.LaboratoryModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Salmonella</a></li>
+    <li class="breadcrumb-item"><a href="#">Laboratories</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Laboratory</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>View Laboratory</h4>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-12">
+
+        <div class="form-group mt-2">
+          <label asp-for="Name" class="form-label"></label>
+          <input asp-for="Name" class="form-control" readonly />
+        </div>
+
+        <div class="form-group mt-2">
+          <label asp-for="Address" class="form-label"></label>
+          <textarea asp-for="Address" class="form-control" rows="5" readonly></textarea>
+        </div>
+
+        <div class="form-check mt-2">
+          <input asp-for="Active" class="form-check-input" type="checkbox" disabled>
+          <label asp-for="Active" class="form-check-label">Active</label>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="float: left" class="mt-4">
+      <a asp-area="Salmonella" asp-controller="Laboratory" asp-action="Index" class="btn btn-light"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    </div>
+
+    <div style="float: right" class="mt-4">
+      <a asp-area="Salmonella" asp-controller="Laboratory" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteLaboratoryConfirm"><i class="fa-solid fa-trash"></i> Delete</button>
+    </div>
+  </div>
+</div>
+
+<partial name="DeleteLaboratoryConfirmPartial" model="@(new NotificationModel{Id = Model.Id})" />

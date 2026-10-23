@@ -1,0 +1,45 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.BatchAttachmentModel
+
+<div class="modal fade" id="removeAttachmentModal" tabindex="-1" aria-labelledby="removeAttachmentModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4">Remove Attachment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-route-id="@Model.Id" asp-controller="Batch" asp-action="RemoveAttachment" method="post">
+          <input type="hidden" name="Id" id="attachmentId" />
+          <input type="hidden" name="BatchId" id="batchId" />
+          <div class="row">
+            <div class="col-12">
+              <p>Confirm that this attachment is to be deleted.</p>
+            </div>
+          </div>
+          <div class="row mt-2 pull-right">
+            <div class="col-12">
+              <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Remove</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.remove-attachment').forEach(function (button) {
+      button.addEventListener('click', function () {
+        const attachmentId = this.getAttribute('data-id');
+        const batchId = this.getAttribute('data-batchid');
+
+        document.getElementById('attachmentId').value = attachmentId;
+        document.getElementById('batchId').value = batchId;
+
+        const modal = new bootstrap.Modal(document.getElementById('removeAttachmentModal'));
+        modal.show();
+      });
+    });
+  });
+</script>

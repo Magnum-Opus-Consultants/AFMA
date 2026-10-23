@@ -1,0 +1,103 @@
+﻿@model AFMA.ApplicationLayer.Model.Wims.NotificationTemplateModel
+
+<link rel="stylesheet" href="~/css/summernote-lite.css">
+<link rel="stylesheet" href="~/vendor/summernote/summernote-lite.css">
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Notification Template</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Edit Notification Template</h3>
+  <p>Manages notification template related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <form class="needs-validation" novalidate asp-action="Edit" method="post">
+
+
+            <div class="row mt-2">
+              <div class="col-8">
+                <div class="form-group">
+                  <label asp-for="Description" class="form-label"></label>
+                  <input asp-for="Description" class="form-control"/>
+                  <span asp-validation-for="Description"></span>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="form-group">
+                  <label asp-for="NotificationTypeId" class="form-label"></label>
+                  <select id="NotificationTypeId" name="NotificationTypeId" class="form-control" asp-items="@(await WimsApplicationLayer.GenerateNotificationTypeSelectList(Model.NotificationTypeId))">
+                    <option value="">-- Select Notification Type --</option>
+                  </select>
+                  <span asp-validation-for="NotificationTypeId"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12 mt-2">
+                <div class="form-group">
+                  <label asp-for="Subject" class="form-label"></label>
+                  <input asp-for="Subject" class="form-control"/>
+                  <span asp-validation-for="Subject"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12 mt-2">
+                <div class="form-group">
+                  <label asp-for="Body" class="form-label"></label>
+                  <textarea asp-for="Body" class="summernote"></textarea>
+                  <span asp-validation-for="Body"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="Distribution" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  <script src="~/vendor/summernote/summernote-lite.js"></script>
+  <script>
+    $(function() {
+
+      summernoteStyle()
+
+      $('.summernote').summernote({
+        minHeight: 500,
+        callbacks: {
+          onBlur: function() {
+            $("#Message").val($('#Message').code());
+          },
+          onChange: function(contents, $editable) {
+            // fix https://github.com/summernote/summernote/issues/2631
+            if ($(this).summernote('isEmpty') && contents != '') {
+              $(this).summernote('code', '')
+            }
+          }
+        }
+      })
+    })
+  </script>
+
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}

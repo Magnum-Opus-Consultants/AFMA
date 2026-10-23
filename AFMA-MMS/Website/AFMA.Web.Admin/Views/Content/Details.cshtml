@@ -1,0 +1,183 @@
+﻿@* @model AFMA.ApplicationLayer.Model.Website.ContentPageModel
+@using AFMA.Web.Admin.Helpers
+
+@{
+  bool tabActive = true;
+}
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Content</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Content Page</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">View Content Page</h3>
+  <p>Manages all the content pages for the public website</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="Id" class="form-label"></label>
+              <input asp-for="Id" class="form-control" disabled />
+            </div>
+          </div>
+          
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="ParentContentPageId" class="form-label"></label>
+              <input asp-for="ParentContentPageId" class="form-control" disabled />
+            </div>
+          </div>
+
+
+
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="PageTitle" class="form-label"></label>
+              <input asp-for="PageTitle" class="form-control" disabled/>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="MainMenu" class="form-label"></label>
+              <input asp-for="MainMenu" class="form-control" disabled/>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="DisplayOrder" class="form-label"></label>
+              <input asp-for="DisplayOrder" class="form-control" disabled/>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="FriendlyUrl" class="form-label"></label>
+              <input asp-for="FriendlyUrl" class="form-control" disabled/>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <input asp-for="Published" class="form-check-input" type="checkbox" disabled>
+              <label asp-for="Published" class="form-check-label">Published</label>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-group">
+              <label asp-for="PublishedDate" class="form-label"></label>
+              <input asp-for="PublishedDate" class="form-control" disabled/>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="ShowPageTitle" class="form-check-input" type="checkbox" disabled>
+              <label asp-for="ShowPageTitle" class="form-check-label">Show Page Title</label>
+            </div>
+          </div>
+
+          <div style="float: left" class="mt-2">
+            <a asp-controller="Content" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+          </div>
+
+          <div style="float: right" class="mt-2">
+            <a asp-controller="Content" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteMemberConfirm"><i class="fa-solid fa-trash"></i> Delete</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr/>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Content Sections</h3>
+  <p>Manages all the content pages for the public website</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="col-md-12 p-3">
+          <a asp-controller="Content" asp-action="CreateContentPageSection" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-plus"></i> New</a>
+        </div>
+
+        <div class="card-header">
+          <ul class="nav nav-pills" id="myTab" role="tablist">
+            @foreach (var contentSection in Model.ContentPageSections)
+            {
+              <li class="nav-item" role="presentation">
+                <button class="nav-link @tabActive.ToBooleanActiveInactive()" id="@contentSection.Id-tab" data-bs-toggle="tab" data-bs-target="#tab-@contentSection.Id" type="button" role="tab" aria-controls="@contentSection.Id" aria-selected="true">@contentSection.Header</button>
+              </li>
+              {
+                tabActive = false;
+              }
+            }
+          </ul>
+        </div>
+
+        <div class="card-body">
+
+          <div class="tab-content" id="myTabContent">
+            @{ tabActive = true; }
+            @foreach (var contentSection in Model.ContentPageSections)
+            {
+              <div class="tab-pane fade @tabActive.ToBooleanActiveInactive() show" id="tab-@contentSection.Id" role="tabpanel" aria-labelledby="@contentSection.Id-tab">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label asp-for="@contentSection.Header" class="form-label"></label>
+                    <input asp-for="@contentSection.Header" class="form-control" disabled/>
+                  </div>
+                </div>
+
+                <div class="col-12 mt-2">
+                  <div class="form-group">
+                    <label asp-for="@contentSection.DisplayOrder" class="form-label"></label>
+                    <input asp-for="@contentSection.DisplayOrder" class="form-control" disabled/>
+                  </div>
+                </div>
+
+                <div class="col-12 mt-2">
+                  <div class="form-group">
+                    <input asp-for="@contentSection.ShowSectionHeader" class="form-check-input" type="checkbox" disabled>
+                    <label asp-for="@contentSection.ShowSectionHeader" class="form-check-label">Show Page Title</label>
+                  </div>
+                </div>
+
+                <div class="col-12 mt-2">
+                  <div class="form-group">
+                    <label asp-for="@contentSection.PageContent" class="form-label"></label>
+                    <br/>
+                    <div class="card bg-light shadow-none border-1">
+                      <div class="card-body">
+                        @Html.Raw(contentSection.PageContent)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="float: right" class="mt-2">
+                  <a asp-controller="Content" asp-action="EditContentPageSection" asp-route-id="@contentSection.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteContentSectionConfirm"><i class="fa-solid fa-trash"></i> Delete</button>
+                </div>
+
+              </div>
+              {tabActive = false;}
+            }
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> *@

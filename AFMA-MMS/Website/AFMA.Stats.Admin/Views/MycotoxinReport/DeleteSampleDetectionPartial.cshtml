@@ -1,0 +1,27 @@
+﻿@model AFMA.ApplicationLayer.Model.NotificationModel
+
+<div class="modal fade" id="deleteSampleDetectionConfirm" tabindex="-1" aria-labelledby="deleteSalmpleDetectionCnfirmLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4">Remove Sample Detection</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-route-sampleId="@Model.SampleId" asp-route-reportId="@Model.ReportId" asp-controller="MycotoxinReport" asp-action="DeleteSampleDetection" method="post">
+          <input type="hidden" id="sampleDetectionId" name="sampleDetectionId" />
+          <div class="row">
+            <div class="col-12">
+              <p>Confirm that this detection is to be removed.</p>
+            </div>
+          </div>
+          <div class="row mt-2 pull-right">
+            <div class="col-12">
+              <button type="submit" class="btn btn-warning"><i class="fa-solid fa-trash"></i> Remove</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

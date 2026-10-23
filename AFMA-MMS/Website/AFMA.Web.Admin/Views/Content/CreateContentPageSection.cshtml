@@ -1,0 +1,126 @@
+﻿@* @model AFMA.ApplicationLayer.Model.Website.ContentPageSectionModel
+
+<link rel="stylesheet" href="~/css/summernote-lite.css">
+<link rel="stylesheet" href="~/vendor/summernote/summernote-lite.css">
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Content</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Content Page</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Create Content Page Section</h3>
+  <p>Manages all the content pages for the public website</p>
+
+  <form asp-controller="Content" asp-action="EditContentPageSection" method="post" class="needs-validation" novalidate="">
+    
+    @Html.HiddenFor(x => x.ContentPageId)
+    
+    <div class="card">
+      <div class="card-body">
+        <div class="col-12">
+          <div class="form-group">
+            <label asp-for="Header" class="form-label"></label>
+            <input asp-for="Header" class="form-control"/>
+            <span asp-validation-for="Header"></span>
+          </div>
+        </div>
+        
+        <div class="col-12 mt-2">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label asp-for="BannerImage" class="form-label"></label>
+                <select class="form-control" asp-for="BannerImage" asp-items="WebApplicationLayer.GenerateBannerImageSelectList(Context, null)">
+                  <option value="">-- Select banner image --</option>
+                </select>
+                <span asp-validation-for="BannerImage"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <input asp-for="ShowSectionHeader" class="form-check-input" type="checkbox">
+            <label asp-for="ShowSectionHeader" class="form-check-label">Show Header</label>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label asp-for="ContentPage" class="form-label"></label>
+                <input asp-for="ContentPage" class="form-control" readonly="readonly"/>
+                <span asp-validation-for="ContentPage"></span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label asp-for="ContentPageSectionTypeId" class="form-label"></label>
+                <select class="form-control" asp-for="ContentPageSectionTypeId" asp-items="WebApplicationLayer.GenerateContentPageSectionTypeSelectList(null)">
+                  <option value="">-- Select content section type --</option>
+                </select>
+                <span asp-validation-for="ContentPageSectionTypeId"></span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label asp-for="DisplayOrder" class="form-label"></label>
+                <input asp-for="DisplayOrder" class="form-control"/>
+                <span asp-validation-for="DisplayOrder"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="PageContent" class="form-label"></label>
+            <textarea asp-for="PageContent" class="summernote" id="pageContent"></textarea>
+            <span asp-validation-for="PageContent"></span>
+          </div>
+        </div>
+
+        <div style="float: right" class="mt-2">
+          <button type="submit" class="btn btn-success"><i class="fa-solid fa-save"></i> Save</button>
+          <a asp-controller="Content" asp-action="Details" asp-route-id="@Model.ContentPageId" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>
+
+@section Scripts
+{
+  <script src="~/vendor/summernote/summernote-lite.js"></script>
+  <script>
+    $(function() {
+
+      summernoteStyle()
+
+      $('.summernote').summernote({
+        minHeight: 500,
+        callbacks: {
+          onBlur: function() {
+            $("#pageContent").val($('#pageContent').code());
+            alert("dsds");
+          },
+          onChange: function(contents, $editable) {
+            // fix https://github.com/summernote/summernote/issues/2631
+            if ($(this).summernote('isEmpty') && contents != '') {
+              $(this).summernote('code', '')
+            }
+          }
+        }
+      })
+    })
+  </script>
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+} *@

@@ -1,0 +1,150 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model AFMA.ApplicationLayer.Model.Wims.MemberBranchModel
+
+@{
+  bool tabActive = true;
+  bool canEdit = await WimsApplicationLayer.CanUserEditMember(Model.MemberId).ConfigureAwait(false);
+  var memberType = await WimsApplicationLayer.GetMemberType(Model.MemberId).ConfigureAwait(false);
+}
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Member Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Member Branch</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">View Member Branch</h3>
+  <p>Manages all member related information</p>
+  <div class="row g-2">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="MemberIdentificationId" class="form-label"></label>
+                <input asp-for="MemberIdentificationId" class="form-control" disabled />
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label asp-for="Member" class="form-label"></label>
+                <input asp-for="Member" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 mt-2">
+              <div class="form-group">
+                <label asp-for="BranchName" class="form-label"></label>
+                <input asp-for="BranchName" class="form-control" disabled />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="PhysicalAddress" class="form-label"></label>
+                <textarea asp-for="PhysicalAddress" class="form-control" rows="3" disabled></textarea>
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="PostalAddress" class="form-label"></label>
+                <textarea asp-for="PostalAddress" class="form-control" rows="3" disabled></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="TelephoneNumber" class="form-label"></label>
+                <input asp-for="TelephoneNumber" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <label asp-for="OtherMemberIdentificationId" class="form-label"></label>
+              <input asp-for="OtherMemberIdentificationId" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 mt-2">
+              <div class="form-group">
+                <label asp-for="DateOfMembership" class="form-label"></label>
+                <input asp-for="DateOfMembership" class="form-control" disabled />
+              </div>
+            </div>
+            <div class="col-6 mt-2">
+              <label asp-for="DateOfIssue" class="form-label"></label>
+              <input asp-for="DateOfIssue" class="form-control" disabled />
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-12 mt-2">
+              <div class="form-group">
+                <label asp-for="Comments" class="form-label"></label>
+                <textarea asp-for="Comments" class="form-control" rows="4" disabled></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div style="float: left" class="mt-4">
+            <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+          </div>
+
+          <div style="float: right" class="mt-4">
+            @if(canEdit)
+            {
+              <a asp-controller="Member" asp-action="EditBranch" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+            }
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="fw-black">Animal Feed Products</h5>
+          <ul class="list-group">
+            @foreach (var product in Model.AnimalFeedProducts)
+            {
+              <li class="list-group-item">
+                <h6 class="mb-0">@product.AnimalFeedProduct</h6>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    @if (memberType == MemberTypeEnum.Full)
+    {
+      <div class="col-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="fw-black">“Affiliate Member Types</h5>
+            <ul class="list-group">
+              @foreach (var provider in Model.ServiceProviders)
+              {
+                <li class="list-group-item">
+                  <h6 class="mb-0">@provider.ServiceProvider</h6>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    } 
+  </div>
+</div>

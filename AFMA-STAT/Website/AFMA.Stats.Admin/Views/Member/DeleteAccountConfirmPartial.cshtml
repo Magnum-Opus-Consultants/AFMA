@@ -1,0 +1,27 @@
+﻿@model AFMA.ApplicationLayer.Model.NotificationModel
+
+<div class="modal fade" id="deleteAccountConfirm" tabindex="-1" aria-labelledby="deleteAccountConfirmLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4">Delete Member Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form asp-route-memberId="@Model.MemberId" asp-route-memberAccountId="@Model.MemberAccountId" asp-controller="Member" asp-action="DeleteAccount" method="post">
+          <div class="row">
+            <div class="col-12">
+              <p>Confirm that this account is to be deleted.</p>
+              <p>NOTE! All related information like submission history will be deleted.</p>
+            </div>
+          </div>
+          <div class="row mt-2 pull-right">
+            <div class="col-12">
+              <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

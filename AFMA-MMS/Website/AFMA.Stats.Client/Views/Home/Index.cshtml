@@ -1,0 +1,141 @@
+﻿@model AFMA.ApplicationLayer.ViewModels.ClientDashboardViewModel
+
+@{
+  ViewBag.PageTitle = "Dashboard";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Dashboard";
+  //var memberAccess = await ApplicationLayer.GetCurrentMemberAccess().ConfigureAwait(false);
+}
+
+<div class="row">
+  @foreach (var dashboardItem in Model.ReportSummary)
+  {
+    <div class="col-md-6 col-xl-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="float-end">
+            <div class="avatar-sm mx-auto mb-4">
+              <span class="avatar-title rounded-circle bg-light font-size-24">
+                <i class="mdi @dashboardItem.DashboardImage text-primary"></i>
+              </span>
+            </div>
+          </div>
+          <div>
+            <p class="text-muted text-uppercase fw-semibold">@dashboardItem.DashboardName</p>
+            <h4 class="mb-1 mt-1"></h4>
+          </div>
+
+          <table class="table table-borderless table-sm">
+            <tr>
+              <td class="w-10">
+                <h4><div class=" badge badge-soft-success me-1">@dashboardItem.Submitted</div></h4>
+              </td>
+              <td class="align-middle">
+                <h6 class="text-muted">Reports Submitted</h6>
+              </td>
+            </tr>
+            <tr>
+              <td class="w-10">
+                <h4><div class=" badge badge-soft-warning me-1">@dashboardItem.NotSubmitted</div></h4>
+              </td>
+              <td class="align-middle">
+                <h6 class="text-muted">Reports Not Submitted</h6>
+              </td>
+            </tr>
+            <tr>
+              <td class="w-10">
+                <h4><div class=" badge badge-soft-info me-1">@dashboardItem.CurrentDue</div></h4>
+              </td>
+              <td class="align-middle">
+                <h6 class="text-muted">Reports Current Due</h6>
+              </td>
+            </tr>
+            <tr>
+              <td class="w-10">
+                <h4><div class=" badge badge-soft-danger me-1">@dashboardItem.Overdue</div></h4>
+              </td>
+              <td class="align-middle">
+                <h6 class="text-muted">Reports Overdue</h6>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  }
+ 
+
+@*  @if (memberAccess.HasIndustryProfileAccess)
+  {
+    <div class="col-md-6 col-xl-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="float-end">
+            <div class="avatar-sm mx-auto mb-4">
+              <span class="avatar-title rounded-circle bg-light font-size-24">
+                <i class="mdi mdi-factory text-primary"></i>
+              </span>
+            </div>
+          </div>
+          <div>
+            <p class="text-muted text-uppercase fw-semibold">Industry Profile Summary</p>
+            <h4 class="mb-1 mt-1"></h4>
+          </div>
+          <p class="text-muted mt-3 mb-0">
+            <span class="badge badge-soft-warning me-1"><i class="mdi mdi-arrow-up-bold me-1"></i>0.55%</span> since last week
+          </p>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (memberAccess.HasSalmonellaAccess)
+  {
+    <div class="col-md-6 col-xl-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="float-end">
+            <div class="avatar-sm mx-auto mb-4">
+              <span class="avatar-title rounded-circle bg-light font-size-24">
+                <i class="mdi mdi-biohazard text-primary"></i>
+              </span>
+            </div>
+          </div>
+          <div>
+            <p class="text-muted text-uppercase fw-semibold">Salmonella Summary</p>
+            <h4 class="mb-1 mt-1"></h4>
+          </div>
+          <p class="text-muted mt-3 mb-0">
+                      <span class="badge badge-soft-danger me-1"><i class="mdi mdi-arrow-down-bold me-1"></i>4.58%</span> since last week
+          </p>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (memberAccess.HasMycotoxinAccess)
+  {
+    <div class="col-md-6 col-xl-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="float-end">
+            <div class="avatar-sm mx-auto mb-4">
+              <span class="avatar-title rounded-circle bg-light font-size-24">
+                <i class="mdi mdi-bug text-primary"></i>
+              </span>
+            </div>
+          </div>
+          <div>
+            <p class="text-muted text-uppercase fw-semibold">Mycotoxin Summary</p>
+            <h4 class="mb-1 mt-1"></h4>
+          </div>
+          <p class="text-muted mt-3 mb-0">
+            <span class="badge badge-soft-success me-1"><i class="mdi mdi-arrow-up-bold me-1"></i>14.33%</span> since last week
+          </p>
+        </div>
+      </div>
+    </div>
+  }
+*@
+</div>

@@ -1,0 +1,85 @@
+﻿@model AFMA.ApplicationLayer.ViewModels.BranchSummaryReportViewModel
+@{
+  var months = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+}
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Salmonella</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Branch Reports</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Branch Report Summary - @Model.Module - @Model.Year </h4>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-sm table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="w-25">Member</th>
+            <th scope="col" class="w-15">Branch</th>
+            <th scope="col" class="w-15">Reports</th>
+            @foreach (var month in months)
+            {
+              <th scope="col" class="w-15">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</th>
+            }
+
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var memberBranch in Model.MemberBranches)
+          {
+            <tr>
+              <td class="align-middle">
+                @memberBranch.MemberName
+              </td>
+              <td class="align-middle">
+                @memberBranch.BranchName
+              </td>
+              <td class="align-middle">
+                <text class="success">@memberBranch.ReportExistsCount</text>
+              </td>
+
+              @foreach (var month in months)
+              {
+                var r = memberBranch.Reports.Single(x => x.ReportMonth == month);
+                <td class="align-middle">
+                  @{
+                    if (r.ReportExists)
+                    {
+                      <span class="text-success">Found</span>
+                    }
+                    else
+                    {
+                      <span class="text-danger">Not Found</span>
+                    }
+                  }
+                  <br>
+                  @{
+                    if (r.ReportExists)
+                    {
+                      if (r.Submitted)
+                      {
+                        <span class="text-info">Submitted</span>
+                      }
+                      else
+                      {
+                        <span class="text-warning">Outstanding</span>
+                      }
+                    }
+                  }
+                </td>
+              }
+            </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

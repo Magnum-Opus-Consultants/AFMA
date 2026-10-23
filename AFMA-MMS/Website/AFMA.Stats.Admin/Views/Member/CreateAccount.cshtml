@@ -1,0 +1,127 @@
+﻿@model AFMA.ApplicationLayer.Model.MemberAccountModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Members</a></li>
+    <li class="breadcrumb-item active" aria-current="page">New Account</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="fw-black">New Account</h4>
+    </div>
+
+    <form class="needs-validation" novalidate asp-action="CreateAccount" method="post">
+
+      <input type="hidden" asp-for="MemberId" />
+
+      <div class="row g-2">
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="UserName" class="form-label"></label>
+            <input asp-for="UserName" class="form-control" required />
+            <div class="invalid-feedback">Username is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Password" class="form-label"></label>
+            <input type="text" asp-for="Password" class="form-control" />
+            <div class="invalid-feedback">Password is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="FirstName" class="form-label"></label>
+            <input asp-for="FirstName" class="form-control" required />
+            <div class="invalid-feedback">First Name is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="LastName" class="form-label"></label>
+            <input asp-for="LastName" class="form-control" required />
+            <div class="invalid-feedback">Last Name is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" required />
+            <div class="invalid-feedback">Email is required.</div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="form-group">
+            <label asp-for="MemberBranchId" class="form-label"></label>
+            <select class="form-control" asp-for="MemberBranchId" asp-items="@await ApplicationLayer.GenerateMemberBranchSelectList(true, Model.MemberId, null)" required></select>
+            <div class="invalid-feedback">Branch is required.</div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="Active" class="form-check-input" type="checkbox" checked>
+              <label asp-for="Active" class="form-check-label">Active</label>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="IsAdministrator" class="form-check-input" type="checkbox">
+              <label asp-for="IsAdministrator" class="form-check-label">Is Administrator</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="FeedsalesAccess" class="form-check-input" type="checkbox">
+              <label asp-for="FeedsalesAccess" class="form-check-label">Access Feedsales</label>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="SalmonellaAccess" class="form-check-input" type="checkbox">
+              <label asp-for="SalmonellaAccess" class="form-check-label">Access Salmonella</label>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="IndustryProfileAccess" class="form-check-input" type="checkbox">
+              <label asp-for="IndustryProfileAccess" class="form-check-label">Access Industry Profile</label>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <div class="form-check">
+              <input asp-for="MycotoxinsAccess" class="form-check-input" type="checkbox">
+              <label asp-for="MycotoxinsAccess" class="form-check-label">Access Mycotoxins</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="float: right">
+        <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+        <a asp-controller="Member" asp-action="Details" asp-route-id="@Model.MemberId" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,160 @@
+﻿@model AFMA.ApplicationLayer.ViewModels.CompanyIndustryProfileViewModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">Industry Profile</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Industry Profile Reports</li>
+  </ol>
+</nav>
+
+<div class="row g-2">
+  <div class="col-md-12">
+    
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-3">Edit Running Costs</h4>
+        </div>
+        
+        <form class="needs-validation" novalidate asp-action="EditIndustryCost" method="post">
+        <input asp-for="IndustryProfileReportId" type="hidden" />
+        <input asp-for="MemberId" type="hidden" />
+        <input asp-for="MemberBranchId" type="hidden" />
+        <input asp-for="MemberTypeId" type="hidden" />
+
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-responsive table-striped table-condensed table-bordered">
+              <tr>
+                <th class="td-afm-secondary td-w-5"></th>
+                <th class="td-afm-secondary">Devisor Ton</th>
+                <th class="td-afm-secondary td-w-20"></th>
+                <th class="td-afm-secondary td-w-10 text-center">P</th>
+                <th class="td-afm-secondary td-w-10 text-center">S</th>
+                <th class="td-afm-secondary td-w-10 text-center">V</th>
+                <th class="td-afm-secondary td-w-10">V</th>
+              </tr>
+              <tr>
+                <th class="td-afm-secondary">Code</th>
+                <th class="td-afm-secondary">Item</th>
+                <th class="td-afm-secondary text-center"><strong>Note</strong></th>
+                <th class="td-afm-secondary">Production</th>
+                <th class="td-afm-secondary">Sales/Marketing</th>
+                <th class="td-afm-secondary">Administration</th>
+                <th class="td-afm-secondary">Road Transport</th>
+              </tr>
+
+              @foreach (var group in Model.MemberRunningCosts)
+              {
+                <tr>
+                  <td class="align-middle">@group.GroupCode</td>
+                  <td class="align-middle">@group.GroupName</td>
+                  <td class="align-middle"></td>
+                  <td class="align-middle">
+                    @if (group.ProductionEnabled && group.Editable && group.GroupId != 12)
+                    {
+                      <input type="text" id="RunningCostGroupProduction_@group.Id" name="RunningCostGroupProduction_@group.Id" class="form-control" value="@group.ProductionValue" />
+                    }
+                    else
+                    {
+                      <div style="text-align:center">XXXXX</div>
+                    }
+                  </td>
+                  <td class="align-middle">
+                    @if (group.SalesEnabled && group.Editable)
+                    {
+                      <input type="text" id="RunningCostGroupSales_@group.Id" name="RunningCostGroupSales_@group.Id" class="form-control" value="@group.SalesValue" />
+                    }
+                    else
+                    {
+                      <div style="text-align:center">XXXXX</div>
+                    }
+                  </td>
+                  <td class="align-middle">
+                    @if (group.AdministrationEnabled && group.Editable)
+                    {
+                      <input type="text" id="RunningCostGroupAdministration_@group.Id" name="RunningCostGroupAdministration_@group.Id" class="form-control" value="@group.AdministrationValue" />
+                    }
+                    else
+                    {
+                      <div style="text-align:center">XXXXX</div>
+                    }
+                  </td>
+                  <td class="align-middle">
+                    @if (group.RoadTransportEnabled && group.Editable)
+                    {
+                      <input type="text" id="RunningCostGroupRoadTransport_@group.Id" name="RunningCostGroupRoadTransport_@group.Id" class="form-control" value="@group.RoadTransportValue" />
+                    }
+                    else
+                    {
+                      <div style="text-align:center">XXXXX</div>
+                    }
+                  </td>
+                </tr>
+                if (group.SubItems.Count > 0)
+                {
+                  foreach (var subItem in group.SubItems)
+                  {
+                    <tr>
+                      <td class="align-middle"></td>
+                      <td class="align-middle">@($"* {subItem.GroupName}")</td>
+                      <td class="align-middle" style="text-align:center">XXXXX</td>
+                      <td class="align-middle">
+                        @if (group.ProductionEnabled && group.Editable)
+                        {
+                          <input type="text" id="RunningCostItemProduction_@(subItem.GroupId)_@subItem.ItemId" name="RunningCostItemProduction_@(subItem.GroupId)_@subItem.ItemId" class="form-control" value="@subItem.ProductionValue" />
+                        }
+                        else
+                        {
+                          <div style="text-align:center">XXXXX</div>
+                        }
+                      </td>
+                      <td class="align-middle">
+                        @if (group.SalesEnabled && group.Editable)
+                        {
+                          <input type="text" id="RunningCostItemSales_@(subItem.GroupId)_@subItem.ItemId" name="RunningCostItemSales_@(subItem.GroupId)_@subItem.ItemId" class="form-control" value="@subItem.SalesValue" />
+                        }
+                        else
+                        {
+                          <div style="text-align:center">XXXXX</div>
+                        }
+                      </td>
+                      <td class="align-middle">
+                        @if (group.AdministrationEnabled && group.Editable)
+                        {
+                          <input type="text" id="RunningCostItemAdministration_@(subItem.GroupId)_@subItem.ItemId" name="RunningCostItemAdministration_@(subItem.GroupId)_@subItem.ItemId" class="form-control" value="@subItem.AdministrationValue" />
+                        }
+                        else
+                        {
+                          <div style="text-align:center">XXXXX</div>
+                        }
+                      </td>
+                      <td class="align-middle">
+                        @if (group.RoadTransportEnabled && group.Editable)
+                        {
+                          <input type="text" id="RunningCostItemRoadTransport_@(subItem.GroupId)_@subItem.ItemId" name="RunningCostItemRoadTransport_@(subItem.GroupId)_@subItem.ItemId" class="form-control" value="@subItem.RoadTransportValue" />
+                        }
+                        else
+                        {
+                          <div style="text-align:center">XXXXX</div>
+                        }
+                      </td>
+                    </tr>
+                  }
+                }
+              }
+            </table>
+          </div>
+        </div>
+
+        <div style="float: right">
+          <button type="submit" class="btn btn-afm-default"><i class="fa-solid fa-save"></i> Save</button>
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

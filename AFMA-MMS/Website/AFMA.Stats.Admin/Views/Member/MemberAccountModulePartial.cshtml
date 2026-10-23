@@ -1,0 +1,80 @@
+﻿@model IEnumerable<AFMA.ApplicationLayer.Model.MemberAccountModuleModel>
+
+@{
+  var modules = ApplicationLayer.GetModules().Result;
+}
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Modules</h4>
+    </div>
+
+      
+      @foreach (var module in modules)
+      {
+        <div class="col-12 mt-2">
+          <div class="form-check">
+            <input id="" class="form-check-input" type="checkbox">
+            <label class="form-check-label">Access @module.Description</label>
+          </div>
+          </div>
+      }
+
+
+@*      <div class="form-check">
+
+        @if (fs)
+        {
+          <input asp-for="FeedsalesAccess" class="form-check-input" type="checkbox" checked>
+        }
+        else
+        {
+          <input asp-for="FeedsalesAccess" class="form-check-input" type="checkbox" )>
+        }
+        <label asp-for="FeedsalesAccess" class="form-check-label">Access Feedsales Module</label>
+      </div>
+
+    <div class="col-12 mt-2">
+      <div class="form-check">
+        @if (sm)
+        {
+          <input asp-for="SalmonellaAccess" class="form-check-input" type="checkbox" checked>
+        }
+        else
+        {
+          <input asp-for="SalmonellaAccess" class="form-check-input" type="checkbox">
+        }
+        <label asp-for="SalmonellaAccess" class="form-check-label">Access Salmonella Module</label>
+      </div>
+    </div>
+
+    <div class="col-12 mt-2">
+      <div class="form-check">
+        @if (ip)
+        {
+          <input asp-for="IndustryProfileAccess" class="form-check-input" type="checkbox" checked>
+        }
+        else
+        {
+          <input asp-for="IndustryProfileAccess" class="form-check-input" type="checkbox">
+        }
+        <label asp-for="IndustryProfileAccess" class="form-check-label">Access Industry Profile Module</label>
+      </div>
+    </div>
+
+    <div class="col-12 mt-2">
+      <div class="form-check">
+        @if (mt)
+        {
+          <input asp-for="MycotoxinsAccess" class="form-check-input" type="checkbox" checked>
+        }
+        else
+        {
+          <input asp-for="MycotoxinsAccess" class="form-check-input" type="checkbox">
+        }
+        <label asp-for="MycotoxinsAccess" class="form-check-label">Access Mycotoxins Module</label>
+      </div>
+    </div>
+*@  </div>
+</div>

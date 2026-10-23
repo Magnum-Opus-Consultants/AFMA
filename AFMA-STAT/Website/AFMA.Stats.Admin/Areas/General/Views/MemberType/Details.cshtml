@@ -1,0 +1,44 @@
+﻿@using AFMA.ApplicationLayer.Model
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AFMA.ApplicationLayer.Model.MemberTypeModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">System Admin</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Member Type</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>View Member Type</h4>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-12">
+        <div class="form-group">
+          <label asp-for="Description" class="form-label"></label>
+          <input asp-for="Description" class="form-control" readonly />
+        </div>
+      </div>
+    </div>
+
+    <div style="float: left" class="mt-2">
+      <a asp-controller="MemberType" asp-action="Index" class="btn btn-default"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    </div>
+
+    <div style="float: right" class="mt-2">
+      <a asp-controller="MemberType" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-afm-primary"><i class="fa-solid fa-edit"></i> Edit</a>
+      @if (Model.Deletable)
+      {
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteMemberTypeConfirm"><i class="fa-solid fa-trash"></i> Delete</button>
+      }
+    </div>
+
+  </div>
+</div>
+
+<partial name="DeleteMemberTypeConfirmPartial" model="@(new NotificationModel{Id = Model.Id})" />

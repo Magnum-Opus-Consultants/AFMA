@@ -1,0 +1,216 @@
+﻿@model AFMA.ApplicationLayer.ViewModels.CompanyIndustryProfileViewModel
+
+@{
+  ViewBag.PageTitle = "Industry Profile";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Industry Profile";
+  ViewBag.Action = "View Report";
+  ViewData["IndustryProfileReportId"] = Model.IndustryProfileReportId;
+  ViewData["MemberBranchId"] = Model.MemberBranchId;
+  ViewData["MemberId"] = Model.MemberId;
+  ViewData["CurrentPageAction"] = Model.CurrentPage;
+}
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">View Industry Profile Report</h4>
+        <p class="card-title-desc">Displays your industry profile report with a summary of all items submitted.</p>
+
+        <div class="row g-2">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h4 class="mb-2">Industry Profile Report</h4>
+                  @if (Model.IsSubmitted)
+                  {
+                    <h4 class="mb-2 pull-right text-success">** SUBMITTED **</h4>
+                  }
+                  else
+                  {
+                    <h4 class="mb-2 pull-right text-danger">** NOT SUBMITTED **</h4>
+                  }
+
+                </div>
+                <div class="row mt-2">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label asp-for="MemberName" class="form-label"></label>
+                      <input asp-for="MemberName" class="form-control" disabled />
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label asp-for="MemberBranch" class="form-label"></label>
+                      <input asp-for="MemberBranch" class="form-control" disabled />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-2">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label asp-for="ReportYear" class="form-label"></label>
+                      <input asp-for="ReportYear" class="form-control" disabled />
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label asp-for="IndustryProfileReportId" class="form-label"></label>
+                      <input asp-for="IndustryProfileReportId" class="form-control" disabled />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-2 mb-2">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label asp-for="MemberType" class="form-label"></label>
+                      <input asp-for="MemberType" class="form-control" disabled />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label asp-for="CreatedByUser" class="form-label"></label>
+                      <input asp-for="CreatedByUser" class="form-control" disabled />
+                    </div>
+                  </div>
+                </div>
+
+                <div style="float: left" class="mt-2">
+                  <a asp-controller="IndustryProfile" asp-action="Index" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-2 mt-2">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h4 class="mb-2">Submissions</h4>
+                </div>
+                <ul class="nav nav-pills pt-1" id="industryProfileTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="industry-profile-tab" data-bs-toggle="tab" data-bs-target="#industry-profile" type="button" role="tab" aria-controls="industry-profile" aria-selected="true">Industry Profile</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="industry-cost-tab" data-bs-toggle="tab" data-bs-target="#industry-cost" type="button" role="tab" aria-controls="industry-cost" aria-selected="false">Industry Cost</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="running-cost-tab" data-bs-toggle="tab" data-bs-target="#running-cost" type="button" role="tab" aria-controls="running-cost" aria-selected="false">Running Cost</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="running-cost-sundries-tab" data-bs-toggle="tab" data-bs-target="#running-cost-sundries" type="button" role="tab" aria-controls="running-cost-sundries" aria-selected="false">Running Cost - Sundries</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pellet-cost-tab" data-bs-toggle="tab" data-bs-target="#pellet-cost" type="button" role="tab" aria-controls="pellet-cost" aria-selected="false">Pellet Cost</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="cumbling-cost-tab" data-bs-toggle="tab" data-bs-target="#crumbling-cost" type="button" role="tab" aria-controls="crumbling-cost" aria-selected="false">Crumbling Cost</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="bagging-cost-tab" data-bs-toggle="tab" data-bs-target="#bagging-cost" type="button" role="tab" aria-controls="bagging-cost" aria-selected="false">Bagging Cost</button>
+                  </li>
+                </ul>
+                <div class="tab-content pt-3" id="industryProfileTabContent">
+                  <div class="tab-pane fade show active" id="industry-profile" role="tabpanel" aria-labelledby="industry-profile-tab">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Base Information - Annual</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryProfileBaseDetailPartial" model="@Model.MemberIpBaseItems" view-data="ViewData" />
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Base Administered Cost Components - Annual</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryProfileAdminDetailPartial" model="@Model.MemberIpAdminItems" view-data="ViewData" />
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Additional Information</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryProfileAdditionalDetailPartial" model="@Model.MemberIpAdditionalItems" view-data="ViewData" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="industry-cost" role="tabpanel" aria-labelledby="industry-cost-tab">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Industry Cost Summary</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryCostDetailPartial" model="@Model.IndustryCostsGroups" view-data="ViewData" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="running-cost" role="tabpanel" aria-labelledby="running-cost-tab">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Running Costs</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryProfileMemberRunningCostPartial" model="@Model.MemberRunningCosts" view-data="ViewData" />
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Running Costs - Rented Fleet</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryProfileMemberRunningCostFleetPartial" model="@Model.MemberRunningCostsFleet" view-data="ViewData" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="running-cost-sundries" role="tabpanel" aria-labelledby="running-cost-sundries-tab">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Total Sundry Expenses As Per Management Accounts</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryProfileMemberRunningCostSundryPartial" model="@Model.MemberRunningCostsSundries" view-data="ViewData" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="pellet-cost" role="tabpanel" aria-labelledby="pellet-cost-tab">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Total Cost Of Pellets</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryProfileMemberPcbCostPartial" model="@Model.MemberPelletCostItems" view-data="ViewData" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="crumbling-cost" role="tabpanel" aria-labelledby="crumbling-cost-tab">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Total Cost Of Crumbles</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryProfileMemberPcbCostPartial" model="@Model.MemberCrumblingCostItems" view-data="ViewData" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="bagging-cost" role="tabpanel" aria-labelledby="bagging-cost-tab">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Total Cost Of Bagged Feed</h4>
+                        <p class="card-title-desc">Displays your industry profile report data.</p>
+                        <partial name="IndustryProfileMemberPcbCostPartial" model="@Model.MemberBaggingCostItems" view-data="ViewData" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

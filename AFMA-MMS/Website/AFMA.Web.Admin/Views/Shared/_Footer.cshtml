@@ -1,0 +1,14 @@
+﻿@{
+  var testSite = true;//ApplicationLayer.IsTestSite();
+}
+<div id="main-footer">
+  <nav class="navbar navbar-expand navbar-light bg-@(testSite ? "warning" : "white") small shadow-sm">
+    <span class="navbar-text @(testSite ? "text-light" : "" )">
+      @DateTime.Now.Year &copy; Animal Feed Manufacturers Association. All rights reserved.
+    </span>
+    <span class="navbar-text ms-auto @(testSite ? "text-light" : "" )">
+      @* Version @Html.Raw(ApplicationLayer.ApplicationVersion()) *@
+      Version 0.0.1
+    </span>
+  </nav>
+</div>

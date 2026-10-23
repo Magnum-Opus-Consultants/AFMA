@@ -1,0 +1,104 @@
+﻿@using AFMA.ApplicationLayer.Helpers
+@model AFMA.ApplicationLayer.Model.Wims.NotificationContactModel
+
+<nav aria-label="breadcrumb" id="main-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item"><a href="#">General</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Notification Contact</li>
+  </ol>
+</nav>
+
+<div class="col-md-12">
+  <h3 class="fw-black">Create Notification Contact</h3>
+  <p>Manages notification template related information</p>
+  <div class="row g-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <form class="needs-validation" novalidate asp-action="CreateContact" method="post">
+            
+            <input asp-for="NotificationTemplateId" type="hidden" />
+            
+
+            <div class="row mt-2">
+              <div class="col-3">
+                <div class="form-group">
+                  <label asp-for="ContactTypeId" class="form-label"></label>
+                  <select class="form-control" asp-for="ContactTypeId" asp-items="Html.GetEnumSelectList<ContactType>()"></select>
+                  <span asp-validation-for="ContactTypeId"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div id="email">
+              <div class="row mt-4">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label asp-for="FullName" class="form-label"></label>
+                    <input asp-for="FullName" class="form-control"/>
+                    <span asp-validation-for="FullName"></span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label asp-for="EmailAddress" class="form-label"></label>
+                    <input asp-for="EmailAddress" class="form-control" />
+                    <span asp-validation-for="EmailAddress"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="contact" style="display:none">
+              <div class="row mt-2">
+                <div class="col-12 mt-2">
+                  <div class="form-group">
+                    <label asp-for="MemberContactTypeId" class="form-label"></label>
+                    <select class="form-control" asp-for="MemberContactTypeId" asp-items="await WimsApplicationLayer.GenerateMemberContactTypeSelectList(null)"></select>
+                    <span asp-validation-for="MemberContactTypeId"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="float: right" class="mt-4">
+              <button type="submit" class="btn btn-afm-default"><i class="fa-regular fa-save"></i> Save</button>
+              <a asp-controller="NotificationTemplate" asp-action="Details" asp-route-id="@Model.NotificationTemplateId" class="btn btn-default"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  <script>
+
+    $(document).ready(function () {
+        $('#ContactTypeId').trigger('change');
+      });
+
+      $("select#ContactTypeId").change(function () {
+      var ccc = $(this).val();
+
+      if (ccc == 0)
+      {
+        $("#contact").hide();
+        $("#email").show();
+      }
+
+      if (ccc == 1){
+        $("#contact").show();
+        $("#email").hide();
+      }
+    });
+
+  </script>
+
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}

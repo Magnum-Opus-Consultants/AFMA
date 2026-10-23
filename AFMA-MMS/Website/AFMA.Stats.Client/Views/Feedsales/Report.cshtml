@@ -1,0 +1,55 @@
+﻿@model AFMA.ApplicationLayer.Model.ReportCriteriaModel
+
+@{
+  ViewBag.PageTitle = "Feedsales";
+  ViewBag.Home = "Home";
+  ViewBag.Controller = "Feedsales";
+  ViewBag.Action = "Total Report";
+}
+
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Total Feedsales Report</h4>
+    </div>
+
+    <div class="row g-2 mt-2">
+      <div class="col-12 p-2">
+        <div class="alert alert-info">
+          <p>
+            This report will generate an Excel document with submission between the start- and end date. The date can be picked from a date picker or entered in manually. Important notes:
+            <ul>
+              <li><strong>Start Date</strong>: The start date should always be the first day of the month.</li>
+              <li><strong>End Date</strong>: The end date should always the last day of the month you are including in your report.</li>
+            </ul>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <form class="needs-validation" novalidate asp-action="FeedsalesTotalReport" method="post">
+      <div class="row g-2">
+
+        <div class="col-2 p-2">
+          <div class="form-group">
+            <label asp-for="StartDate" class="form-label"></label>
+            <input asp-for="StartDate" class="form-control" type="date" required />
+            <div class="invalid-feedback">Start Date is required.</div>
+          </div>
+        </div>
+
+        <div class="col-2 p-2">
+          <div class="form-group">
+            <label asp-for="EndDate" class="form-label"></label>
+            <input asp-for="EndDate" class="form-control" type="date" required />
+            <div class="invalid-feedback">End Date is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="float: right">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel-o"></i> Export (Microsoft Excel)</button>
+      </div>
+    </form>
+  </div>
+</div>

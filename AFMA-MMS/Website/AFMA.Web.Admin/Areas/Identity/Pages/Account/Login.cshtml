@@ -1,0 +1,54 @@
+﻿@page
+@model LoginModel
+
+<div class="card">
+  <div class="card-body">
+    <img src="~/img/afma_400x400.png" alt="AFMA Web Manager" width="32" height="32" class="mb-3">
+    <h1 class="fw-black mb-2">AFMA Web Manager</h1>
+    <p class="fw-light text-secondary mb-4">Welcome! Please sign in to continue.</p>
+    <section>
+      <form class="needs-validation" novalidate method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="mb-3">
+          <div class="form-group">
+            <label asp-for="Input.Email"></label>
+            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-group">
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-group">
+            <div class="checkbox">
+              <label asp-for="Input.RememberMe">
+                <input asp-for="Input.RememberMe"/>
+                @Html.DisplayNameFor(m => m.Input.RememberMe)
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-group">
+            <button type="submit" class="btn btn-afm-primary">Log in</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>
+            <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+          </p>
+        </div>
+
+      </form>
+    </section>
+  </div>
+</div>
+
+@section Scripts {
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+}
